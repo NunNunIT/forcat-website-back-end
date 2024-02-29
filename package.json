@@ -7,7 +7,7 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "nodemon index.js"
   },
-  "homepage": "https://github.com/NwunNunIT/techtwo-website-back-end#readme",
+  "homepage": "https://github.com/NunNunIT/techtwo-website-back-end#readme",
   "author": "",
   "license": "ISC",
   "dependencies": {
@@ -15,12 +15,8 @@
     "cookie-parser": "^1.4.6",
     "dotenv": "^16.3.1",
     "express": "^4.18.2",
-    "express-session": "^1.17.3",
-    "installable": "^0.2.8",
     "jsonwebtoken": "^9.0.2",
     "mongoose": "^8.2.0",
-    "status": "^0.0.6",
-    "url": "^0.11.3",
     "util": "^0.12.5"
   },
   "devDependencies": {
