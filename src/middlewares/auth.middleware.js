@@ -4,20 +4,12 @@ const jwt = require('jsonwebtoken');
 
 const auth = () => { };
 
-auth.unauthorized = async (req, res, next) => {
-  const bearerHeader = req.headers['authorization'];
-  if (bearerHeader) {
-    return res.status(403).json({
-      statusCode: 403,
-      err: 'Forbidden',
-      msg: 'Only request without bearerHeader is allowed.'
-    });
-  }
-
-  return next();
-}
-
-auth.verifyToken = async (req, res, next) => {
+// verifyToken() kiểm tra token
+// bao gồm:
+// - kiểm bearerHeader có tồn tại hay không
+// - kiểm tra thông tin id, role có trong token hay không
+// nếu thỏa hết thì next(), ngược lại trả về lỗi
+const verifyToken = async (req, res, next) => {
   try {
     const bearerHeader = req.headers.authorization;
     if (!bearerHeader) {
@@ -50,114 +42,86 @@ auth.verifyToken = async (req, res, next) => {
   }
 }
 
-auth.admin = async (req, res, next) => {
-  auth.verifyToken(req, res, async () => {
-    if (req.user.role !== 'admin') {
+// patternAuth() kiểm tra token và role
+// bao gồm:
+// - kiểm tra token bằng verifyToken()
+// - kiểm tra role có trong mảng allowedRoles hay không
+// - kiểm tra điều kiện additionalCondition có thỏa mãn hay không
+// - kiểm tra account có tồn tại hay không bằng id trong token
+// nếu thỏa hết thì next(), ngược lại trả về lỗi
+const patternAuth = async (req, res, next, allowedRoles, additionalCondition) => {
+  verifyToken(req, res, async () => {
+    if (!allowedRoles.includes(req.user.role) ||
+      (additionalCondition && !additionalCondition(req))
+    ) {
       return res.status(403).json({
         statusCode: 403,
         err: 'Forbidden',
-        msg: 'You must be an admin to request.'
+        msg: 'You do not have permission to perform this request.',
       });
     }
 
-    const adminAccount = await AdminModel.findById(req.user.id).exec();
-    if (!adminAccount) {
-      return res.status(401).json({
-        statusCode: 401,
-        err: 'Unauthorized',
-        msg: 'Can\'t find admin account with this token.'
-      });
-    }
-
-    return next();
-  })
-}
-
-auth.customer = async (req, res, next) => {
-  auth.verifyToken(req, res, async () => {
-    if (req.user.role !== 'customer') {
-      return res.status(403).json({
-        statusCode: 403,
-        err: 'Forbidden',
-        msg: 'You must be a customer to request.'
-      });
-    }
-
-    const customerAccount = await CustomerModel.findById(req.user.id).exec();
-    if (!customerAccount) {
-      return res.status(401).json({
-        statusCode: 401,
-        err: 'Unauthorized',
-        msg: 'Can\'t find customer account with this token.'
-      });
-    }
-
-    return next();
-  })
-}
-
-auth.currentCustomer = async (req, res, next) => {
-  auth.verifyToken(req, res, async () => {
-    if (req.user.role !== 'customer') {
-      return res.status(403).json({
-        statusCode: 403,
-        err: 'Forbidden',
-        msg: 'You must be a customer to request.'
-      });
-    }
-
-    if (req.user.id !== req.params.id) {
-      return res.status(403).json({
-        statusCode: 403,
-        err: 'Forbidden',
-        msg: 'You must request on your account.'
-      });
-    }
-
-    const customerAccount = await CustomerModel.findById(req.user.id).exec();
-    if (!customerAccount) {
-      return res.status(401).json({
-        statusCode: 401,
-        err: 'Unauthorized',
-        msg: 'Can\'t find customer account with this token.'
-      });
-    };
-
-    return next();
-  })
-}
-
-auth.adminOrCurrentCustomer = async (req, res, next) => {
-  auth.verifyToken(req, res, async () => {
-    if (req.user.role !== 'admin' && req.user.role !== 'customer') {
-      return res.status(403).json({
-        statusCode: 403,
-        err: 'Forbidden',
-        msg: 'You must be an admin or a customer to request.'
-      });
-    }
-
-    if (req.user.role === 'customer' && req.user.id !== req.params.id) {
-      return res.status(403).json({
-        statusCode: 403,
-        err: 'Forbidden',
-        msg: 'You must request on your account.'
-      });
-    }
-
-    const model = req.user.role === 'admin' ? AdminModel : (req.user.role === 'customer' ? CustomerModel : null);
+    const model = req.user.role === 'admin' ? AdminModel :
+      (req.user.role === 'customer' ? CustomerModel : null);
     const account = await model.findById(req.user.id).exec();
     if (!account) {
       return res.status(401).json({
         statusCode: 401,
         err: 'Unauthorized',
-        msg: 'Can\'t find account with this token.'
+        msg: 'Can\'t find account with this token.',
       });
     }
 
     return next();
-  })
+  });
 }
 
+const isCurrentAccount = req => req.user.id === req.params.id;
+
+// auth.unauthorized kiểm tra request có bearerHeader hay không
+// nếu có thì trả về lỗi, ngược lại next()
+auth.unauthorized = async (req, res, next) => {
+  const bearerHeader = req.headers['authorization'];
+  if (bearerHeader) {
+    return res.status(403).json({
+      statusCode: 403,
+      err: 'Forbidden',
+      msg: 'Only request without bearerHeader is allowed.'
+    });
+  }
+
+  return next();
+}
+
+// auth.admin kiểm tra token và role có phải admin hay không
+// nếu thỏa mãn thì next(), ngược lại trả về lỗi
+auth.admin = async (req, res, next) => await patternAuth(
+  req, res, next,
+  ['admin'],
+);
+
+// auth.customer kiểm tra token và role có phải customer hay không
+// nếu thỏa mãn thì next(), ngược lại trả về lỗi
+auth.customer = async (req, res, next) => await patternAuth(
+  req, res, next,
+  ['customer'],
+);
+
+// auth.currectCustomer kiểm tra token và role có phải customer và id yêu cầu có phải id trong token hay không
+// nếu thỏa mãn thì next(), ngược lại trả về lỗi
+auth.currentCustomer = async (req, res, next) => await patternAuth(
+  req, res, next,
+  ['customer'],
+  isCurrentAccount,
+);
+
+// auth.adminOrCurrentCustomer kiểm tra token và role có phải admin hoặc customer
+// nếu là role customer thì id yêu cầu có phải id trong token hay không
+// nếu thỏa mãn thì next(), ngược lại trả về lỗi
+auth.adminOrCurrentCustomer = async (req, res, next) => await patternAuth(
+  req, res, next,
+  ['admin', 'customer'],
+  req => req.user.role !== 'customer' || isCurrentAccount(req),
+);
 
 module.exports = auth;
