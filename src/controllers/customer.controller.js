@@ -68,8 +68,16 @@ customerController.create = async (req, res, next) => {
     });
   }
 
-  const hashedPassword = await bcrypt.hash(password, 10);
+  const previousAccount = await CustomerModel.findOne({ phone }).exec();
+  if (previousAccount) {
+    return res.status(409).json({
+      statusCode: 409,
+      err: 'Conflict',
+      msg: 'Account already exists',
+    });
+  }
 
+  const hashedPassword = await bcrypt.hash(password, 10);
   try {
     const account = await CustomerModel.create({ phone, password: hashedPassword });
 
@@ -90,7 +98,6 @@ customerController.create = async (req, res, next) => {
 customerController.readAll = async (req, res, next) => {
   try {
     const accounts = await CustomerModel.find({}).exec();
-    console.log(accounts)
 
     return res.status(200).json({
       statusCode: 200,
@@ -108,15 +115,6 @@ customerController.readAll = async (req, res, next) => {
 }
 
 customerController.read = async (req, res, next) => {
-  const { id, role } = res.locals;
-  if (role === 'customer' && id !== req.params.id) {
-    return res.status(403).json({
-      statusCode: 403,
-      err: 'Forbidden',
-      msg: 'You must request on your account.'
-    });
-  }
-
   try {
     const account = await CustomerModel.findById(req.params.id);
 
@@ -146,13 +144,6 @@ customerController.read = async (req, res, next) => {
 customerController.update = async (req, res, next) => {
   const { id, role } = res.locals;
   const { name, email, address } = req.body;
-  if (role === 'customer' && id !== req.params.id) {
-    return res.status(403).json({
-      statusCode: 403,
-      err: 'Forbidden',
-      msg: 'You only request on your account.'
-    });
-  }
 
   try {
     const account = await CustomerModel.findByIdAndUpdate(req.params.id, { name, email, address }).exec();
