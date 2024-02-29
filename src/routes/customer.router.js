@@ -2,16 +2,16 @@ const express = require('express')
 const router = express.Router()
 
 // const { adminMiddleware, customerMiddleware } = require('../middlewares')
-const middleware = require('../middlewares')
+const { auth } = require('../middlewares')
 
 const { customerController } = require('../controllers')
 
-router.post('/login', middleware.unauthorized, customerController.login);
-router.post('/register', middleware.unauthorized, customerController.create);
+router.post('/login', auth.unauthorized, customerController.login);
+router.post('/register', auth.unauthorized, customerController.create);
 
-router.get('/', middleware.admin, customerController.readAll);
-router.get('/:id', middleware.customerAbove, customerController.read);
+router.get('/', auth.admin, customerController.readAll);
+router.get('/:id', auth.adminOrCurrentCustomer, customerController.read);
 
-router.put('/update/:id', middleware.customerAbove, customerController.update);
+router.put('/update/:id', auth.adminOrCurrentCustomer, customerController.update);
 
 module.exports = router

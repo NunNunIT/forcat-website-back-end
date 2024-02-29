@@ -3,7 +3,7 @@ const Schema = mongoose.Schema;
 
 // Define Admin Schema
 const adminSchema = new Schema({
-  login_name: { type: String, required: true },
+  login_name: { type: String, required: true, unique: true },
   password: { type: String, required: true },
   name: { type: String, required: true },
   sex: { type: String, enum: ['Nam', 'Nữ'], required: true },
@@ -55,9 +55,8 @@ const cartSchema = new Schema({
 
 // Define Customer Schema
 const customerSchema = new Schema({
-  phone: { type: String, required: true },
+  phone: { type: String, required: true, unique: true },
   password: { type: String, required: true },
-  role: { type: String, enum: ['Customer', 'Staff'], default: 'Customer' },
   name: { type: String },
   birth: { type: Date },
   sex: { type: String, enum: ['Nam', 'Nữ'] },
