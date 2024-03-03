@@ -107,7 +107,7 @@ auth.customer = async (req, res, next) => await patternAuth(
   ['customer'],
 );
 
-// auth.currectCustomer kiểm tra token và role có phải customer và id yêu cầu có phải id trong token hay không
+// auth.currentCustomer kiểm tra token và role có phải customer và id yêu cầu có phải id trong token hay không
 // nếu thỏa mãn thì next(), ngược lại trả về lỗi
 auth.currentCustomer = async (req, res, next) => await patternAuth(
   req, res, next,
