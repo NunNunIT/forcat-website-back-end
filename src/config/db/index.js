@@ -5,7 +5,11 @@ const url = `mongodb+srv://${process.env.DATABASE_USER}:${process.env.DATABASE_P
 const connect = async () => {
   try {
     mongoose.set('strictQuery', false);
-    await mongoose.connect(url);
+    await mongoose.connect(url, {
+      useNewUrlParser: true,
+      useUnifiedTopology: true,
+      dbName: 'SEO_DB',
+    });
     console.log("Connected to MongoDB is successful!");
 
   } catch (err) {
