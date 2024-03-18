@@ -2,7 +2,8 @@ const express = require('express');
 const apiRouter = express.Router();
 
 apiRouter.use('/admin', require('./admin.router'));
-apiRouter.use('/customer', require('./customer.router'))
+apiRouter.use('/customer', require('./customer.router'));
+apiRouter.use('/articles', require('./article.router'));
 
 const route = app => {
   app.use('/api', apiRouter);
