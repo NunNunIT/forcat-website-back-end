@@ -4,6 +4,7 @@ const Schema = mongoose.Schema;
 // import models
 const { ProductModel } = require("./product.model")
 const { CategoryModel } = require("./category.model")
+const { ReviewModel } = require("./review.model")
 
 const articleSchema = new Schema({
   article_id: { type: String, required: true, unique: true, },
@@ -38,9 +39,9 @@ const articleSchema = new Schema({
 
 const ArticleModel = mongoose.model('Article', articleSchema);
 
-
 module.exports = {
   ArticleModel,
   ProductModel,
   CategoryModel,
+  ReviewModel,
 };
