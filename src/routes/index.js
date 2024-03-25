@@ -1,12 +1,14 @@
-const express = require('express');
+const express = require("express");
 const apiRouter = express.Router();
 
-apiRouter.use('/admin', require('./admin.router'));
-apiRouter.use('/customer', require('./customer.router'));
-apiRouter.use('/articles', require('./article.router'));
+apiRouter.use("/articles", require("./article.router"));
+apiRouter.get("/", (req, res, next) => res.status(200).json({
+  statusCode: 200,
+  msg: "Welcome to forcat api",
+}))
 
 const route = app => {
-  app.use('/api', apiRouter);
+  app.use("/api", apiRouter);
   app.use((req, res) => {
     res.status(404).json({
       message: "Not found",
