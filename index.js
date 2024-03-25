@@ -26,5 +26,5 @@ app.use((req, res, next) => {
 route(app)
 
 app.listen(cfg.port, () => {
-  console.log(`Website is running at http://${cfg.host}:${cfg.port}`)
+  console.log(`Website is running at http://${cfg.host}:${cfg.port}/api`)
 })
