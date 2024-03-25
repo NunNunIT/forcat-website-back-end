@@ -3,6 +3,7 @@ const apiRouter = express.Router();
 
 apiRouter.use('/admin', require('./admin.router'));
 apiRouter.use('/customer', require('./customer.router'))
+apiRouter.use('/product', require('./product.router'))
 
 const route = app => {
   app.use('/api', apiRouter);
