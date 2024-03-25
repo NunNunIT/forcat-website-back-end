@@ -9,7 +9,6 @@ const connect = async () => {
       dbName: 'SEO_DB',
     });
     console.log("Connected to MongoDB is successful!");
-
   } catch (err) {
     console.log(`Connected failed at url ${url}!\n`, err);
   }

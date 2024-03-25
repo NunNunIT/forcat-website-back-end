@@ -1,1 +1,5 @@
-module.exports = {}
+const articleController = require('./article.controller');
+
+module.exports = {
+  articleController,
+};
