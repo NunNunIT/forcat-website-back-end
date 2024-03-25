@@ -3,10 +3,9 @@ const slugify = require("slugify");
 
 const articleController = () => { }
 
-const getSomeRelateArticle = async ({ article_slug, article_date, article_type }) => {
+const getSomeRelatedArticle = async ({ article_slug, article_date, article_type }) => {
   const numberLimitArticle = 5;
 
-  console.log(article_slug, article_date, article_type);
   try {
     const articles = await ArticleModel.find({
       article_slug: { $ne: article_slug }, // Exclude the current article
@@ -112,10 +111,7 @@ articleController.read = async (req, res, next) => {
       })
     }
 
-    // article.relate_articles = await getSomeRelateArticle(article);
-    const relatedArticles = await getSomeRelateArticle(article);
-    console.log(relatedArticles);
-    // const new_article = { ...article, relatedArticles }
+    const relatedArticles = await getSomeRelatedArticle(article);
     article._doc.related_articles = relatedArticles;
 
     return res.status(200).json({
