@@ -30,15 +30,7 @@ const productSchema = new mongoose.Schema(
       max: 5,
     },
     product_short_description: String,
-    product_description: [
-      {
-        type: {
-          type: String,
-          required: true,
-        },
-        content: String,
-      },
-    ],
+    product_description: String,
     product_detail: Object,
     product_variants: [
       {
