@@ -8,6 +8,7 @@ import userRoutes from "./routes/user.route.js";
 import authRoutes from "./routes/auth.route.js";
 import productListRoutes from "./routes/productList.route.js";
 import productRoutes from "./routes/product.route.js";
+import cartRoutes from "./routes/cart.route.js";
 import reviewRoutes from "./routes/review.route.js";
 
 const PORT = 8080;
@@ -37,6 +38,7 @@ app.use("/api/user", userRoutes);
 app.use("/api/auth", authRoutes);
 app.use("/api/productList", productListRoutes);
 app.use("/api/product", productRoutes);
+app.use("/api/cart", cartRoutes);
 app.use("/api/review", reviewRoutes);
 
 app.use((err, req, res, next) => {
