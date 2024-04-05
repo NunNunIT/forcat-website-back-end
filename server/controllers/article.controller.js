@@ -36,8 +36,7 @@ export const create = async (req, res, next) => {
       return resHandler.conflict(res, 'The article slug is already taken');
     }
 
-    console.error(err);
-    return resHandler.error();
+    next(err);
   }
 }
 
@@ -62,8 +61,7 @@ export const readAll = async (req, res, next) => {
 
     return resHandler.ok(res, articles);
   } catch (err) {
-    console.error(err);
-    return resHandler.error();
+    next(err);
   }
 }
 
@@ -84,8 +82,7 @@ export const readOne = async (req, res, next) => {
 
     return resHandler.ok(res, article);
   } catch (err) {
-    console.error(err);
-    return resHandler.error();
+    next(err);
   }
 }
 
@@ -106,7 +103,6 @@ export const update = async (req, res, next) => {
 
     return resHandler.ok(res, article);
   } catch (err) {
-    console.error(err);
-    return resHandler.error();
+    next(err);
   }
 }

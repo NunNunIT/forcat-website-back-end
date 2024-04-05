@@ -13,6 +13,7 @@ const created = (res, data, message) => resWithPack(res, 201, { data, message })
 // 4xx
 const badRequest = (res, message = 'Bad Request') => resWithPack(res, 400, { message });
 const unauthorize = (res, message = 'Unauthorized') => resWithPack(res, 401, { message });
+const forbidden = (res, message = 'Forbidden') => resWithPack(res, 403, { message });
 const notFound = (res, message = 'Resource not found') => resWithPack(res, 404, { message });
 const conflict = (res, message = 'Conflict') => resWithPack(res, 409, { message });
 
@@ -25,6 +26,7 @@ export default {
   created,
   badRequest,
   unauthorize,
+  forbidden,
   notFound,
   conflict,
   error,

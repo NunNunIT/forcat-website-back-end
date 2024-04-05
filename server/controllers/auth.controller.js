@@ -1,99 +1,114 @@
 import User from "../models/user.model.js"
 import bcryptjs from 'bcryptjs'
 import responseHandler from "../handlers/response.handler.js";
-import jwt from 'jsonwebtoken'
+import jwt from 'jsonwebtoken';
+
+const HOUR = 3600000;
 
 export const register = async (req, res, next) => {
-    const user_email = req.body.user_email
-    const checkUser = await User.findOne({
-        user_email
-    });
-    if (checkUser) return responseHandler.badrequest(res, "username already used");
+  const { user_email, user_name, user_password } = req.body;
+  if (!(user_email && user_name && user_password))
+    return responseHandler.badRequest(res, 'All input is required');
 
-    try {
-        const newUser = new User({
-            user_login_name: req.body.user_name.split(" ").join("").toLowerCase() + Math.random().toString(36).slice(-8),
-            user_name: req.body.user_name,
-            user_password: bcryptjs.hashSync(req.body.user_password, 10),
-            user_email: req.body.user_email
-        });
+  const checkUser = await User.findOne({ user_email });
 
-        await newUser.save();
-        res.status(200).json({
-            message: "User created successfully."
-        });
-    } catch (error) {
-        next(error)
-        // next(errorHandler(500, error.message))
-        // res.status(500).json({ message: error.message });
-    }
+  if (checkUser)
+    return responseHandler.badRequest(res, 'Username already used');
+
+  const user_data = {
+    user_login_name:
+      user_name.split(' ').join('').toLowerCase() +
+      Math.random().toString(36).slice(-8),
+    user_name,
+    user_password: bcryptjs.hashSync(user_password, 10),
+    user_email,
+  }
+
+  try {
+    await User.create(user_data);
+    return responseHandler.created(res);
+  } catch (error) {
+    next(error);
+  }
 };
 
 export const login = async (req, res, next) => {
-    const {
-        user_email,
-        user_password
-    } = req.body
+  const { user_email, user_password } = req.body;
 
-    try {
-        const validUser = await User.findOne({
-            user_email
-        });
-        if (!validUser) return responseHandler.errorHandler(res, 404, "Tài khoản không tồn tại!");
-        const checkPassword = bcryptjs.compareSync(user_password, validUser.user_password);
-        if (!checkPassword) return responseHandler.unauthorize(res)
+  const checkUser = await User.findOne({ user_email });
+  if (!checkUser)
+    return responseHandler.notFound(res, "Tài khoản không tồn tại!");
 
-        const {user_password: hashedPassword, ...rest} = validUser._doc
-        const token = jwt.sign({
-            id: validUser._id
-        }, process.env.JWT_SECRET_KEY);
+  const checkPassword = bcryptjs.compareSync(user_password, checkUser.user_password);
+  if (!checkPassword)
+    return responseHandler.unauthorize(res);
 
-        const expiryDate = new Date(Date.now() + 3600000); // 1 hour
-        res.cookie('access_token', token, {
-            httpOnly: true,
-            expires: expiryDate
-        }).status(200).json(rest);
-    } catch (error) {
-        next(error)
-    }
+  try {
+    const { user_password: hashedPassword, ...rest } = checkUser._doc;
+    const token = jwt.sign({ id: checkUser._id }, process.env.JWT_SECRET_KEY);
+    const expiryDate = new Date(Date.now() + HOUR); // 1 hour
+
+    res.cookie('access_token', token, {
+      httpOnly: true,
+      expires: expiryDate
+    });
+
+    return responseHandler.ok(res, rest);
+  } catch (error) {
+    next(error)
+  }
 }
 
 export const loginWithGoogle = async (req, res, next) => {
-    try {
-        const user = await User.findOne({user_email: req.body.email});
-        if (user) {
-            const {user_password: hashedPassword, ...rest} = user._doc
-            const token = jwt.sign({id: user._id}, process.env.JWT_SECRET_KEY);
-            const expiryDate = new Date(Date.now() + 3600000); // 1 hour
-            res.cookie('access_token', token, {
-                httpOnly: true,
-                expires: expiryDate
-            }).status(200).json(rest);
-        } else {
-            const generatedPassword = Math.random().toString(36).slice(-8) + Math.random().toString(36).slice(-8);
-            const hashedPassword = bcryptjs.hashSync(generatedPassword, 10)
-            const newUser = new User({
-                user_name: req.body.user_name,
-                user_login_name: req.body.user_name.split(" ").join("").toLowerCase() + Math.random().toString(36).slice(-8),
-                user_email: req.body.user_email,
-                user_password: hashedPassword,
-                user_avt_img: req.body.user_avt_img 
-            })
-            await newUser.save()
-            const {user_password: hashedPassword2, ...rest} = newUser._doc
-            const token = jwt.sign({id: newUser._id}, process.env.JWT_SECRET_KEY)
-            const expiryDate = new Date(Date.now() + 3600000); // 1 hour
-            res.cookie('access_token', token, {
-                httpOnly: true,
-                expires: expiryDate
-            }).status(200).json(rest);
-        }
-    } catch (error) {
-        next(error)
+  try {
+    const checkUser = await User.findOne({ user_email: req.body.email });
+    if (checkUser) {
+      const { user_password: hashedPassword, ...rest } = user._doc;
+
+      const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET_KEY);
+      const expiryDate = new Date(Date.now() + HOUR); // 1 hour
+      res.cookie('access_token', token, {
+        httpOnly: true,
+        expires: expiryDate
+      });
+
+      return responseHandler.ok(res, rest);
     }
+
+    const generatedPassword =
+      Math.random().toString(36).slice(-8) +
+      Math.random().toString(36).slice(-8);
+    const hashedPassword = bcryptjs.hashSync(generatedPassword, 10);
+
+    const user_data = {
+      user_name: req.body.user_name,
+      user_login_name:
+        req.body.user_name.split(" ").join("").toLowerCase() +
+        Math.random().toString(36).slice(-8),
+      user_email: req.body.user_email,
+      user_password: hashedPassword,
+      user_avt_img: req.body.user_avt_img,
+    }
+
+    const user = await User.create(user_data);
+    const { user_password: _, ...rest } = user._doc;
+
+    const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET_KEY);
+    const expiryDate = new Date(Date.now() + HOUR); // 1 hour
+    res.cookie('access_token', token, {
+      httpOnly: true,
+      expires: expiryDate
+    });
+
+    return responseHandler.ok(res, rest);
+  } catch (error) {
+    next(error);
+  }
 }
 
 export const logout = (req, res, next) => {
-    console.log('Đã đăng xuất')
-    res.clearCookie('access_token').status(200).json('Logout success!');
+  console.log('Đã đăng xuất')
+  res.clearCookie('access_token');
+
+  return responseHandler.ok(res, undefined, 'Logout success');
 }
