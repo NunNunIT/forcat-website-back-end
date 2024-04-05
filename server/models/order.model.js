@@ -42,6 +42,9 @@ const orderSchema = new mongoose.Schema(
           type: String,
           ref: "Product", // Tham chiếu đến collection sản phẩm (Product)
         },
+        variant_id: {
+          type: String,
+        },
         quantity: Number,
         unit_price: Number,
       },

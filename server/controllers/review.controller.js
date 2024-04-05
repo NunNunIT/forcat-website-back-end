@@ -1,6 +1,7 @@
 import Review from "../models/review.model.js";
 import responseHandler from "../handlers/response.handler.js";
 
+// [GET] /api/review/getOverview/:product_id
 export const getOverview = async (req, res, next) => {
   const productId = req.params.product_id;
 
@@ -34,6 +35,7 @@ export const getOverview = async (req, res, next) => {
       },
     });
   } catch (err) {
+    console.log(err);
     return responseHandler.error(res);
   }
 };

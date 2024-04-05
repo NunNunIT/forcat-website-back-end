@@ -1,6 +1,7 @@
 import Product from "../models/product.model.js";
 import responseHandler from "../handlers/response.handler.js";
 
+// [GET] /api/product/getProduct/product_slug
 export const getProduct = async (req, res, next) => {
   const productSlug = req.params.product_slug;
 
@@ -21,6 +22,7 @@ export const getProduct = async (req, res, next) => {
     });
     return responseHandler.ok(res, { product, relatedProducts });
   } catch (err) {
+    console.log(err);
     return responseHandler.error(res);
   }
 };

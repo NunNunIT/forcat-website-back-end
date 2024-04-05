@@ -1,6 +1,7 @@
 import User from "../models/user.model.js";
 import responseHandler from "../handlers/response.handler.js";
 
+// [GET] /api/cart/getCart/:user_id
 export const getCart = async (req, res, next) => {
   const userId = req.params.user_id;
 
@@ -18,10 +19,12 @@ export const getCart = async (req, res, next) => {
 
     return responseHandler.ok(res, { cartInfo });
   } catch (err) {
+    console.log(err);
     return responseHandler.error(res);
   }
 };
 
+// [POST] /api/cart/updateCart/:user_id
 export const updateCart = async (req, res, next) => {
   const userId = req.params.user_id;
 
@@ -56,6 +59,7 @@ export const updateCart = async (req, res, next) => {
     user.save();
     return responseHandler.ok(res, {});
   } catch (err) {
+    console.log(err);
     return responseHandler.error(res);
   }
 };
