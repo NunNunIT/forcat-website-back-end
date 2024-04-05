@@ -1,45 +1,30 @@
-const responseWithData = (res, statusCode, data) => res.status(statusCode).json(data);
-
-const error = (res) => responseWithData(res, 500, {
-  status: 500,
-  success: false,
-  message: "Oops! Something worng!"
-});
-
-const errorHandler = (res, statusCode, message) => responseWithData(res, statusCode, {
+// Define the response handler with Package Response
+const resWithPack = (res, statusCode, pack) => res.status(statusCode).json({
   status: statusCode,
-  success: false,
-  message
+  success: statusCode >= 200 && statusCode < 300,
+  ...pack
 });
 
-const badrequest = (res, message) => responseWithData(res, 400, {
-  status: 400,
-  success: false,
-  message
-});
+// Define the response handler
+// 2xx
+const ok = (res, data) => resWithPack(res, 200, { data });
+const created = (res, data) => resWithPack(res, 201, { data });
 
-const ok = (res, data) => responseWithData(res, 200, data);
+// 4xx
+const badRequest = (res, message) => resWithPack(res, 400, { message: message ?? "Bad Required" });
+const unauthorize = (res, message) => resWithPack(res, 401, { message: message ?? "Unauthorized" });
+const notFound = (res, message) => resWithPack(res, 404, { message: message ?? "Resource not found" });
+const conflict = (res, message) => resWithPack(res, 409, { message: message ?? "Conflict" });
 
-const created = (res, data) => responseWithData(res, 201, data);
-
-const unauthorize = (res) => responseWithData(res, 401, {
-  status: 401,
-  success: false,
-  message: "Unathorized"
-});
-
-const notfound = (res) => responseWithData(res, 404, {
-  status: 404,
-  success: false,
-  message: "Resource not found"
-});
+// 5xx
+const error = (res, message) => resWithPack(res, 500, { message: message ?? "Oops! Something wrong!" });
 
 export default {
-  error,
-  errorHandler,
-  badrequest,
+  resWithPack,
   ok,
   created,
+  badRequest,
   unauthorize,
-  notfound
+  notFound,
+  error,
 };

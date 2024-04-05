@@ -7,6 +7,7 @@ import path from 'path';
 import userRoutes from './routes/user.route.js';
 import authRoutes from './routes/auth.route.js';
 import productListRoutes from './routes/productList.route.js';
+import articleRoutes from './routes/article.route.js';
 
 const PORT = 8080;
 const __dirname = path.resolve()
@@ -28,19 +29,19 @@ app.use(express.json())
 
 app.listen(PORT, () => {
     console.log(`Server started on port ${PORT}`);
-  });
+});
 
 app.use('/api/user', userRoutes);
 app.use('/api/auth', authRoutes);
 app.use('/api/productList', productListRoutes);
+app.use('/api/articles', articleRoutes);
 
 app.use((err, req, res, next) => {
     const statusCode = err.statusCode || 500;
     const message = err.message || 'Internal Server Error';
-    return res.status(statusCode).json({ 
+    return res.status(statusCode).json({
         success: false,
         message,
         statusCode,
-
     })
 })
