@@ -7,14 +7,14 @@ const resWithPack = (res, statusCode, pack) => res.status(statusCode).json({
 
 // Define the response handler
 // 2xx
-const ok = (res, data) => resWithPack(res, 200, { data });
-const created = (res, data) => resWithPack(res, 201, { data });
+const ok = (res, data, message) => resWithPack(res, 200, { data, message });
+const created = (res, data, message) => resWithPack(res, 201, { data, message });
 
 // 4xx
-const badRequest = (res, message) => resWithPack(res, 400, { message: message ?? "Bad Required" });
-const unauthorize = (res, message) => resWithPack(res, 401, { message: message ?? "Unauthorized" });
-const notFound = (res, message) => resWithPack(res, 404, { message: message ?? "Resource not found" });
-const conflict = (res, message) => resWithPack(res, 409, { message: message ?? "Conflict" });
+const badRequest = (res, message = 'Bad Request') => resWithPack(res, 400, { message });
+const unauthorize = (res, message = 'Unauthorized') => resWithPack(res, 401, { message });
+const notFound = (res, message = 'Resource not found') => resWithPack(res, 404, { message });
+const conflict = (res, message = 'Conflict') => resWithPack(res, 409, { message });
 
 // 5xx
 const error = (res, message) => resWithPack(res, 500, { message: message ?? "Oops! Something wrong!" });
@@ -26,5 +26,6 @@ export default {
   badRequest,
   unauthorize,
   notFound,
+  conflict,
   error,
 };
