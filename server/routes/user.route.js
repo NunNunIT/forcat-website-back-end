@@ -1,8 +1,9 @@
 import express from 'express';
-import { test } from '../controllers/user.controller.js'
+import { edit, changePassword } from '../controllers/user.controller.js'
 
 const router = express.Router();
 
-router.get('/', test)
+router.put("/edit", edit);
+router.put("/change-password", changePassword);
 
 export default router;

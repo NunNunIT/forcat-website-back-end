@@ -13,13 +13,17 @@
   "license": "ISC",
   "dependencies": {
     "@reduxjs/toolkit": "^2.2.2",
+    "bcrypt": "^5.1.1",
     "bcryptjs": "^2.4.3",
     "cors": "^2.8.5",
     "dotenv": "^16.4.5",
     "express": "^4.19.1",
     "jsonwebtoken": "^9.0.2",
     "mongoose": "^8.2.2",
+    "nodemailer": "^6.9.13",
     "nodemon": "^3.1.0",
-    "react-redux": "^9.1.0"
+    "react-redux": "^9.1.0",
+    "request": "^2.88.2",
+    "supertest": "^6.3.4"
   }
 }

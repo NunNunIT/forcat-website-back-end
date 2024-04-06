@@ -3,6 +3,13 @@ import bcryptjs from 'bcryptjs'
 import responseHandler from "../handlers/response.handler.js";
 import jwt from 'jsonwebtoken';
 
+import nodemailer from "nodemailer";
+import createOTP from "../utils/createOTP.js";
+import dotenv from "dotenv";
+
+dotenv.config();
+
+
 const HOUR = 3600000;
 
 export const register = async (req, res, next) => {
@@ -112,3 +119,46 @@ export const logout = (req, res, next) => {
 
   return responseHandler.ok(res, undefined, 'Logout success');
 }
+
+
+
+
+
+
+// Create a function to send an email
+async function sendEmail(email, otp) {
+  let transporter = nodemailer.createTransport({
+    service: "gmail",
+    auth: {
+      user: process.env.EMAIL,
+      pass: process.env.PASSWORD,
+    },
+  });
+
+  let mailOptions = {
+    from: process.env.EMAIL,
+    to: "ntan0828@gmail.com",
+    subject: "OTP for email verification",
+    text: `Your OTP is ${otp}`,
+  };
+
+  await transporter.sendMail(mailOptions);
+}
+
+export const forgot = async (req, res, next) => {
+  // const { user_email } = req.body.user_email;
+
+  try {
+    // const user = await User.findOne({ user_email: req.body.email });
+    // if (!user) {
+    //   return responseHandler.notFound(res, "Email does not exist!");
+    // }
+
+    const otp = createOTP();
+    await sendEmail("ntan0828@gmail.com", otp);
+
+    res.status(200).json({ message: "OTP sent successfully." });
+  } catch (error) {
+    next(error);
+  }
+};
