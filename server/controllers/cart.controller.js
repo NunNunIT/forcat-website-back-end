@@ -12,11 +12,12 @@ export const getCart = async (req, res, next) => {
         select: "_id product_name product_imgs product_variants",
       })
       .exec();
+
     if (!user) {
       return responseHandler.notFound(res, "Cart Not Found");
     }
-    const cartInfo = user.cart;
 
+    const cartInfo = user.cart;
     return responseHandler.ok(res, { cartInfo });
   } catch (err) {
     console.log(err);

@@ -55,6 +55,19 @@ const productSchema = new mongoose.Schema(
         in_stock: Number,
       },
     ],
+    review_count: [Number],
+    recent_images: [
+      {
+        link: String,
+        alt: String,
+      },
+    ],
+    recent_videos: [
+      {
+        link: String,
+        alt: String,
+      },
+    ],
     recent_reviews: [
       {
         type: mongoose.Schema.Types.ObjectId,
