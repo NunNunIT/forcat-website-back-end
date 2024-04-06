@@ -19,6 +19,7 @@
     "express": "^4.19.1",
     "jsonwebtoken": "^9.0.2",
     "mongoose": "^8.2.2",
+    "nodemon": "^3.1.0",
     "react-redux": "^9.1.0"
   }
 }

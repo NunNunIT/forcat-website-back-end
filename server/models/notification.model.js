@@ -3,6 +3,10 @@ import { createSlug } from "../utils/createSlug.js";
 
 const notificationSchema = new mongoose.Schema(
   {
+    notification_status: {
+      type: Boolean,
+      required: true,
+    },
     notification_name: {
       type: String,
       required: true,
@@ -46,7 +50,7 @@ const notificationSchema = new mongoose.Schema(
   { timestamps: true }
 );
 
-notificationSchema.pre('save', function(next) {
+notificationSchema.pre("save", function (next) {
   this.notification_slug = createSlug(this.notification_name);
   next();
 });
