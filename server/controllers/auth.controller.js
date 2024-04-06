@@ -6,6 +6,7 @@ import jwt from "jsonwebtoken";
 import nodemailer from "nodemailer";
 import createOTP from "../utils/createOTP.js";
 import dotenv from "dotenv";
+import moment from "moment";
 
 dotenv.config();
 
@@ -146,14 +147,20 @@ export const forgot = async (req, res, next) => {
 
   try {
     const user = await User.findOne({ user_email: user_email });
-    // if (!user) {
-    //   return responseHandler.notFound(res, "Email does not exist!");
-    // }
 
     const otp = createOTP();
-    await sendEmail(user_email, otp); // pass user_email instead of user
 
-    res.status(200).json({ message: "OTP sent successfully." });
+    // Create a JWT with the OTP as the payload and a 60 second expiry
+    const otpToken = jwt.sign({ otp: otp }, process.env.JWT_SECRET_KEY, {
+      expiresIn: "60s",
+    });
+
+    // Store the OTP token in a cookie
+    res.cookie("otpToken", otpToken, { maxAge: 60 * 1000, httpOnly: true });
+
+    await sendEmail(user_email, otp);
+
+    return responseHandler.ok(res, null, "OTP sent successfully");
   } catch (error) {
     next(error);
   }

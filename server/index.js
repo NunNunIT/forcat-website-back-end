@@ -3,6 +3,7 @@ import mongoose from 'mongoose';
 import dotenv from 'dotenv';
 import cors from 'cors'
 import path from 'path';
+import cookieParser from "cookie-parser";
 
 import userRoutes from './routes/user.route.js';
 import authRoutes from './routes/auth.route.js';
@@ -45,3 +46,5 @@ app.use((err, req, res, next) => {
     message,
   });
 })
+
+app.use(cookieParser());
