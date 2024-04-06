@@ -120,11 +120,6 @@ export const logout = (req, res, next) => {
   return responseHandler.ok(res, undefined, 'Logout success');
 }
 
-
-
-
-
-
 // Create a function to send an email
 async function sendEmail(email, otp) {
   let transporter = nodemailer.createTransport({

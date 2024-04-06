@@ -49,11 +49,8 @@ export const edit = async (req, res) => {
   }
 };
 
-
-
 export const changePassword = async (req, res) => {
   const { oldPassword, newPassword, confirmPassword } = req.body;
-
 
   try {
     const user = await User.findByEmail(req.body.email);
