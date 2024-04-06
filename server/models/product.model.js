@@ -66,7 +66,7 @@ const productSchema = new mongoose.Schema(
   { timestamps: true }
 );
 
-productSchema.pre('save', function(next) {
+productSchema.pre("save", function (next) {
   this.product_slug = createSlug(this.product_name);
   next();
 });
