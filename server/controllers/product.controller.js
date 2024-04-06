@@ -53,7 +53,7 @@ export const getTopRatedProducts = async (req, res, next) => {
   }
 };
 
-// [GET] /api/getProduct/:product_slug
+// [GET] /api/:product_slug
 export const getProduct = async (req, res, next) => {
   const productSlug = req.params.product_slug;
 
