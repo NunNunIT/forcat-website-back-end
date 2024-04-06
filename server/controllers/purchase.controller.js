@@ -27,12 +27,15 @@ export const readAll = async (req, res, next) => {
   if (!role || !['admin', 'user', 'staff'].includes(role))
     return responseHandler.forbidden(res, 'You are not authorized!');
 
-  const query = (role.includes(['admin', 'staff'])) ?
+  const query = (['admin', 'staff'].includes(role)) ?
     {} :
     { customer_id: user_id };
 
-  const select = (role.includes(['admin', 'staff'])) ?
-    { customer_id: 1, } :
+  const select = (['admin', 'staff'].includes(role)) ?
+    {
+      order_note: 0,
+      __v: 0
+    } :
     {
       order_buyer: 1,
       order_address: 1,
