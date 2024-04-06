@@ -53,6 +53,16 @@ const orderSchema = new mongoose.Schema(
 );
 
 orderSchema.pre("save", function (next) {
+  this.order_process_info = [
+    {
+      status: "unpaid",
+      date: new Date(),
+    },
+    {
+      status: "delivering",
+      date: new Date(),
+    }
+  ];
   this.order_total_cost = this.order_details.reduce(
     (total, item) => total + item.quantity * item.unit_price,
     this.order_shipping_cost
