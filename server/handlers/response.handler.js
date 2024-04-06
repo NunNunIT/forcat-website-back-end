@@ -1,51 +1,33 @@
-const responseWithData = (res, statusCode, data) =>
-  res.status(statusCode).json(data);
+// Define the response handler with Package Response
+const resWithPack = (res, statusCode, pack) => res.status(statusCode).json({
+  status: statusCode,
+  success: statusCode >= 200 && statusCode < 300,
+  ...pack
+});
 
-const error = (res) =>
-  responseWithData(res, 500, {
-    status: 500,
-    success: false,
-    message: "Oops! Something worng!",
-  });
+// Define the response handler
+// 2xx
+const ok = (res, data, message) => resWithPack(res, 200, { data, message });
+const created = (res, data, message) => resWithPack(res, 201, { data, message });
 
-const errorHandler = (res, statusCode, message) =>
-  responseWithData(res, statusCode, {
-    status: statusCode,
-    success: false,
-    message,
-  });
+// 4xx
+const badRequest = (res, message = 'Bad Request') => resWithPack(res, 400, { message });
+const unauthorize = (res, message = 'Unauthorized') => resWithPack(res, 401, { message });
+const forbidden = (res, message = 'Forbidden') => resWithPack(res, 403, { message });
+const notFound = (res, message = 'Resource not found') => resWithPack(res, 404, { message });
+const conflict = (res, message = 'Conflict') => resWithPack(res, 409, { message });
 
-const badrequest = (res, message) =>
-  responseWithData(res, 400, {
-    status: 400,
-    success: false,
-    message,
-  });
-
-const ok = (res, data) => responseWithData(res, 200, data);
-
-const created = (res, data) => responseWithData(res, 201, data);
-
-const unauthorize = (res) =>
-  responseWithData(res, 401, {
-    status: 401,
-    success: false,
-    message: "Unathorized",
-  });
-
-const notfound = (res) =>
-  responseWithData(res, 404, {
-    status: 404,
-    success: false,
-    message: "Resource not found",
-  });
+// 5xx
+const error = (res, message) => resWithPack(res, 500, { message: message ?? "Oops! Something wrong!" });
 
 export default {
-  error,
-  errorHandler,
-  badrequest,
+  resWithPack,
   ok,
   created,
+  badRequest,
   unauthorize,
-  notfound,
+  forbidden,
+  notFound,
+  conflict,
+  error,
 };
