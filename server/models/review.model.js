@@ -3,16 +3,29 @@ import { createSlug } from "../utils/createSlug.js";
 
 const reviewSchema = new mongoose.Schema({
   product_id: {
-    type: String,
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'Product',
     required: true
   },
-  user_id: {
+  product_variant_name: {
     type: String,
+  },
+  user_id: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'User',
     required: true
   },
   order_id: {
-    type: String,
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'Order',
     required: true
+  },
+  user_info: {
+    user_name: {
+      type: String,
+      required: true
+    },
+    user_avt: String
   },
   review_rating: {
     type: Number,
