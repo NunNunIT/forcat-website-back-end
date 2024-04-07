@@ -7,6 +7,7 @@ import cookieParser from "cookie-parser";
 
 import userRoutes from "./routes/user.route.js";
 import authRoutes from "./routes/auth.route.js";
+import productListRoutes from './routes/productList.route.js';
 import productRoutes from "./routes/product.route.js";
 import cartRoutes from "./routes/cart.route.js";
 import reviewRoutes from "./routes/review.route.js";
@@ -40,7 +41,8 @@ app.listen(PORT, () => {
 
 app.use("/api/auth", authRoutes);
 app.use("/api/user", userRoutes);
-app.use("/api/products", productRoutes);
+app.use("/api/product", productRoutes);
+app.use('/api/productList', productListRoutes);
 app.use("/api/articles", articleRoutes);
 app.use("/api/purchases", purchaseRoutes);
 app.use("/api/cart", cartRoutes);
