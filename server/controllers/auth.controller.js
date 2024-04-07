@@ -6,7 +6,6 @@ import jwt from "jsonwebtoken";
 import nodemailer from "nodemailer";
 import createOTP from "../utils/createOTP.js";
 import dotenv from "dotenv";
-import moment from "moment";
 
 dotenv.config();
 
@@ -147,15 +146,16 @@ export const forgot = async (req, res, next) => {
   const { user_email } = req.body;
 
   try {
-    const user = await User.findOne({ user_email: user_email });
+    // Find the user in the database
+    const user = await User.findOne({ user_email });
 
     // Check if user exists
-    // if (!user) {
-    //     return responseHandler.notFound(res, "User with this email does not exist");
-    // }
-
-    // Store the user's id in a cookie
-    res.cookie("userId", user._id, { maxAge: 60 * 60 * 1000, httpOnly: true });
+    if (!user) {
+      return responseHandler.notFound(
+        res,
+        "User with this email does not exist"
+      );
+    }
 
     const otp = createOTP();
 
@@ -176,21 +176,21 @@ export const forgot = async (req, res, next) => {
 };
 
 export const resetPassword = async (req, res, next) => {
-  const { newPassword } = req.body;
+  const { newPassword, user_email } = req.body;
 
   try {
-    // Get the user's id from the cookie
-    const userId = req.cookies.userId;
+    // Find the user in the database
+    const user = await User.findOne({ user_email });
 
-    const user = await User.findById(userId);
+    // Check if user exists
+    if (!user) {
+      return responseHandler.notFound(res, "User does not exist");
+    }
 
     // Hash the new password and update the user's password
-    const salt = await bcryptjs.genSalt(10);
-    user.user_password = await bcryptjs.hash(newPassword, salt);
+    user.user_password = bcryptjs.hashSync(newPassword, 10);
 
     await user.save();
-
-    res.clearCookie("userId");
 
     return responseHandler.ok(res, null, "Password updated successfully");
   } catch (error) {
