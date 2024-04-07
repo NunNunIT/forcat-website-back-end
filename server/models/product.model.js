@@ -62,6 +62,19 @@ const productSchema = new mongoose.Schema(
         in_stock: Number,
       },
     ],
+    review_count: [Number],
+    recent_images: [
+      {
+        link: String,
+        alt: String,
+      },
+    ],
+    recent_videos: [
+      {
+        link: String,
+        alt: String,
+      },
+    ],
     recent_reviews: [
       {
         type: mongoose.Schema.Types.ObjectId,
@@ -73,7 +86,7 @@ const productSchema = new mongoose.Schema(
   { timestamps: true }
 );
 
-// Middleware để xóa trường categories và cập nhật category_names
+// Middleware để cập nhật category_names
 productSchema.pre("save", async function (next) {
   try {
     // Lấy thông tin của các danh mục từ ObjectId trong trường categories

@@ -45,7 +45,7 @@ export const login = async (req, res, next) => {
 
   try {
     const { user_password: hashedPassword, ...rest } = checkUser._doc;
-    const token = jwt.sign({ id: checkUser._id }, process.env.JWT_SECRET_KEY);
+    const token = jwt.sign({ id: checkUser._id, role: checkUser.user_role }, process.env.JWT_SECRET_KEY);
     const expiryDate = new Date(Date.now() + HOUR); // 1 hour
 
     res.cookie('access_token', token, {
@@ -65,7 +65,7 @@ export const loginWithGoogle = async (req, res, next) => {
     if (checkUser) {
       const { user_password: hashedPassword, ...rest } = user._doc;
 
-      const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET_KEY);
+      const token = jwt.sign({ id: user._id, role: checkUser.user_role }, process.env.JWT_SECRET_KEY);
       const expiryDate = new Date(Date.now() + HOUR); // 1 hour
       res.cookie('access_token', token, {
         httpOnly: true,
@@ -93,7 +93,7 @@ export const loginWithGoogle = async (req, res, next) => {
     const user = await User.create(user_data);
     const { user_password: _, ...rest } = user._doc;
 
-    const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET_KEY);
+    const token = jwt.sign({ id: user._id, role: user.user_role }, process.env.JWT_SECRET_KEY);
     const expiryDate = new Date(Date.now() + HOUR); // 1 hour
     res.cookie('access_token', token, {
       httpOnly: true,
