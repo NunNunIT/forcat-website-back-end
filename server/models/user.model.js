@@ -65,7 +65,7 @@ const userSchema = new mongoose.Schema(
           ref: "Product",
         },
         variant_id: {
-          type: String,
+          type: mongoose.Schema.Types.ObjectId,
         },
         quantity: {
           type: Number,
