@@ -142,11 +142,20 @@ async function sendEmail(email, otp) {
   await transporter.sendMail(mailOptions);
 }
 
+
 export const forgot = async (req, res, next) => {
   const { user_email } = req.body;
 
   try {
     const user = await User.findOne({ user_email: user_email });
+
+    // Check if user exists
+    // if (!user) {
+    //     return responseHandler.notFound(res, "User with this email does not exist");
+    // }
+
+    // Store the user's id in a cookie
+    res.cookie("userId", user._id, { maxAge: 60 * 60 * 1000, httpOnly: true });
 
     const otp = createOTP();
 
@@ -161,6 +170,29 @@ export const forgot = async (req, res, next) => {
     await sendEmail(user_email, otp);
 
     return responseHandler.ok(res, null, "OTP sent successfully");
+  } catch (error) {
+    next(error);
+  }
+};
+
+export const resetPassword = async (req, res, next) => {
+  const { newPassword } = req.body;
+
+  try {
+    // Get the user's id from the cookie
+    const userId = req.cookies.userId;
+
+    const user = await User.findById(userId);
+
+    // Hash the new password and update the user's password
+    const salt = await bcryptjs.genSalt(10);
+    user.user_password = await bcryptjs.hash(newPassword, salt);
+
+    await user.save();
+
+    res.clearCookie("userId");
+
+    return responseHandler.ok(res, null, "Password updated successfully");
   } catch (error) {
     next(error);
   }
