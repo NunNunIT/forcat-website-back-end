@@ -7,7 +7,7 @@ import path from 'path';
 import userRoutes from './routes/user.route.js';
 import authRoutes from './routes/auth.route.js';
 import productListRoutes from './routes/productList.route.js';
-import productReviewRoutes from './routes/productReview.route.js';
+import reviewRoutes from './routes/review.route.js';
 import articleRoutes from './routes/article.route.js';
 
 const PORT = 8080;
