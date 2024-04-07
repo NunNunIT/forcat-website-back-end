@@ -55,6 +55,19 @@ const productSchema = new mongoose.Schema(
         in_stock: Number,
       },
     ],
+    review_count: [Number],
+    recent_images: [
+      {
+        link: String,
+        alt: String,
+      },
+    ],
+    recent_videos: [
+      {
+        link: String,
+        alt: String,
+      },
+    ],
     recent_reviews: [
       {
         type: mongoose.Schema.Types.ObjectId,
@@ -66,7 +79,7 @@ const productSchema = new mongoose.Schema(
   { timestamps: true }
 );
 
-productSchema.pre('save', function(next) {
+productSchema.pre("save", function (next) {
   this.product_slug = createSlug(this.product_name);
   next();
 });
