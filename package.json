@@ -22,5 +22,8 @@
     "mongoose": "^8.2.2",
     "nodemon": "^3.1.0",
     "react-redux": "^9.1.0"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.0"
   }
 }
