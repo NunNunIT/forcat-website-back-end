@@ -3,8 +3,9 @@ import { register, login, loginWithGoogle, logout } from '../controllers/auth.co
 
 const router = express.Router();
 
-router.post("/register", register)
-router.post("/login", login)
-router.post("/login/google", loginWithGoogle)
-router.get("/logout", logout)
+router.post("/register", register);
+router.post("/login", login);
+router.post("/login/google", loginWithGoogle);
+router.get("/logout", logout);
+
 export default router;

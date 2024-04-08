@@ -1,5 +1,4 @@
 import mongoose from "mongoose";
-import { createSlug } from "../utils/createSlug.js";
 
 const orderSchema = new mongoose.Schema(
   {
@@ -28,7 +27,7 @@ const orderSchema = new mongoose.Schema(
       province: String,
     },
     order_note: String,
-    order_shipping_cost: Number,
+    order_shipping_cost: { type: Number, default: 0 },
     order_total_cost: Number,
     order_process_info: [
       {
@@ -49,6 +48,15 @@ const orderSchema = new mongoose.Schema(
   },
   { timestamps: true }
 );
+
+orderSchema.pre("save", function (next) {
+  this.order_total_cost = this.order_details.reduce(
+    (total, item) => total + item.quantity * item.unit_price,
+    this.order_shipping_cost
+  );
+
+  next();
+});
 
 const Order = mongoose.model("Order", orderSchema);
 export default Order;
