@@ -1,11 +1,38 @@
 import Notification from "../models/notification.model.js"; // Import model notification
 import responseHandler from "../handlers/response.handler.js";
+import { createSlug } from "../utils/createSlug.js";
 
 export const getAllNoti = async (req, res, next) => {
   const notiType = req.query.type; // Lấy từ truy vấn loại thông báo từ query parameter
   const userID = req.params.user_id; // test
 
+  const page = parseInt(req.query.page) || 1; // Trang mặc định là 1
+  const perPage = 10; // Số lượng thông báo trên mỗi trang
+
   try {
+    const totalNoti = await Notification.countDocuments({
+      $or: [
+        {
+          $and: [
+            { notification_type: notiType },
+            {
+              "users.usersList": { $in: [{ _id: userID }] },
+            },
+          ],
+        },
+        {
+          $and: [
+            { notification_type: notiType },
+            {
+              "users.isAll": true,
+            },
+          ],
+        },
+      ],
+    });
+
+    const totalPages = Math.ceil(totalNoti / perPage); // Tính tổng số trang
+
     const noti = await Notification.find({
       $or: [
         {
@@ -25,13 +52,16 @@ export const getAllNoti = async (req, res, next) => {
           ],
         },
       ],
-    }).exec();
+    })
+      .skip((page - 1) * perPage) // Bỏ qua thông báo trên các trang trước đó
+      .limit(perPage) // Giới hạn số lượng thông báo trên mỗi trang
+      .exec();
 
     if (!noti) {
-      return responseHandler.badResquest(res, "Empty");
+      return responseHandler.badRequest(res, "Empty");
     }
 
-    return responseHandler.ok(res, noti);
+    return responseHandler.ok(res, { notifications: noti, totalPages });
   } catch (error) {
     return responseHandler.error(res);
   }
@@ -59,7 +89,7 @@ export const setReadNoti = async (req, res, next) => {
     ).exec();
 
     if (!notification) {
-      return responseHandler.badResquest(res, "Empty");
+      return responseHandler.badRequest(res, "Empty");
     }
 
     await notification.save();
@@ -108,7 +138,7 @@ export const setReadAllNoti = async (req, res, next) => {
     // console.log("==========================", updateAll);
 
     if (!updateAll) {
-      return responseHandler.badResquest(res, "Empty");
+      return responseHandler.badRequest(res, "Empty");
     }
 
     return responseHandler.ok(res, updateAll);
