@@ -10,6 +10,7 @@ import authRoutes from "./routes/auth.route.js";
 import productListRoutes from './routes/productList.route.js';
 import productRoutes from "./routes/product.route.js";
 import cartRoutes from "./routes/cart.route.js";
+import notiRoutes from "./routes/noti.route.js";
 import reviewRoutes from "./routes/review.route.js";
 import orderRoutes from "./routes/order.route.js";
 import articleRoutes from "./routes/article.route.js";
@@ -48,6 +49,7 @@ app.use("/api/purchases", purchaseRoutes);
 app.use("/api/cart", cartRoutes);
 app.use("/api/review", reviewRoutes);
 app.use("/api/order", orderRoutes);
+app.use("/api/noti", notiRoutes);
 
 app.use((err, req, res, next) => {
   const statusCode = err.statusCode || 500;
