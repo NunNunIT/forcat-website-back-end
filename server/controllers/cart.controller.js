@@ -12,12 +12,63 @@ export const getCart = async (req, res, next) => {
         select: "_id product_name product_imgs product_variants",
       })
       .exec();
+
     if (!user) {
       return responseHandler.notFound(res, "Cart Not Found");
     }
+
     const cartInfo = user.cart;
 
     return responseHandler.ok(res, { cartInfo });
+  } catch (err) {
+    console.log(err);
+    return responseHandler.error(res);
+  }
+};
+
+// [POST] /api/cart/addCart/:user_id
+export const addCart = async (req, res, next) => {
+  const userId = req.params.user_id;
+
+  if (!Object.keys(req.body).length)
+    return responseHandler.notFound(res, "No Body Received");
+
+  try {
+    const user = await User.findOne({ _id: userId });
+
+    if (!user) {
+      return responseHandler.notFound(res, "Cart Not Found");
+    }
+
+    const productId = req.body.product_id;
+    const variantId = req.body.variant_id;
+    const quantity = req.body.quantity;
+    const isExisted = false;
+
+    // handle product existed in cart
+    for (let cartItem of user.cart) {
+      if (
+        cartItem.product.toString() == productId &&
+        cartItem.variant_id.toString() == variantId
+      ) {
+        cartItem.quantity += req.body.quantity;
+        isExisted = true;
+        break;
+      }
+    }
+
+    if (!isExisted) {
+      // if not existed in cart
+      user.cart.push({
+        product: productId,
+        variant_id: variantId,
+        quantity: quantity,
+      });
+    }
+
+    // save to database
+    user.save();
+    return responseHandler.ok(res, {});
   } catch (err) {
     console.log(err);
     return responseHandler.error(res);
