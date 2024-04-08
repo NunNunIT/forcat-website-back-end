@@ -13,10 +13,14 @@ const router = express.Router();
 router.post("/", verifyAccessToken, create);
 
 // Read all purchases
-router.get("/", verifyAccessToken, readAll);
+router.get('/',
+  // verifyAccessToken,
+  readAll);
 
 // Read a purchase with id
-router.get("/:id", verifyAccessToken, readOne);
+router.get('/:id',
+  // verifyAccessToken,
+  readOne);
 
 // Update a purchase with id
 router.post("/edit/:id", update);

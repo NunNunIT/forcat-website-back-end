@@ -39,6 +39,10 @@ const notificationSchema = new mongoose.Schema(
             type: mongoose.Schema.Types.ObjectId,
             ref: "User",
           },
+          isRead: {
+            type: Boolean,
+            default: true,
+          },
         },
       ],
     },
@@ -46,7 +50,7 @@ const notificationSchema = new mongoose.Schema(
   { timestamps: true }
 );
 
-notificationSchema.pre('save', function(next) {
+notificationSchema.pre("save", function (next) {
   this.notification_slug = createSlug(this.notification_name);
   next();
 });

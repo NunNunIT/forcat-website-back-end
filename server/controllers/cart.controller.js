@@ -18,7 +18,6 @@ export const getCart = async (req, res, next) => {
     }
 
     const cartInfo = user.cart;
-
     return responseHandler.ok(res, { cartInfo });
   } catch (err) {
     console.log(err);
