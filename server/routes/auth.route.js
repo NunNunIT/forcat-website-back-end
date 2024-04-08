@@ -4,6 +4,7 @@ import {
   login,
   loginWithGoogle,
   logout,
+  forgot,
   resetPassword,
 } from "../controllers/auth.controller.js";
 import { verifyOtp } from "../middleware/verifyOTP.js";
