@@ -1,5 +1,12 @@
-import express from 'express';
-import { register, login, loginWithGoogle, logout, forgot, resetPassword } from '../controllers/auth.controller.js';
+import express from "express";
+import {
+  register,
+  login,
+  loginWithGoogle,
+  logout,
+  forgot,
+  resetPassword,
+} from "../controllers/auth.controller.js";
 import { verifyOtp } from "../middleware/verifyOTP.js";
 import cookieParser from "cookie-parser";
 
