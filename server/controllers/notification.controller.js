@@ -1,7 +1,7 @@
 import Notification from "../models/notification.model.js"; // Import model notification
 import responseHandler from "../handlers/response.handler.js";
 
-export const getNoti = async (req, res, next) => {
+export const getAllNoti = async (req, res, next) => {
   const notiType = req.query.type; // Lấy từ truy vấn loại thông báo từ query parameter
   const userID = req.params.user_id; // test
 
@@ -28,7 +28,7 @@ export const getNoti = async (req, res, next) => {
     }).exec();
 
     if (!noti) {
-      return responseHandler.badrequest(res, "Empty");
+      return responseHandler.badResquest(res, "Empty");
     }
 
     return responseHandler.ok(res, noti);
@@ -37,27 +37,32 @@ export const getNoti = async (req, res, next) => {
   }
 };
 
-export const readNoti = async (req, res, next) => {
+export const setReadNoti = async (req, res, next) => {
   try {
     const notificationId = req.params.noti_id; // test
     const userID = req.params.user_id; // test
-
     const notification = await Notification.findOneAndUpdate(
       {
         $and: [
           { _id: notificationId },
           { "users.usersList": { $in: [{ _id: userID }] } },
+          {
+            "users.usersList": {
+              $elemMatch: { isRead: true },
+            },
+          },
         ],
       },
       {
-        $set: { notification_status: true },
-      },
-      { new: true }
+        $unset: { "users.usersList.$.isRead": "" },
+      }
     ).exec();
 
     if (!notification) {
-      return responseHandler.badrequest(res, "Empty");
+      return responseHandler.badResquest(res, "Empty");
     }
+
+    await notification.save();
 
     return responseHandler.ok(res, notification);
   } catch (error) {
@@ -65,13 +70,17 @@ export const readNoti = async (req, res, next) => {
   }
 };
 
-export const readAllNoti = async (req, res, next) => {
+export const setReadAllNoti = async (req, res, next) => {
   try {
     const userID = req.params.user_id; // test
 
     const unReadNotifications = await Notification.find({
       $and: [
-        { notification_status: false },
+        {
+          "users.usersList": {
+            $elemMatch: { isRead: true },
+          },
+        },
         { "users.usersList": { $in: [{ _id: userID }] } },
       ],
     }).exec();
@@ -85,17 +94,21 @@ export const readAllNoti = async (req, res, next) => {
     const updateAll = await Notification.updateMany(
       {
         $and: [
-          { notification_status: false },
+          {
+            "users.usersList": {
+              $elemMatch: { isRead: true },
+            },
+          },
           { "users.usersList": { $in: [{ _id: userID }] } },
         ],
       },
-      { $set: { notification_status: true } } // Cập nhật thuộc tính notification_status thành true
+      { $unset: { "users.usersList.$.isRead": "" } }
     ).exec();
 
     // console.log("==========================", updateAll);
 
     if (!updateAll) {
-      return responseHandler.badrequest(res, "Empty");
+      return responseHandler.badResquest(res, "Empty");
     }
 
     return responseHandler.ok(res, updateAll);

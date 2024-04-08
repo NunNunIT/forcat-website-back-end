@@ -3,10 +3,6 @@ import { createSlug } from "../utils/createSlug.js";
 
 const notificationSchema = new mongoose.Schema(
   {
-    notification_status: {
-      type: Boolean,
-      required: true,
-    },
     notification_name: {
       type: String,
       required: true,
@@ -42,6 +38,10 @@ const notificationSchema = new mongoose.Schema(
           user: {
             type: mongoose.Schema.Types.ObjectId,
             ref: "User",
+          },
+          isRead: {
+            type: Boolean,
+            default: true,
           },
         },
       ],

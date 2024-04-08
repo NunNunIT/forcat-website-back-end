@@ -34,9 +34,8 @@ const notificationDescriptionData = [
 // Dữ liệu mẫu cho notification
 const notificationData = [
   {
-    notification_status: 0,
-    notification_name: "Thông báo mẫu 6",
-    notification_slug: "thong-bao-mau-6",
+    notification_name: "Thông báo mẫu 1",
+    notification_slug: "thong-bao-mau-1",
     notification_type: "order",
     notification_description: notificationDescriptionData,
     users: {
@@ -44,39 +43,36 @@ const notificationData = [
       usersList: [new mongoose.Types.ObjectId(), new mongoose.Types.ObjectId()],
     },
   },
-  // {
-  //   notification_status: 0,
-  //   notification_name: "Thông báo mẫu 2",
-  //   notification_slug: "thong-bao-mau-2",
-  //   notification_type: "promotion",
-  //   notification_description: notificationDescriptionData,
-  //   users: {
-  //     isAll: true,
-  //     usersList: [new mongoose.Types.ObjectId(), new mongoose.Types.ObjectId()],
-  //   },
-  // },
-  // {
-  //   notification_status: 0,
-  //   notification_name: "Thông báo mẫu 3",
-  //   notification_slug: "thong-bao-mau-3",
-  //   notification_type: "order",
-  //   notification_description: notificationDescriptionData,
-  //   users: {
-  //     isAll: false,
-  //     usersList: [new mongoose.Types.ObjectId("660ede84587deb30b4cf004a")],
-  //   },
-  // },
-  // {
-  //   notification_status: 0,
-  //   notification_name: "Thông báo mẫu 4",
-  //   notification_slug: "thong-bao-mau-4",
-  //   notification_type: "order",
-  //   notification_description: notificationDescriptionData,
-  //   users: {
-  //     isAll: false,
-  //     usersList: [new mongoose.Types.ObjectId("6601d0f782dbbc599c4d3ebe")],
-  //   },
-  // },
+  {
+    notification_name: "Thông báo mẫu 2",
+    notification_slug: "thong-bao-mau-2",
+    notification_type: "promotion",
+    notification_description: notificationDescriptionData,
+    users: {
+      isAll: true,
+      usersList: [new mongoose.Types.ObjectId(), new mongoose.Types.ObjectId()],
+    },
+  },
+  {
+    notification_name: "Thông báo mẫu 3",
+    notification_slug: "thong-bao-mau-3",
+    notification_type: "order",
+    notification_description: notificationDescriptionData,
+    users: {
+      isAll: false,
+      usersList: [new mongoose.Types.ObjectId()],
+    },
+  },
+  {
+    notification_name: "Thông báo mẫu 5",
+    notification_slug: "thong-bao-mau-5",
+    notification_type: "order",
+    notification_description: notificationDescriptionData,
+    users: {
+      isAll: false,
+      usersList: [new mongoose.Types.ObjectId()],
+    },
+  },
 ];
 
 // Tạo một thông báo mới và lưu vào cơ sở dữ liệu
