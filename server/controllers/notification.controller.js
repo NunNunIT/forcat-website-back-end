@@ -28,7 +28,7 @@ export const getAllNoti = async (req, res, next) => {
     }).exec();
 
     if (!noti) {
-      return responseHandler.badResquest(res, "Empty");
+      return responseHandler.badRequest(res, "Empty");
     }
 
     return responseHandler.ok(res, noti);
@@ -59,7 +59,7 @@ export const setReadNoti = async (req, res, next) => {
     ).exec();
 
     if (!notification) {
-      return responseHandler.badResquest(res, "Empty");
+      return responseHandler.badRequest(res, "Empty");
     }
 
     await notification.save();
@@ -108,7 +108,7 @@ export const setReadAllNoti = async (req, res, next) => {
     // console.log("==========================", updateAll);
 
     if (!updateAll) {
-      return responseHandler.badResquest(res, "Empty");
+      return responseHandler.badRequest(res, "Empty");
     }
 
     return responseHandler.ok(res, updateAll);
