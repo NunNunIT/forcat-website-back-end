@@ -3,6 +3,50 @@ import responseHandler from "../handlers/response.handler.js";
 import { createSlug } from "../utils/createSlug.js";
 
 export const getAllNoti = async (req, res, next) => {
+  const userID = req.params.user_id; // test
+
+  const page = parseInt(req.query.page) || 1; // Trang mặc định là 1
+  const perPage = 10; // Số lượng thông báo trên mỗi trang
+
+  try {
+    const allNoti = await Notification.countDocuments({
+      $or: [
+        {
+          "users.usersList": { $in: [{ _id: userID }] },
+        },
+        {
+          "users.isAll": true,
+        },
+      ],
+    });
+
+    const totalPages = Math.ceil(allNoti / perPage); // Tính tổng số trang
+
+    const noti = await Notification.find({
+      $or: [
+        {
+          "users.usersList": { $in: [{ _id: userID }] },
+        },
+        {
+          "users.isAll": true,
+        },
+      ],
+    })
+      .skip((page - 1) * perPage) // Bỏ qua thông báo trên các trang trước đó
+      .limit(perPage) // Giới hạn số lượng thông báo trên mỗi trang
+      .exec();
+
+    if (!noti) {
+      return responseHandler.badRequest(res, "Empty");
+    }
+
+    return responseHandler.ok(res, { notifications: noti, totalPages });
+  } catch (error) {
+    return responseHandler.error(res);
+  }
+};
+
+export const getNoti = async (req, res, next) => {
   const notiType = req.query.type; // Lấy từ truy vấn loại thông báo từ query parameter
   const userID = req.params.user_id; // test
 
