@@ -118,8 +118,8 @@ export const getNoti = async (req, res, next) => {
 
 export const setReadNoti = async (req, res, next) => {
   try {
-    const notificationId = req.params.noti_id; // test
-    const userID = req.params.user_id; // test
+    const notificationId = req.body.noti_id; // test
+    const userID = req.body.user_id; // test
     const notification = await Notification.findOneAndUpdate(
       {
         $and: [
