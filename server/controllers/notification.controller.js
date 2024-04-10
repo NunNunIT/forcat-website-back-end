@@ -25,7 +25,7 @@ export const getAllNoti = async (req, res, next) => {
           ],
         },
       ],
-    }).exec();
+    })
 
     if (!noti) {
       return responseHandler.badRequest(res, "Empty");
