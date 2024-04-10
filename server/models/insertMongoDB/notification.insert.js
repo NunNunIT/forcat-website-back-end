@@ -16,28 +16,13 @@ mongoose.connect(
   }
 );
 
-// Dữ liệu mẫu cho notification_description
-const notificationDescriptionData = [
-  {
-    type: "title",
-    content: "Nội dung tiêu đề",
-    notification_date: new Date(),
-  },
-  {
-    type: "image",
-    url: "Đường dẫn đến hình ảnh",
-    alt: "Mô tả hình ảnh",
-    notification_date: new Date(),
-  },
-];
-
 // Dữ liệu mẫu cho notification
 const notificationData = [
   {
     notification_name: "Thông báo mẫu 1",
     notification_slug: "thong-bao-mau-1",
     notification_type: "order",
-    notification_description: notificationDescriptionData,
+    notification_description: "mo ta thong báo 2",
     users: {
       isAll: true,
       usersList: [new mongoose.Types.ObjectId(), new mongoose.Types.ObjectId()],
@@ -47,7 +32,7 @@ const notificationData = [
     notification_name: "Thông báo mẫu 2",
     notification_slug: "thong-bao-mau-2",
     notification_type: "promotion",
-    notification_description: notificationDescriptionData,
+    notification_description: "mo ta thong báo 3",
     users: {
       isAll: true,
       usersList: [new mongoose.Types.ObjectId(), new mongoose.Types.ObjectId()],
@@ -57,7 +42,7 @@ const notificationData = [
     notification_name: "Thông báo mẫu 3",
     notification_slug: "thong-bao-mau-3",
     notification_type: "order",
-    notification_description: notificationDescriptionData,
+    notification_description: "mo ta thong báo 5",
     users: {
       isAll: false,
       usersList: [new mongoose.Types.ObjectId()],
@@ -67,7 +52,7 @@ const notificationData = [
     notification_name: "Thông báo mẫu 5",
     notification_slug: "thong-bao-mau-5",
     notification_type: "order",
-    notification_description: notificationDescriptionData,
+    notification_description: "mo ta thong báo 5",
     users: {
       isAll: false,
       usersList: [new mongoose.Types.ObjectId()],

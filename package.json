@@ -27,6 +27,7 @@
     "react-redux": "^9.1.0"
   },
   "devDependencies": {
+    "console-control-strings": "^1.1.0",
     "nodemon": "^3.1.0"
   }
 }
