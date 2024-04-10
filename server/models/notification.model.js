@@ -15,19 +15,7 @@ const notificationSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
-    notification_description: [
-      {
-        type: {
-          type: String,
-          enum: ["title", "image"],
-          required: true,
-        },
-        content: String,
-        url: String,
-        alt: String,
-        notification_date: Date,
-      },
-    ],
+    notification_description: String,
     users: {
       isAll: {
         type: Boolean,
@@ -41,7 +29,7 @@ const notificationSchema = new mongoose.Schema(
           },
           isRead: {
             type: Boolean,
-            default: true,
+            default: false,
           },
         },
       ],
