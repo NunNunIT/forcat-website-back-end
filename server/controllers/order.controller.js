@@ -67,6 +67,7 @@ export const readAll = async (req, res, next) => {
       order_total_cost: 1,
     };
 
+  // default page = 1, limit = 10
   const { type, page = 1, limit = 10 } = req.query;
 
   const query = (["admin", "staff"].includes(role)) ?
@@ -79,6 +80,10 @@ export const readAll = async (req, res, next) => {
     };
 
   try {
+    const maxPage = Math.ceil(await Order.countDocuments(query) / limit);
+    if (page > maxPage)
+      return responseHandler.badRequest(res, "Page out of range!");
+
     const orders = await Order.find(query, select)
       .populate("order_details.product_id", "product_name product_slug product_imgs product_variants")
       .sort({ createdAt: -1 })
@@ -111,7 +116,7 @@ export const readAll = async (req, res, next) => {
       })
     );
 
-    return responseHandler.ok(res, handledOrders);
+    return responseHandler.ok(res, { orders: handledOrders, maxPage });
   } catch (err) {
     next(err);
   }
