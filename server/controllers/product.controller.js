@@ -4,10 +4,9 @@ import { decryptData } from "../utils/security.js";
 
 // [GET] /api/product/:pid
 export const getProduct = async (req, res, next) => {
-  const encryptedProductId = req.params.pid;
-  const productId = decryptData(encryptedProductId);
-
   try {
+    const encryptedProductId = req.params.pid;
+    const productId = decryptData(encryptedProductId);
     const product = await Product.findOne({ _id: productId });
 
     if (!product) {
@@ -21,11 +20,11 @@ export const getProduct = async (req, res, next) => {
   }
 };
 
-// [GET] /api/product/getRecommend/:product_id
+// [GET] /api/product/getRecommend/:pid
 export const getRecommend = async (req, res, next) => {
-  const productId = req.params.product_id;
-
   try {
+    const encryptedProductId = req.params.pid;
+    const productId = decryptData(encryptedProductId);
     const product = await Product.findOne({ _id: productId });
 
     if (!product) {
