@@ -8,7 +8,7 @@ import {
 const router = express.Router();
 
 router.get("/getNoti/:user_id", getAllNoti);
-router.post("/readNoti/:user_id/:noti_id", setReadNoti);
+router.post("/readNoti", setReadNoti);
 router.post("/readAllNoti/:user_id", setReadAllNoti);
 
 export default router;
