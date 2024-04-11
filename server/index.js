@@ -48,7 +48,7 @@ app.use("/api/articles", articleRoutes);
 app.use("/api/purchases", purchaseRoutes);
 app.use("/api/cart", cartRoutes);
 app.use("/api/review", reviewRoutes);
-app.use("/api/order", orderRoutes);
+app.use("/api/orders", orderRoutes);
 app.use("/api/noti", notiRoutes);
 
 app.use((err, req, res, next) => {
