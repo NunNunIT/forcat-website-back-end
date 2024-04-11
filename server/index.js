@@ -14,7 +14,6 @@ import notiRoutes from "./routes/noti.route.js";
 import reviewRoutes from "./routes/review.route.js";
 import orderRoutes from "./routes/order.route.js";
 import articleRoutes from "./routes/article.route.js";
-import purchaseRoutes from "./routes/purchase.route.js";
 
 const PORT = 8080;
 const __dirname = path.resolve();
@@ -45,7 +44,6 @@ app.use("/api/user", userRoutes);
 app.use("/api/product", productRoutes);
 app.use("/api/productList", productListRoutes);
 app.use("/api/articles", articleRoutes);
-app.use("/api/purchases", purchaseRoutes);
 app.use("/api/cart", cartRoutes);
 app.use("/api/review", reviewRoutes);
 app.use("/api/orders", orderRoutes);

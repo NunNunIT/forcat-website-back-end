@@ -1,6 +1,9 @@
 import Order from "../models/order.model.js";
+import mongoose from "mongoose";
 import Notification from "../models/notification.model.js";
 import responseHandler from "../handlers/response.handler.js";
+
+const createFromHexString = mongoose.Types.ObjectId.createFromHexString;
 
 // [POST] /api/orders/
 export const create = async (req, res, next) => {
@@ -53,35 +56,62 @@ export const readAll = async (req, res, next) => {
   if (!role || !["admin", "user", "staff"].includes(role))
     return responseHandler.forbidden(res, "You are not authorized!");
 
-  const query = (["admin", "staff"].includes(role)) ?
-    {} :
-    { customer_id: user_id };
-
   const select = (["admin", "staff"].includes(role)) ?
     {
       order_note: 0,
-      __v: 0
+      __v: 0,
     } :
     {
-      order_total_cost: 1,
-      order_process_info: 1,
+      order_status: 1,
       order_details: 1,
+      order_total_cost: 1,
     };
 
   const { type, page = 1, limit = 10 } = req.query;
 
-  try {
-    const orders = await Order.aggregate([
-      { $match: query },
-      { $addFields: { latest_status: { $arrayElemAt: ["$order_process_info.status", -1] } } },
-      ...(type ? [{ $match: { latest_status: type } }] : []),
-      { $project: select, },
-      { $sort: { createdAt: -1, } },
-      { $skip: (page - 1) * limit },
-      { $limit: limit }
-    ])
+  const query = (["admin", "staff"].includes(role)) ?
+    {
+      ...(type ? { order_status: type } : {})
+    } :
+    {
+      customer_id: createFromHexString(user_id),
+      ...(type ? { order_status: type } : {})
+    };
 
-    return responseHandler.ok(res, orders);
+  try {
+    const orders = await Order.find(query, select)
+      .populate("order_details.product_id", "product_name product_slug product_imgs product_variants")
+      .sort({ createdAt: -1 })
+      .skip((page - 1) * limit)
+      .limit(limit);
+
+    // Iterate over order details and add necessary fields
+    const handledOrders = orders.map(
+      order => ({
+        ...order._doc,
+        order_details: order._doc.order_details.map(
+          detail => {
+            // get variant from product_variants
+            const variant = detail.product_id?.product_variants.find(
+              variant => variant.toObject().variant_id === detail.variant_id
+            );
+
+            return {
+              product_id: detail.product_id?._id,
+              product_name: detail.product_id?.product_name,
+              product_slug: detail.product_id?.product_slug,
+              variant_id: detail.variant_id,
+              variant_name: variant?.variant_name,
+              product_img: variant?.variant_imgs[0],
+              quantity: detail.quantity,
+              unit_price: detail.unit_price,
+            }
+          }
+        )
+      })
+    );
+
+    return responseHandler.ok(res, handledOrders);
   } catch (err) {
     next(err);
   }
@@ -114,12 +144,35 @@ export const readOne = async (req, res, next) => {
 
   try {
     const order = await Order.findOne(query, select)
-      .populate("order_details.product_id.variant_id");
+      .populate("order_details.product_id", "product_name product_slug product_imgs product_variants");
 
     if (!order)
       return responseHandler.badRequest(res, "Order not found or That order does not belong to you!");
 
-    return responseHandler.ok(res, order);
+    const handledOrder = {
+      ...order._doc,
+      order_details: order._doc.order_details.map(
+        detail => {
+          // get variant from product_variants
+          const variant = detail.product_id?.product_variants.find(
+            variant => variant.toObject().variant_id === detail.variant_id
+          );
+
+          return {
+            product_id: detail.product_id?._id,
+            product_name: detail.product_id?.product_name,
+            product_slug: detail.product_id?.product_slug,
+            variant_id: detail.variant_id,
+            variant_name: variant?.variant_name,
+            product_img: variant?.variant_imgs[0],
+            quantity: detail.quantity,
+            unit_price: detail.unit_price,
+          }
+        }
+      )
+    }
+
+    return responseHandler.ok(res, handledOrder);
   } catch (err) {
     next(err);
   }
