@@ -41,8 +41,8 @@ export const create = async (req, res, next) => {
 }
 
 export const readAll = async (req, res, next) => {
-  const pageNumber = (req.params.page > 0 ? req.params.page : 1);
-  const numberLimitedArticle = (req.params.limit > 0 ? req.params.limit : 10);
+  const pageNumber = (req.query?.page > 0 ? req.query?.page : 1);
+  const numberLimitedArticle = (req.query?.limit > 0 ? req.query?.limit : 10);
 
   try {
     // Construct query object for filtering (if applicable)
