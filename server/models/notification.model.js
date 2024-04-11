@@ -9,7 +9,6 @@ const notificationSchema = new mongoose.Schema(
     },
     notification_slug: {
       type: String,
-      required: true,
     },
     notification_type: {
       type: String,
