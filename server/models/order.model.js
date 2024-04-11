@@ -9,11 +9,11 @@ const orderSchema = new mongoose.Schema(
     },
     staff_id: {
       type: String,
+      default: "661754e675fd4037c93d0dd8",
       ref: "User", // Tham chiếu đến collection nhân viên (Staff), nếu có
     },
     payment_id: {
       type: String,
-      required: true,
       ref: "Payment", // Tham chiếu đến collection thanh toán (Payment)
     },
     order_buyer: {
@@ -58,11 +58,8 @@ orderSchema.pre("save", function (next) {
       status: "unpaid",
       date: new Date(),
     },
-    {
-      status: "delivering",
-      date: new Date(),
-    }
   ];
+
   this.order_total_cost = this.order_details.reduce(
     (total, item) => total + item.quantity * item.unit_price,
     this.order_shipping_cost
