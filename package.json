@@ -24,7 +24,8 @@
     "mongoose": "^8.2.2",
     "nodemailer": "^6.9.13",
     "nodemon": "^3.1.0",
-    "react-redux": "^9.1.0"
+    "react-redux": "^9.1.0",
+    "tweetnacl": "^1.0.3"
   },
   "devDependencies": {
     "nodemon": "^3.1.0"

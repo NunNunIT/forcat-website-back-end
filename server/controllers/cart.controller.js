@@ -42,7 +42,7 @@ export const addCart = async (req, res, next) => {
     const productId = req.body.product_id;
     const variantId = req.body.variant_id;
     const quantity = req.body.quantity;
-    const isExisted = false;
+    let isExisted = false;
 
     // handle product existed in cart
     for (let cartItem of user.cart) {
