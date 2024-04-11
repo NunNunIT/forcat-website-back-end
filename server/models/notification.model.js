@@ -15,19 +15,7 @@ const notificationSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
-    notification_description: [
-      {
-        type: {
-          type: String,
-          enum: ["title", "image"],
-          required: true,
-        },
-        content: String,
-        url: String,
-        alt: String,
-        notification_date: Date,
-      },
-    ],
+    notification_description: String,
     users: {
       isAll: {
         type: Boolean,
@@ -39,6 +27,10 @@ const notificationSchema = new mongoose.Schema(
             type: mongoose.Schema.Types.ObjectId,
             ref: "User",
           },
+          isRead: {
+            type: Boolean,
+            default: false,
+          },
         },
       ],
     },
@@ -46,7 +38,7 @@ const notificationSchema = new mongoose.Schema(
   { timestamps: true }
 );
 
-notificationSchema.pre('save', function(next) {
+notificationSchema.pre("save", function (next) {
   this.notification_slug = createSlug(this.notification_name);
   next();
 });
