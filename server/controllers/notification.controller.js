@@ -115,7 +115,6 @@ export const getNoti = async (req, res, next) => {
     return responseHandler.error(res);
   }
 };
-
 export const setReadNoti = async (req, res, next) => {
   try {
     const notificationId = req.body.noti_id; // test
@@ -151,18 +150,11 @@ export const setReadNoti = async (req, res, next) => {
 
 export const setReadAllNoti = async (req, res, next) => {
   try {
-    const userID = req.params.user_id; // test
+    const userID = req.body.user_id; // test
 
     const unReadNotifications = await Notification.find({
-      $and: [
-        {
-          "users.usersList": {
-            $elemMatch: { isRead: true },
-          },
-        },
-        { "users.usersList": { $in: [{ _id: userID }] } },
-      ],
-    }).exec();
+      "users.usersList": { $elemMatch: { _id: userID } },
+    });
 
     // console.log("--------------------------", unReadNotifications);
 
@@ -170,19 +162,25 @@ export const setReadAllNoti = async (req, res, next) => {
       return responseHandler.ok(res, unReadNotifications);
     }
 
+    // const updateAll = await Notification.updateMany(
+    //   {
+    //     $and: [
+    //       {
+    //         "users.usersList": {
+    //           $elemMatch: { isRead: true },
+    //         },
+    //       },
+    //       { "users.usersList": { $in: [{ _id: userID }] } },
+    //     ],
+    //   },
+    //   { $unset: { "users.usersList.$.isRead": "" } }
+    // );
     const updateAll = await Notification.updateMany(
       {
-        $and: [
-          {
-            "users.usersList": {
-              $elemMatch: { isRead: true },
-            },
-          },
-          { "users.usersList": { $in: [{ _id: userID }] } },
-        ],
+        "users.usersList": { $elemMatch: { _id: userID, isRead: false } },
       },
-      { $unset: { "users.usersList.$.isRead": "" } }
-    ).exec();
+      { $set: { "users.usersList.$.isRead": true } }
+    );
 
     // console.log("==========================", updateAll);
 
