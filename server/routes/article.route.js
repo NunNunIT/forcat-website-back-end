@@ -7,13 +7,13 @@ const router = express.Router();
 router.post('/', create);
 
 // readAll
-router.get('/', readAll)
+router.get('/', readAll);
 
 // readOne
-router.get('/:slug', readOne)
+router.get('/:slug', readOne);
 
 // update
-router.post('/edit/:slug', update)
+router.post('/edit/:slug', update);
 
 
 export default router;
