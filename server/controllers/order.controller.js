@@ -81,6 +81,9 @@ export const readAll = async (req, res, next) => {
 
   try {
     const maxPage = Math.ceil(await Order.countDocuments(query) / limit);
+    if (maxPage == 0)
+      return responseHandler.ok(res, { orders: [], maxPage: 1 });
+
     if (page > maxPage)
       return responseHandler.badRequest(res, "Page out of range!");
 
