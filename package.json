@@ -1,7 +1,7 @@
 {
-  "name": "for-cat-back-end",
+  "name": "forcat-website-back-end",
   "version": "1.0.0",
-  "description": "For cat shop backend server",
+  "description": "Forcat shop backend server",
   "type": "module",
   "main": "index.js",
   "scripts": {
