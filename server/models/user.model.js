@@ -1,5 +1,4 @@
 import mongoose from "mongoose";
-import { createSlug } from "../utils/createSlug.js";
 
 const userSchema = new mongoose.Schema(
   {
