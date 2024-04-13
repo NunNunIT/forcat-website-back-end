@@ -165,7 +165,13 @@ export const forgot = async (req, res, next) => {
     });
 
     // Store the OTP token in a cookie
-    res.cookie("otpToken", otpToken, { maxAge: 60 * 1000, httpOnly: true });
+    // res.cookie("otpToken", otpToken, { maxAge: 60 * 1000, httpOnly: true });
+    res.cookie("otpToken", otpToken, {
+      maxAge: 60 * 1000,
+      httpOnly: true,
+      sameSite: "none",
+      secure: true, //sửa lại thành true khi deploy
+    });
 
     await sendEmail(user_email, otp);
 
