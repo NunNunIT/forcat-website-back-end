@@ -1,6 +1,6 @@
 import nacl from "tweetnacl";
 
-const publicKey = Buffer.from(process.env.TWEETNACL_PULIC_KEY_BASE64, "base64");
+const publicKey = Buffer.from(process.env.TWEETNACL_PUBLIC_KEY_BASE64, "base64");
 const secretKey = Buffer.from(
   process.env.TWEETNACL_SECRET_KEY_BASE64,
   "base64"
