@@ -46,11 +46,6 @@ const corsOptions = {
   credentials: true // Allow sending of cookies
 };
 
-const corsOptions = {
-  origin: ['http://localhost:3000', 'http://localhost:8080'],
-  credentials: true // Allow sending of cookies
-};
-
 // app.use(cors()); // Khi nào cần sử dụng postman hoặc thunder client thì bật này lên, tắt cái dưwới
 app.use(cors(corsOptions));
 
