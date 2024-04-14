@@ -2,6 +2,8 @@ import Order from "../models/order.model.js";
 import mongoose from "mongoose";
 import Notification from "../models/notification.model.js";
 import responseHandler from "../handlers/response.handler.js";
+import mappingOrderStatus from "../utils/mappingOrderStatus.js";
+import { encryptData } from "../utils/security.js";
 
 const createFromHexString = mongoose.Types.ObjectId.createFromHexString;
 
@@ -85,7 +87,7 @@ export const readAll = async (req, res, next) => {
       return responseHandler.ok(res, { orders: [], maxPage: 1 });
 
     if (page > maxPage)
-      return responseHandler.badRequest(res, "Page out of range!");
+      return responseHandler.badRequest(res, { message: "Page out of range!", maxPage });
 
     const orders = await Order.find(query, select)
       .populate("order_details.product_id", "product_name product_slug product_imgs product_variants")
@@ -105,7 +107,7 @@ export const readAll = async (req, res, next) => {
             );
 
             return {
-              product_id: detail.product_id?._id,
+              product_id_hashed: encryptData(detail.product_id?._id),
               product_name: detail.product_id?.product_name,
               product_slug: detail.product_id?.product_slug,
               variant_id: detail.variant_id,
@@ -145,9 +147,10 @@ export const readOne = async (req, res, next) => {
     {
       order_buyer: 1,
       order_address: 1,
+      order_status: 1,
       order_total_cost: 1,
-      order_process_info: 1,
       order_details: 1,
+      createdAt: 1,
     };
 
   try {
@@ -186,7 +189,59 @@ export const readOne = async (req, res, next) => {
   }
 }
 
-// [POST] /api/orders/edit/:id
+// [POST] /api/orders/:id/edit
 export const update = async (req, res, next) => {
-  return responseHandler.created(res, null, "Update order");
+  return responseHandler.ok(res, null, "Update order");
+}
+
+// [POST] /api/orders/:id/:status
+export const updateStatus = async (req, res, next) => {
+  const user_id = req.user?.id ?? req.query?.id ?? "661754a9ae209b64b08e6874";
+  if (!user_id)
+    return responseHandler.unauthorize(res, "You are not authenticated!");
+
+  const role = req.user?.role ?? "user";
+  if (!role || !["admin", "user", "staff"].includes(role))
+    return responseHandler.forbidden(res, "You are not authorized!");
+
+  const order_id = req.params.id;
+
+  // handle the invalid order_status
+  const order_status = req.params.status;
+  if (!["delivering", "finished", "cancel"].includes(order_status))
+    return responseHandler.badRequest(res, "Invalid status!");
+
+
+  const query = (role.includes(["admin", "staff"])) ?
+    { _id: order_id } :
+    { _id: order_id, customer_id: user_id };
+
+  try {
+    const order = await Order.findOne(query);
+
+    if (!order)
+      return responseHandler.notFound(res, "Order not found or That order does not belong to you!");
+
+    if (order.order_status === order_status)
+      return responseHandler.badRequest(res, "Order status is already " + order_status);
+
+    if (!mappingOrderStatus(order.order_status, order_status)) {
+      console.log(order.order_status, order_status);
+      return responseHandler.badRequest(res, "Order status can't set cause the current status");
+    }
+
+    // Update order_status, order_process_info
+    order.order_status = order_status;
+    order.order_process_info = [...order.order_process_info, {
+      status: order_status,
+      date: new Date()
+    }]
+
+    // Save the updated order
+    await order.save();
+
+    return responseHandler.ok(res, null, "Updated");
+  } catch (err) {
+    next(err);
+  }
 }

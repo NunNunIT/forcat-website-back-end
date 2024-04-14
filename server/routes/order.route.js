@@ -5,6 +5,7 @@ import {
   readAll,
   readOne,
   update,
+  updateStatus,
 } from "../controllers/order.controller.js";
 
 const router = express.Router();
@@ -24,9 +25,14 @@ router.get('/:id',
   readOne);
 
 // Update a purchase with id
-router.post("/edit/:id",
+router.post("/:id/edit",
   // verifyAccessToken,
   update);
+
+// Update a purchase status with id
+router.post("/:id/:status",
+  // verifyAccessToken,
+  updateStatus);
 
 
 export default router;
