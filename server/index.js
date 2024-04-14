@@ -14,6 +14,7 @@ import reviewRoutes from "./routes/review.route.js";
 import orderRoutes from "./routes/order.route.js";
 import articleRoutes from "./routes/article.route.js";
 import purchaseRoutes from "./routes/purchase.route.js";
+import categoryRoutes from "./routes/category.route.js";
 
 const PORT = 8080;
 const __dirname = path.resolve();
@@ -29,9 +30,30 @@ mongoose
     console.log(err);
   });
 
+
 const app = express();
 
-app.use(cors());
+const allowedOrigins = ['http://localhost:3000', 'http://localhost:8080'];
+
+const corsOptions = {
+  origin: function(origin, callback) {
+    if (allowedOrigins.indexOf(origin) !== -1) {
+      callback(null, true);
+    } else {
+      callback(new Error('Not allowed by CORS'));
+    }
+  },
+  credentials: true // Allow sending of cookies
+};
+
+const corsOptions = {
+  origin: ['http://localhost:3000', 'http://localhost:8080'],
+  credentials: true // Allow sending of cookies
+};
+
+// app.use(cors()); // Khi nào cần sử dụng postman hoặc thunder client thì bật này lên, tắt cái dưwới
+app.use(cors(corsOptions));
+
 app.use(express.json());
 app.use(cookieParser());
 
@@ -48,6 +70,7 @@ app.use("/api/purchases", purchaseRoutes);
 app.use("/api/cart", cartRoutes);
 app.use("/api/review", reviewRoutes);
 app.use("/api/order", orderRoutes);
+app.use("/api/category", categoryRoutes);
 
 app.use((err, req, res, next) => {
   const statusCode = err.statusCode || 500;

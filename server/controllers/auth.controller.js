@@ -26,6 +26,7 @@ export const register = async (req, res, next) => {
 
   try {
     await User.create(user_data);
+    console.log('Đăng ký thành công')
     return responseHandler.created(res);
   } catch (error) {
     next(error);
@@ -44,16 +45,22 @@ export const login = async (req, res, next) => {
     return responseHandler.unauthorize(res);
 
   try {
-    const { user_password: hashedPassword, ...rest } = checkUser._doc;
+    const {
+      user_password: passwordToDiscard,
+      createdAt: createdAtToDiscard,
+      updatedAt: updatedAtToDiscard,
+      user_role: roleToDiscard,
+      user_active: isActiveToDiscard,
+      __v: versionToDiscard,
+      ...rest
+    } = checkUser._doc;
+    
     const token = jwt.sign({ id: checkUser._id, role: checkUser.user_role }, process.env.JWT_SECRET_KEY);
     const expiryDate = new Date(Date.now() + HOUR); // 1 hour
+    console.log("Đăng nhập thành công")
+    res.cookie('accessToken', token, { httpOnly: true, expires: expiryDate})
 
-    res.cookie('access_token', token, {
-      httpOnly: true,
-      expires: expiryDate
-    });
-
-    return responseHandler.ok(res, rest);
+    return responseHandler.token(res, rest, token);
   } catch (error) {
     next(error)
   }
@@ -67,7 +74,7 @@ export const loginWithGoogle = async (req, res, next) => {
 
       const token = jwt.sign({ id: user._id, role: checkUser.user_role }, process.env.JWT_SECRET_KEY);
       const expiryDate = new Date(Date.now() + HOUR); // 1 hour
-      res.cookie('access_token', token, {
+      res.cookie('accessToken', token, {
         httpOnly: true,
         expires: expiryDate
       });
@@ -91,16 +98,22 @@ export const loginWithGoogle = async (req, res, next) => {
     }
 
     const user = await User.create(user_data);
-    const { user_password: _, ...rest } = user._doc;
+    const {
+      user_password: passwordToDiscard,
+      createdAt: createdAtToDiscard,
+      updatedAt: updatedAtToDiscard,
+      user_role: roleToDiscard,
+      user_active: isActiveToDiscard,
+      __v: versionToDiscard,
+      ...rest
+    } = user._doc;
+    
 
     const token = jwt.sign({ id: user._id, role: user.user_role }, process.env.JWT_SECRET_KEY);
     const expiryDate = new Date(Date.now() + HOUR); // 1 hour
-    res.cookie('access_token', token, {
-      httpOnly: true,
-      expires: expiryDate
-    });
+    res.cookie("accessToken", token, { httpOnly: true, expires: expiryDate, sameSite: "none", secure: true})
 
-    return responseHandler.ok(res, rest);
+    return responseHandler.token(res, rest, token);
   } catch (error) {
     next(error);
   }
@@ -108,7 +121,8 @@ export const loginWithGoogle = async (req, res, next) => {
 
 export const logout = (req, res, next) => {
   console.log('Đã đăng xuất')
-  res.clearCookie('access_token');
-
+  console.log(req.cookies['accessToken']);
+  res.clearCookie('accessToken');
+  // res.clearCookie('accessToken').status(200).json('Signout success!');
   return responseHandler.ok(res, undefined, 'Logout success');
 }
