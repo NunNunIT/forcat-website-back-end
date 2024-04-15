@@ -384,12 +384,14 @@ export const search = async (req, res) => {
     }
 
     let sortOptions = {};
-    if (sortBy === "popular") {
-      sortOptions.product_sold_quanity = -1;
-    } else if (sortBy === "high_to_low") {
-      sortOptions["product_variants.price"] = -1;
-    } else if (sortBy === "low_to_high") {
-      sortOptions["product_variants.price"] = 1;
+    if (sortBy === "hot") {
+      sortOptions.product_sold_quantity = -1; // Sắp xếp theo sản phẩm nổi bật
+    } else if (sortBy === "sale") {
+      sortOptions.product_sold_quantity = -1; // Sắp xếp theo sản phẩm bán chạy
+    } else if (sortBy === "price-z-to-a") {
+      sortOptions["product_variants.price"] = -1; // Sắp xếp theo giá cao đến thấp
+    } else if (sortBy === "price-a-to-z") {
+      sortOptions["product_variants.price"] = 1; // Sắp xếp theo giá thấp đến cao
     }
 
     const totalProducts = await Product.countDocuments(searchConditions);
@@ -408,19 +410,17 @@ export const search = async (req, res) => {
 
     // Biến đổi dữ liệu trả về theo yêu cầu
     const transformedProducts = products.map((product) => {
-      // Tìm giá thấp nhất và tính toán giá sau khi giảm giá
+      // Tìm giá thấp nhất và số lượng bán được cao nhất
       const lowestPriceVariant = product.product_variants.reduce(
         (minPriceVariant, variant) => {
-          const discountedPrice =
-            (variant.price * (100 - variant.discount_amount)) / 100;
           if (
             !minPriceVariant ||
-            discountedPrice < minPriceVariant.discountedPrice
+            (variant.price * (100 - variant.discount_amount)) / 100 <
+              (minPriceVariant.price *
+                (100 - minPriceVariant.discount_amount)) /
+                100
           ) {
-            minPriceVariant = {
-              price: discountedPrice,
-              discountedPrice: variant.price,
-            };
+            minPriceVariant = variant;
           }
           return minPriceVariant;
         },
