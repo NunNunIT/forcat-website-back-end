@@ -37,6 +37,16 @@ export const create = async (req, res, next) => {
   }
 }
 
+export const readUnlimited = async (req, res, next) => {
+  try {
+    const articles = await Article.find({}, { _id: 0, article_description: 0 }).exec();
+
+    return resHandler.ok(res, articles);
+  } catch (err) {
+    next(err);
+  }
+}
+
 export const readAll = async (req, res, next) => {
   const page = (req.query?.page > 0 ? req.query?.page : 1);
   const limit = (req.query?.limit > 0 ? req.query?.limit : 10);
@@ -48,7 +58,7 @@ export const readAll = async (req, res, next) => {
     const sorted_fields = { createdAt: -1, }
 
     // Count the total number of articles
-    const maxPage = await Article.countDocuments(query).exec();
+    const maxPage = Math.ceil(await Article.countDocuments(query).exec() / limit);
 
     // Perform efficient pagination with skip and limit
     const articles = await Article.find(query, { _id: 0, article_description: 0 })
@@ -57,7 +67,7 @@ export const readAll = async (req, res, next) => {
       .sort(sorted_fields) // Sort by creation date (optional)
       .exec(); // Execute the query
 
-    return resHandler.ok(res, {articles, maxPage});
+    return resHandler.ok(res, { articles, maxPage });
   } catch (err) {
     next(err);
   }
