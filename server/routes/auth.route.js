@@ -18,7 +18,7 @@ router.use(cookieParser());
 router.post("/register", register);
 router.post("/login", login);
 router.post("/login/google", loginWithGoogle);
-router.get("/logout", logout);
+router.post("/logout", logout);
 
 router.post("/forgot", forgot);
 router.post("/verify-otp", verifyOtp);

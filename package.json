@@ -1,7 +1,7 @@
 {
-  "name": "for-cat-back-end",
+  "name": "forcat-website-back-end",
   "version": "1.0.0",
-  "description": "For cat shop backend server",
+  "description": "Forcat shop backend server",
   "type": "module",
   "main": "index.js",
   "scripts": {
@@ -24,7 +24,8 @@
     "mongoose": "^8.2.2",
     "nodemailer": "^6.9.13",
     "nodemon": "^3.1.0",
-    "react-redux": "^9.1.0"
+    "react-redux": "^9.1.0",
+    "tweetnacl": "^1.0.3"
   },
   "devDependencies": {
     "console-control-strings": "^1.1.0",

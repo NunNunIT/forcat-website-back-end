@@ -9,6 +9,6 @@ const router = express.Router();
 
 router.get("/getNoti/:user_id", getAllNoti);
 router.post("/readNoti", setReadNoti);
-router.post("/readAllNoti/:user_id", setReadAllNoti);
+router.post("/readAllNoti", setReadAllNoti);
 
 export default router;

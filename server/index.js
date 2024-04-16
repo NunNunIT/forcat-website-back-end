@@ -14,6 +14,7 @@ import notiRoutes from "./routes/noti.route.js";
 import reviewRoutes from "./routes/review.route.js";
 import orderRoutes from "./routes/order.route.js";
 import articleRoutes from "./routes/article.route.js";
+import categoryRoutes from "./routes/category.route.js";
 
 const PORT = 8080;
 const __dirname = path.resolve();
@@ -29,9 +30,16 @@ mongoose
     console.log(err);
   });
 
+
 const app = express();
 
-app.use(cors());
+// app.use(cors());
+app.use(
+  cors({
+    origin: "http://localhost:3000", // replace with the URL of your frontend
+    credentials: true,
+  })
+);
 app.use(express.json());
 app.use(cookieParser());
 
@@ -48,6 +56,7 @@ app.use("/api/cart", cartRoutes);
 app.use("/api/reviews", reviewRoutes);
 app.use("/api/orders", orderRoutes);
 app.use("/api/noti", notiRoutes);
+app.use("/api/category", categoryRoutes);
 
 app.use((err, req, res, next) => {
   const statusCode = err.statusCode || 500;
