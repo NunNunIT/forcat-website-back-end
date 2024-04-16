@@ -1,11 +1,12 @@
 import Category from "../models/category.model.js";
 import Product from "../models/product.model.js";
 import responseHandler from "../handlers/response.handler.js";
+import { encryptData } from "../utils/security.js";
 
 export const getCategoriesList = async (req, res, next) => {
   try {
     // Fetch all categories
-    const categories = await Category.find();
+    const categories = await Category.find({}, "category_name category_type category_img");
 
     // Group categories by category_type
     const categoriesByType = [];
@@ -14,13 +15,11 @@ export const getCategoriesList = async (req, res, next) => {
       if (!categoriesByType.find((cat) => cat.category_type === type)) {
         categoriesByType.push({
           category_type: type,
-          iconData: "expand_more",
           subCategories: [],
         });
       }
       categoriesByType.find((cat) => cat.category_type === type).subCategories.push({
-        _id: category._id,
-        category_name: category.category_name,
+        ...category.toObject(),
         products: [],
         productCount: 0, // Added: property for product count
       });
@@ -74,21 +73,21 @@ export const getCategoriesList = async (req, res, next) => {
 
           // Biến đổi dữ liệu sản phẩm theo yêu cầu
           return {
-            product_id: product._id,
+            product_id_hashed: encryptData(product._id),
             product_name: product.product_name,
             product_slug: product.product_slug,
             product_avg_rating: product.product_avg_rating,
             product_img: product.product_imgs[0], // Lấy ảnh đầu tiên trong mảng product_imgs
             lowest_price: lowestPriceVariant
               ? (lowestPriceVariant.price *
-                  (100 - lowestPriceVariant.discount_amount)) /
-                100
+                (100 - lowestPriceVariant.discount_amount)) /
+              100
               : null, // Giá thấp nhất
             product_price: lowestPriceVariant.price,
             highest_discount: highestDiscountVariant
               ? highestDiscountVariant.discount_amount
               : null, // Giảm giá cao nhất
-            product_sold_quantity: product.product_sold_quanity, // Số lượng bán được
+            product_sold_quantity: product.product_sold_quantity, // Số lượng bán được
             category_name: product.category_names[0],
           };
         });
