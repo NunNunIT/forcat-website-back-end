@@ -46,6 +46,7 @@ const productSchema = new mongoose.Schema(
     product_variants: [
       {
         variant_name: String,
+        variant_slug: String,
         price: Number,
         variant_imgs: [
           {
@@ -112,6 +113,11 @@ const productSchema = new mongoose.Schema(
 
 productSchema.pre("save", function (next) {
   this.product_slug = createSlug(this.product_name);
+  // Lặp qua mỗi phần tử trong mảng product_variants
+  this.product_variants.forEach((variant) => {
+    // Tạo slug mới từ variant_name và gán cho variant_slug
+    variant.variant_slug = createSlug(variant.variant_name);
+  });
   next();
 });
 

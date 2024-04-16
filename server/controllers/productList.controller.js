@@ -175,12 +175,10 @@ export const getNewestProducts = async (req, res, next) => {
 
     responseHandler.ok(res, transformedProducts, "Trả dữ liệu thành công");
   } catch (error) {
-    res
-      .status(500)
-      .json({
-        success: false,
-        message: "Đã xảy ra lỗi khi lấy sản phẩm mới nhất.",
-      });
+    res.status(500).json({
+      success: false,
+      message: "Đã xảy ra lỗi khi lấy sản phẩm mới nhất.",
+    });
   }
 };
 
@@ -248,19 +246,99 @@ export const getTopRatedProducts = async (req, res, next) => {
     responseHandler.ok(res, transformedProducts, "Trả dữ liệu thành công");
   } catch (error) {
     // console.error(error);
-    res
-      .status(500)
-      .json({
-        success: false,
-        message: "Đã xảy ra lỗi khi lấy sản phẩm có đánh giá cao nhất.",
-      });
+    res.status(500).json({
+      success: false,
+      message: "Đã xảy ra lỗi khi lấy sản phẩm có đánh giá cao nhất.",
+    });
+  }
+};
+
+export const getDiscountProducts = async (req, res, next) => {
+  try {
+    const discountProducts = await Product.find({
+      product_variants: {
+        $elemMatch: {
+          discount_id: { $exists: true },
+          discount_amount: { $gt: 0 },
+        },
+      },
+    })
+      .sort({ product_avg_rating: -1 })
+      .limit(10)
+      .select(
+        "product_name category_names product_imgs product_avg_rating product_variants product_sold_quanity product_slug"
+      );
+
+    const transformedProducts = discountProducts.map((product) => {
+      const lowestPriceVariant = product.product_variants.reduce(
+        (minPriceVariant, variant) => {
+          if (
+            (!minPriceVariant ||
+              (variant.price * (100 - variant.discount_amount)) / 100 <
+                (minPriceVariant.price *
+                  (100 - minPriceVariant.discount_amount)) /
+                  100) &&
+            variant.discount_id &&
+            variant.discount_amount > 0
+          ) {
+            minPriceVariant = variant;
+          }
+          return minPriceVariant;
+        },
+        null
+      );
+
+      const highestDiscountVariant = product.product_variants.reduce(
+        (maxDiscountVariant, variant) => {
+          if (
+            (!maxDiscountVariant ||
+              variant.discount_amount > maxDiscountVariant.discount_amount) &&
+            variant.discount_id &&
+            variant.discount_amount > 0
+          ) {
+            maxDiscountVariant = variant;
+          }
+          return maxDiscountVariant;
+        },
+        null
+      );
+
+      return {
+        product_id: product._id,
+        product_name: product.product_name,
+        product_slug: product.product_slug,
+        product_avg_rating: product.product_avg_rating,
+        product_img: product.product_imgs[0],
+        lowest_price: lowestPriceVariant
+          ? (lowestPriceVariant.price *
+              (100 - lowestPriceVariant.discount_amount)) /
+            100
+          : null,
+        product_price: lowestPriceVariant ? lowestPriceVariant.price : null,
+        highest_discount: highestDiscountVariant
+          ? highestDiscountVariant.discount_amount
+          : null,
+        product_sold_quantity: product.product_sold_quanity,
+        category_name: product.category_names[0],
+        variant_name: lowestPriceVariant
+          ? lowestPriceVariant.variant_name
+          : null,
+      };
+    });
+
+    responseHandler.ok(res, transformedProducts, "Trả dữ liệu thành công");
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      message: "Đã xảy ra lỗi khi lấy sản phẩm có đánh giá cao nhất.",
+    });
   }
 };
 
 // Controller để tìm những sản phẩm phù hợp với searchKey
 export const getSearchRecommended = async (req, res) => {
   try {
-    let { searchKey} = req.query;
+    let { searchKey } = req.query;
     let searchConditions = {};
 
     if (searchKey) {
@@ -289,7 +367,7 @@ export const getSearchRecommended = async (req, res) => {
     products = sortSearchResults(products, req.query.searchKey);
     // Lấy 10 kết quả đầu tiên
     const firstTenProducts = products.slice(0, 10);
-    
+
     // Biến đổi dữ liệu trả về theo yêu cầu
     const transformedProducts = firstTenProducts.map((product) => {
       // Tìm giá thấp nhất và tính toán giá sau khi giảm giá
@@ -332,12 +410,10 @@ export const getSearchRecommended = async (req, res) => {
     );
   } catch (error) {
     console.error(error);
-    res
-      .status(500)
-      .json({
-        success: false,
-        message: "Đã xảy ra lỗi khi tìm kiếm sản phẩm.",
-      });
+    res.status(500).json({
+      success: false,
+      message: "Đã xảy ra lỗi khi tìm kiếm sản phẩm.",
+    });
   }
 };
 
@@ -458,6 +534,8 @@ export const search = async (req, res) => {
           : null, // Giảm giá cao nhất
         product_sold_quantity: product.product_sold_quanity, // Số lượng bán được
         category_name: product.category_names[0],
+        variant_id: lowestPriceVariant._id,
+        variant_name: product.variant_names,
       };
     });
 
@@ -473,11 +551,9 @@ export const search = async (req, res) => {
     );
   } catch (error) {
     // console.error(error);
-    res
-      .status(500)
-      .json({
-        success: false,
-        message: "Đã xảy ra lỗi khi tìm kiếm sản phẩm.",
-      });
+    res.status(500).json({
+      success: false,
+      message: "Đã xảy ra lỗi khi tìm kiếm sản phẩm.",
+    });
   }
 };

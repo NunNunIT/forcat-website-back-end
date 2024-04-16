@@ -1,6 +1,7 @@
 import mongoose from "mongoose";
 import Product from "../product.model.js"; // Import model sản phẩm
-import Category from "../category.model.js"; // Import model danh mục
+import Category from "../category.model.js"; 
+import { createSlug } from "../../utils/createSlug.js";
 
 // Thiết lập kết nối đến cơ sở dữ liệu MongoDB
 mongoose.connect(
@@ -66,6 +67,27 @@ async function updateProductVariants() {
   }
 }
 
+const updateAllProductsVariantSlugs = async function() {
+  try {
+    // Lấy tất cả sản phẩm từ cơ sở dữ liệu
+    const products = await Product.find();
+
+    // Lặp qua từng sản phẩm và cập nhật lại variant_slug
+    products.forEach((product) => {
+      createSlug(product);
+      // Lưu sản phẩm sau khi cập nhật
+      product.save();
+    });
+
+    console.log("Cập nhật variant_slug cho tất cả sản phẩm thành công!");
+  } catch (error) {
+    console.error("Lỗi khi cập nhật variant_slug cho tất cả sản phẩm:", error);
+  }
+};
+
+// Gọi hàm để cập nhật variant_slug cho tất cả sản phẩm
+updateAllProductsVariantSlugs();
+
 // Gọi hàm để cập nhật sản phẩm
-updateProducts();
-updateProductVariants();
+// updateProducts();
+// updateProductVariants();
