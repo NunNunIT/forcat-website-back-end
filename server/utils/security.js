@@ -26,7 +26,6 @@ const decryptData = (encryptedData) => {
 
   // Perform decryption using nacl.box.open
   const decryptedData = nacl.box.open(decodedData, nonce, publicKey, secretKey);
-  console(decodedData);
 
   // Convert the decrypted data back to a string (assuming UTF-8 encoding)
   const decryptedString = Buffer.from(decryptedData).toString("utf-8");
