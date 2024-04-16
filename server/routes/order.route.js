@@ -5,6 +5,8 @@ import {
   readAll,
   readOne,
   update,
+  updateStatus,
+  readAllReviews,
 } from "../controllers/order.controller.js";
 
 const router = express.Router();
@@ -19,14 +21,24 @@ router.get('/',
   readAll);
 
 // Read a purchase with id
-router.get('/:id',
+router.get('/:order_id',
   // verifyAccessToken,
   readOne);
 
 // Update a purchase with id
-router.post("/edit/:id",
+router.post("/:order_id/edit",
   // verifyAccessToken,
   update);
+
+// Update a purchase status with id
+router.post("/:order_id/:order_status",
+  // verifyAccessToken,
+  updateStatus);
+
+// Read all reviews
+router.get('/:order_id/reviews',
+  // verifyAccessToken,
+  readAllReviews);
 
 
 export default router;

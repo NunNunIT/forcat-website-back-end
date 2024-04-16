@@ -1,7 +1,75 @@
+import Product from "../models/product.model.js";
+import Order from "../models/order.model.js";
 import Review from "../models/review.model.js";
 import responseHandler from "../handlers/response.handler.js";
+import { decryptData } from "../utils/security.js";
 
-// [GET] /api/review/getOverview/:product_id
+// [POST] /api/reviews/
+export const createOrUpdate = async (req, res, next) => {
+  const user_id = req.user?.id ?? req.query?.id ?? "661754a9ae209b64b08e6874";
+  if (!user_id)
+    return responseHandler.unauthorize(res, "You are not authenticated!");
+
+  const role = req.user?.role ?? "user";
+  // Only user can create or update review
+  if (!role || !["user"].includes(role))
+    return responseHandler.forbidden(res, "You are not authorized!");
+
+  const {
+    product_id_hashed, product_variant_name,
+    order_id, user_info, review_rating,
+    review_context
+  } = req.body;
+  if (!product_id_hashed || !order_id || !user_info || !review_rating || !review_context)
+    return responseHandler.badRequest(res, "Missing required fields!");
+
+  try {
+    const product_id = decryptData(product_id_hashed);
+    const product = await Product.findById(product_id, "product_name");
+    // Handle if product not exists by product_id
+    if (!product)
+      return responseHandler.badRequest(res, "Product not found!");
+
+    // query order
+    const query_order = { _id: order_id, customer_id: user_id, order_status: "finished" };
+    const order = await Order.findOne(query_order, "_id");
+    // Handle if order not exists by order_id, customer_id, or order_status is not finished
+    if (!order)
+      return responseHandler.badRequest(res, "Order not found or That order is not belong to you so can't create the review!");
+
+    // query review
+    const query_review = { user_id, product_id, order_id }
+    const review = await Review.findOne(query_review);
+    // Handle if review not exists to create new review
+    if (!review) {
+      await Review.create({
+        product_id,
+        product_variant_name,
+        user_id,
+        order_id,
+        user_info,
+        review_rating,
+        review_context,
+        review_imgs: [],
+        review_videos: [],
+      });
+
+      return responseHandler.created(res, null, "Review created successfully!");
+    }
+
+    // Handle to update review
+    await Review.findOneAndUpdate(query_review, {
+      review_rating,
+      review_context,
+    });
+
+    return responseHandler.ok(res, null, "Review updated successfully!");
+  } catch (err) {
+    next(err);
+  }
+}
+
+// [GET] /api/reviews/getOverview/:product_id
 export const getOverview = async (req, res, next) => {
   const productId = req.params.product_id;
 
@@ -77,10 +145,10 @@ export const getFilteredReviews = async (req, res) => {
 
     // Lấy danh sách các đánh giá dựa trên query, sắp xếp và phân trang
     const reviews = await Review.find(query)
-                                .select('user_info review_rating review_context review_imgs review_video createdAt')
-                                .sort(sortQuery)
-                                .skip(skip)
-                                .limit(perPage);
+      .select('user_info review_rating review_context review_imgs review_video createdAt')
+      .sort(sortQuery)
+      .skip(skip)
+      .limit(perPage);
 
     // Trả về kết quả
     res.status(200).json({
@@ -92,4 +160,3 @@ export const getFilteredReviews = async (req, res) => {
     res.status(500).json({ message: error.message });
   }
 };
-
