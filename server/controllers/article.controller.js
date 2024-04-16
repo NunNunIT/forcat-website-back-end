@@ -37,6 +37,16 @@ export const create = async (req, res, next) => {
   }
 }
 
+export const readUnlimited = async (req, res, next) => {
+  try {
+    const articles = await Article.find({}, { _id: 0, article_description: 0 }).exec();
+
+    return resHandler.ok(res, articles);
+  } catch (err) {
+    next(err);
+  }
+}
+
 export const readAll = async (req, res, next) => {
   const page = (req.query?.page > 0 ? req.query?.page : 1);
   const limit = (req.query?.limit > 0 ? req.query?.limit : 10);
