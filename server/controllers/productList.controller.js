@@ -420,7 +420,7 @@ export const getSearchRecommended = async (req, res) => {
 // Controller tìm kiếm + bộ lọc kết quả tìm kiếm
 export const search = async (req, res) => {
   try {
-    let { searchKey, category, rating, minPrice, maxPrice, sortBy, page } =
+    let { searchKey, category, rating, minPrice, maxPrice, sortBy, discount, page } =
       req.query;
     const perPage = 20;
     const pageNumber = parseInt(page) || 1;
@@ -456,6 +456,15 @@ export const search = async (req, res) => {
       searchConditions["product_variants.price"] = {
         $gte: minPrice,
         $lte: maxPrice,
+      };
+    }
+
+    if (discount) {
+      searchConditions["product_variants"] = {
+        $elemMatch: {
+          discount_id: { $exists: true },
+          discount_amount: { $gt: 0 },
+        },
       };
     }
 
@@ -535,7 +544,8 @@ export const search = async (req, res) => {
         product_sold_quantity: product.product_sold_quanity, // Số lượng bán được
         category_name: product.category_names[0],
         variant_id: lowestPriceVariant._id,
-        variant_name: product.variant_names,
+        variant_name: lowestPriceVariant.variant_name,
+        variant_slug: lowestPriceVariant.variant_slug,
       };
     });
 
