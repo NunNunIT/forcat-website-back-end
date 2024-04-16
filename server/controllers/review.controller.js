@@ -31,11 +31,11 @@ export const createOrUpdate = async (req, res, next) => {
       return responseHandler.badRequest(res, "Product not found!");
 
     // query order
-    const query_order = { order_id, customer_id: user_id, order_status: "finished" };
+    const query_order = { _id: order_id, customer_id: user_id, order_status: "finished" };
     const order = await Order.findOne(query_order, "_id");
     // Handle if order not exists by order_id, customer_id, or order_status is not finished
     if (!order)
-      return responseHandler.badRequest(res, "Order not found or That order is not belong to you!");
+      return responseHandler.badRequest(res, "Order not found or That order is not belong to you so can't create the review!");
 
     // query review
     const query_review = { user_id, product_id, order_id }
