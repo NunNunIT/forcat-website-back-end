@@ -1,5 +1,4 @@
 import mongoose from "mongoose";
-import { createSlug } from "../utils/createSlug.js";
 
 const reviewSchema = new mongoose.Schema({
   product_id: {
@@ -38,7 +37,7 @@ const reviewSchema = new mongoose.Schema({
     link: String,
     alt: String
   }],
-  review_video: [{
+  review_videos: [{
     link: String,
     alt: String
   }]
