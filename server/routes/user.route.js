@@ -1,5 +1,5 @@
 import express from 'express';
-import { edit, changePassword,  getUserByEmail, deleteUserByEmail } from '../controllers/user.controller.js'
+import { edit, getInforUser, changePassword,  getUserByEmail, deleteUserByEmail } from '../controllers/user.controller.js'
 
 const router = express.Router();
 
@@ -8,6 +8,7 @@ router.get("/get-user", getUserByEmail);
 router.delete("/delete", deleteUserByEmail);
 
 //api được sử dụng
+router.post("/getInfo", getInforUser);
 router.put("/edit", edit);
 router.put("/change-password", changePassword);
 
