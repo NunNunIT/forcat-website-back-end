@@ -1,5 +1,6 @@
 import Product from "../models/product.model.js"; // Import model sản phẩm
 import responseHandler from "../handlers/response.handler.js";
+import { encryptData } from "../utils/security.js";
 
 // Hàm tính độ phù hợp của một sản phẩm dựa trên từ khóa tìm kiếm
 const calculateRelevance = (product, searchKey) => {
@@ -28,6 +29,7 @@ const calculateRelevance = (product, searchKey) => {
       relevance += 1; // Tăng điểm nếu từ khóa xuất hiện trong tên sản phẩm
       keywordCount += 1;
     }
+
     if (
       product.product_description &&
       product.product_description.toLowerCase().includes(keyword.toLowerCase())
@@ -35,6 +37,7 @@ const calculateRelevance = (product, searchKey) => {
       relevance += 1; // Tăng điểm nếu từ khóa xuất hiện trong mô tả sản phẩm
       keywordCount += 1;
     }
+
     if (product.category_names) {
       product.category_names.forEach((category) => {
         if (
@@ -46,6 +49,7 @@ const calculateRelevance = (product, searchKey) => {
         }
       });
     }
+
     if (product.product_variants) {
       product.product_variants.forEach((variant) => {
         if (
@@ -72,6 +76,7 @@ const calculateRelevance = (product, searchKey) => {
     ) {
       return count + 1;
     }
+
     if (product.category_names) {
       product.category_names.forEach((category) => {
         if (
@@ -82,6 +87,7 @@ const calculateRelevance = (product, searchKey) => {
         }
       });
     }
+
     if (product.product_variants) {
       product.product_variants.forEach((variant) => {
         if (
@@ -128,9 +134,9 @@ export const getNewestProducts = async (req, res, next) => {
           if (
             !minPriceVariant ||
             (variant.price * (100 - variant.discount_amount)) / 100 <
-              (minPriceVariant.price *
-                (100 - minPriceVariant.discount_amount)) /
-                100
+            (minPriceVariant.price *
+              (100 - minPriceVariant.discount_amount)) /
+            100
           ) {
             minPriceVariant = variant;
           }
@@ -154,15 +160,15 @@ export const getNewestProducts = async (req, res, next) => {
 
       // Biến đổi dữ liệu sản phẩm theo yêu cầu
       return {
-        product_id: product._id,
+        product_id_hashed: encryptData(product._id),
         product_name: product.product_name,
         product_slug: product.product_slug,
         product_avg_rating: product.product_avg_rating,
         product_img: product.product_imgs[0], // Lấy ảnh đầu tiên trong mảng product_imgs
         lowest_price: lowestPriceVariant
           ? (lowestPriceVariant.price *
-              (100 - lowestPriceVariant.discount_amount)) /
-            100
+            (100 - lowestPriceVariant.discount_amount)) /
+          100
           : null, // Giá thấp nhất
         product_price: lowestPriceVariant.price,
         highest_discount: highestDiscountVariant
@@ -201,9 +207,9 @@ export const getTopRatedProducts = async (req, res, next) => {
           if (
             !minPriceVariant ||
             (variant.price * (100 - variant.discount_amount)) / 100 <
-              (minPriceVariant.price *
-                (100 - minPriceVariant.discount_amount)) /
-                100
+            (minPriceVariant.price *
+              (100 - minPriceVariant.discount_amount)) /
+            100
           ) {
             minPriceVariant = variant;
           }
@@ -227,15 +233,15 @@ export const getTopRatedProducts = async (req, res, next) => {
 
       // Biến đổi dữ liệu sản phẩm theo yêu cầu
       return {
-        product_id: product._id,
+        product_id_hashed: encryptData(product._id),
         product_name: product.product_name,
         product_slug: product.product_slug,
         product_avg_rating: product.product_avg_rating,
         product_img: product.product_imgs[0], // Lấy ảnh đầu tiên trong mảng product_imgs
         lowest_price: lowestPriceVariant
           ? (lowestPriceVariant.price *
-              (100 - lowestPriceVariant.discount_amount)) /
-            100
+            (100 - lowestPriceVariant.discount_amount)) /
+          100
           : null, // Giá thấp nhất
         product_price: lowestPriceVariant.price,
         highest_discount: highestDiscountVariant
@@ -281,9 +287,9 @@ export const getDiscountProducts = async (req, res, next) => {
           if (
             (!minPriceVariant ||
               (variant.price * (100 - variant.discount_amount)) / 100 <
-                (minPriceVariant.price *
-                  (100 - minPriceVariant.discount_amount)) /
-                  100) &&
+              (minPriceVariant.price *
+                (100 - minPriceVariant.discount_amount)) /
+              100) &&
             variant.discount_id &&
             variant.discount_amount > 0
           ) {
@@ -310,15 +316,15 @@ export const getDiscountProducts = async (req, res, next) => {
       );
 
       return {
-        product_id: product._id,
+        product_id_hashed: encryptData(product._id),
         product_name: product.product_name,
         product_slug: product.product_slug,
         product_avg_rating: product.product_avg_rating,
         product_img: product.product_imgs[0],
         lowest_price: lowestPriceVariant
           ? (lowestPriceVariant.price *
-              (100 - lowestPriceVariant.discount_amount)) /
-            100
+            (100 - lowestPriceVariant.discount_amount)) /
+          100
           : null,
         product_price: lowestPriceVariant ? lowestPriceVariant.price : null,
         highest_discount: highestDiscountVariant
@@ -396,7 +402,7 @@ export const getSearchRecommended = async (req, res) => {
       );
 
       return {
-        product_id: product._id,
+        product_id: encryptData(product._id),
         product_name: product.product_name,
         product_slug: product.product_slug,
         product_img: product.product_imgs[0], // Lấy ảnh đầu tiên trong mảng product_imgs
@@ -510,9 +516,9 @@ export const search = async (req, res) => {
           if (
             !minPriceVariant ||
             (variant.price * (100 - variant.discount_amount)) / 100 <
-              (minPriceVariant.price *
-                (100 - minPriceVariant.discount_amount)) /
-                100
+            (minPriceVariant.price *
+              (100 - minPriceVariant.discount_amount)) /
+            100
           ) {
             minPriceVariant = variant;
           }
@@ -536,15 +542,15 @@ export const search = async (req, res) => {
 
       // Biến đổi dữ liệu sản phẩm theo yêu cầu
       return {
-        product_id: product._id,
+        product_id_hashed: encryptData(product._id),
         product_name: product.product_name,
         product_slug: product.product_slug,
         product_avg_rating: product.product_avg_rating,
         product_img: product.product_imgs[0], // Lấy ảnh đầu tiên trong mảng product_imgs
         lowest_price: lowestPriceVariant
           ? (lowestPriceVariant.price *
-              (100 - lowestPriceVariant.discount_amount)) /
-            100
+            (100 - lowestPriceVariant.discount_amount)) /
+          100
           : null, // Giá thấp nhất
         product_price: lowestPriceVariant.price,
         highest_discount: highestDiscountVariant
