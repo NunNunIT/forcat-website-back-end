@@ -3,10 +3,8 @@ import { MetadataRoute } from "next";
 
 // import utils
 import { BACKEND_URL } from "@/utils/commonConst";
-import { encryptData } from "@/utils/security";
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
-  console.log("-------------", process.env.NEXT_PUBLIC_BASE_URL);
   try {
     const productsRes = await fetch(
       `${BACKEND_URL}/productList/search?searchKey=`

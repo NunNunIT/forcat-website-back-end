@@ -5,7 +5,7 @@
   "type": "module",
   "scripts": {
     "dev": "concurrently --names \"BE,FE\" \"nodemon ./server/index.js\" \"next dev ./client -p 3000\"",
-    "build": "concurrently --names \"BE,BFE\" \"node ./server/index.js\" \"next build ./client\"",
+    "build": "cross-env BUILD_SUCCESS=true concurrently --kill-others \"node ./server/index.js\" \"next build ./client\"",
     "start": "concurrently --names \"BE,FE\" \"node ./server/index.js\" \"next start ./client -p 3000\"",
     "lint": "next lint ./client"
   },
@@ -51,10 +51,11 @@
   },
   "devDependencies": {
     "@types/jsonwebtoken": "^9.0.6",
-    "@types/node": "^20.12.7",
+    "@types/node": "20.12.7",
     "@types/react": "^18.2.79",
     "@types/react-dom": "^18",
     "console-control-strings": "^1.1.0",
+    "cross-env": "^7.0.3",
     "eslint": "^8",
     "eslint-config-next": "14.1.0",
     "nodemon": "^3.1.0",
