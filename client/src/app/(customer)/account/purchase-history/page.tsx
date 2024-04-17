@@ -20,7 +20,7 @@ import "react-loading-skeleton/dist/skeleton.css";
 const fetcher: Fetcher<ResponseOrderHistory, string> = async (url: string) => {
   const res: Response = await fetch(url);
   const json: IResponseJSON = await res.json();
-  if (!json.success) throw json;
+  // if (!json.success) throw json;
 
   return json.data as ResponseOrderHistory;
 };

@@ -4,7 +4,7 @@ export default {
     NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME: "dmjwq3ebx",
     TWEETNACL_PUBLIC_KEY_BASE64: "7zhu8+gSc34FGn2lBjH7bs2OM+hjkkrh3dKSAsQHuXA=",
     TWEETNACL_SECRET_KEY_BASE64: "mcwvsaLSMthCmElVr2E4Pyp2B4qeK+vOGJsLmGpVVG8=",
-    NEXT_PUBLIC_BASE_URL: "http://127.0.0.1:3000",
+    NEXT_PUBLIC_BASE_URL: "http://localhost:3000",
   },
   images: {
     remotePatterns: [

@@ -65,7 +65,7 @@ export default function CustomerHeaderNav() {
         console.error("Logout failed:", await res.text());
       }
     } catch (error) {
-      console.error("Logout error:", error);
+      // console.error("Logout error:", error);
     }
   };
   return (

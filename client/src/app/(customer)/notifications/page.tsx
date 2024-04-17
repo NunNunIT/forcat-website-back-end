@@ -19,8 +19,8 @@ const notificationTypes = ["", "order", "promotion"];
 const user_id = "6616be67a63ceb458b15828f";
 const fetcher: Fetcher<INotiProps[], string> = async (url: string) => {
   const res: Response = await fetch(url);
-  if (!res.ok)
-    throw new Error("Failed to fetch notifications: " + res.statusText);
+  // if (!res.ok)
+  //   throw new Error("Failed to fetch notifications: " + res.statusText);
 
   const json = await res.json();
 

@@ -16,7 +16,7 @@ import "./page.css";
 const fetcher: Fetcher<IReviewItem[], string> = async (url: string) => {
   const RES: Response = await fetch(url);
   const JSON: IResponseJSON = await RES.json();
-  if (!JSON.success) throw JSON;
+  // if (!JSON.success) throw JSON;
   return JSON.data as IReviewItem[];
 };
 
