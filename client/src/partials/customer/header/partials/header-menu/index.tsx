@@ -138,25 +138,26 @@ export default function CustomerHeaderMenu(
 ): JSX.Element {
   return (
     <ul className={cx("header__menu")}>
-      {props.categories.map((category: ICategoryProps, index: number) => (
-        <CustomerHeaderMenuCategoryItem
-          key={index}
-          categoryType={category.category_type}
-          {...category}>
-          {category.subCategories && (
-            <ul className={cx("menu__cate-dropdown")}>
-              {category.subCategories.map(
-                (subCategory: ISubCategoryProps, index: number) => (
-                  <CustomerHeaderMenuSubCategoryItem
-                    key={index}
-                    {...subCategory}
-                  />
-                )
-              )}
-            </ul>
-          )}
-        </CustomerHeaderMenuCategoryItem>
-      ))}
+      {props.categories &&
+        props.categories.map((category: ICategoryProps, index: number) => (
+          <CustomerHeaderMenuCategoryItem
+            key={index}
+            categoryType={category.category_type}
+            {...category}>
+            {category.subCategories && (
+              <ul className={cx("menu__cate-dropdown")}>
+                {category.subCategories.map(
+                  (subCategory: ISubCategoryProps, index: number) => (
+                    <CustomerHeaderMenuSubCategoryItem
+                      key={index}
+                      {...subCategory}
+                    />
+                  )
+                )}
+              </ul>
+            )}
+          </CustomerHeaderMenuCategoryItem>
+        ))}
 
       {props.links.map((link: IHeaderLinkProps) => (
         <li key={link.title} className={cx("menu__item")}>

@@ -201,7 +201,7 @@ export default function EditInformationPage() {
 
       return response;
     } catch (error: any) {
-      console.error("Error sending update request:", error);
+      // console.error("Error sending update request:", error);
     }
   };
 

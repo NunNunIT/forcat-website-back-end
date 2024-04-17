@@ -40,7 +40,7 @@ interface IOrderDetailProps {
 const fetcher: Fetcher<IOrderDetailProps, string> = async (url: string) => {
   const res: IResponseJSON = await fetch(url).then((res) => res.json());
 
-  if (!res.success) throw res;
+  // if (!res.success) throw res;
 
   return res.data as IOrderDetailProps;
 };

@@ -29,15 +29,15 @@ const fetchNewestProducts = async () => {
       }
     );
 
-    if (!response.ok) {
-      throw new Error("Failed to fetch newest products");
-    }
+    // if (!response.ok) {
+    //   throw new Error("Failed to fetch newest products");
+    // }
 
     const data = await response.json();
     return data.data; // Return the entire data object
   } catch (error) {
-    console.error("Error fetching newest products:", error);
-    throw error;
+    // console.error("Error fetching newest products:", error);
+    // throw error;
   }
 };
 
@@ -50,15 +50,15 @@ const fetchDiscountProducts = async () => {
       }
     );
 
-    if (!response.ok) {
-      throw new Error("Failed to fetch discount products");
-    }
+    // if (!response.ok) {
+    //   throw new Error("Failed to fetch discount products");
+    // }
 
     const data = await response.json();
     return data.data; // Return the entire data object
   } catch (error) {
-    console.error("Error fetching discount products:", error);
-    throw error;
+    // console.error("Error fetching discount products:", error);
+    // throw error;
   }
 };
 

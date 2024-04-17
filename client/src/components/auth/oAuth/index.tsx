@@ -44,7 +44,7 @@ export default function OAuth() {
 
       window.location.href = "/";
     } catch (error) {
-      console.log("Could not login with Google", error);
+      // console.log("Could not login with Google", error);
     }
   };
 
