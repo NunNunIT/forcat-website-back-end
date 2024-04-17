@@ -62,7 +62,7 @@ export const login = async (req, res, next) => {
       __v: versionToDiscard,
       ...rest
     } = checkUser._doc;
-    
+
     const token = jwt.sign({ id: checkUser._id, role: checkUser.user_role }, process.env.JWT_SECRET_KEY);
     const expiryDate = new Date(Date.now() + HOUR); // 1 hour
 
@@ -122,7 +122,7 @@ export const loginWithGoogle = async (req, res, next) => {
       __v: versionToDiscard,
       ...rest
     } = user._doc;
-    
+
 
     const token = jwt.sign({ id: user._id, role: user.user_role }, process.env.JWT_SECRET_KEY);
     const expiryDate = new Date(Date.now() + HOUR); // 1 hour
@@ -141,8 +141,6 @@ export const loginWithGoogle = async (req, res, next) => {
 
 export const logout = (req, res, next) => {
   const accessToken = req.cookies.access_token;
-  
-  console.log("Đã đăng xuất, accessToken:", accessToken);
 
   res.clearCookie("accessToken");
   return responseHandler.ok(res, undefined, "Logout success");
