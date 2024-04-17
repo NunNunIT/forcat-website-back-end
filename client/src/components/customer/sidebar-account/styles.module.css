@@ -1,0 +1,227 @@
+/* side-bar
+#sidebar {
+  grid-area: aside;
+
+  display: flex;
+  flex-direction: column;
+  overflow-x: hidden;
+  border-radius: 8px;
+
+  background: white;
+
+  transition: .3s ease;
+}
+
+span.image-container img {
+  width: 7rem;
+  height: 7rem;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.avatar {
+  margin-top: 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  text-decoration: none;
+}
+
+.image-container {
+  margin-bottom: 5px;
+}
+
+.user_name {
+  color: #333;
+  text-align: center;
+}
+
+#sidebar .side-menu__ele.active a {
+  color: var(--primary-color-1);
+}
+
+#sidebar .side-menu.top li a:hover {
+  color: var(--primary-color-2);
+}
+
+#sidebar .side-menu li a:hover {
+  color: var(--primary-color-2);
+}
+
+#sidebar .side-menu {
+  width: 100%;
+  margin-top: 20px;
+}
+
+.side-menu li {
+  height: 48px;
+  background: transparent;
+  margin-left: 6px;
+  border-radius: 48px 0 0 48px;
+  padding: 4px;
+}
+
+.side-menu li a {
+  width: 100%;
+  height: 100%;
+  background: white;
+  display: flex;
+  align-items: center;
+  border-radius: 48px;
+  font-size: 16px;
+  color: var(--dark);
+  white-space: nowrap;
+  overflow-x: hidden;
+}
+
+#sidebar .side-menu li a.logout {
+  color: var(--red);
+}
+
+#sidebar .side-menu li a .bx {
+  min-width: calc(60px - ((4px + 6px) * 2));
+  display: flex;
+  justify-content: center;
+}
+
+.sidebar-account__popup {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  margin: auto;
+  width: 100%;
+  height: 100%;
+  background-color: rgb(0, 0, 0);
+  background-color: rgba(0, 0, 0, 0.5);
+  z-index: 9999;
+  overflow-y: auto;
+}
+
+.sidebar-account__popup .material-symbols-outlined {
+  font-variation-settings:
+    'FILL' 1,
+    'wght' 300,
+    'GRAD' 0,
+    'opsz' 24
+}
+
+.sidebar-account__popup .material-symbols-outlined:hover {
+  color: var(--primary-color-2);
+}
+
+.sidebar-account__popup .popup__main {
+  position: relative;
+  background-color: #FAFAFA;
+  border-radius: 8px;
+  margin: auto;
+  width: 55%;
+  height: auto;
+  display: flex;
+  justify-content: space-between;
+  padding: 32px;
+
+}
+
+.sidebar-account__popup .btn-close {
+  position: relative;
+  color: var(--primary-color-1);
+  font-size: 25px;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.sidebar-account__popup .popup__content-main {
+  display: flex;
+  padding: 32px;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.sidebar-account__popup .popup--top {
+  display: flex;
+  justify-content: space-between;
+}
+
+.sidebar-account__popup .popup__title {
+  font-size: 1.5rem;
+  font-weight: 600;
+}
+
+.sidebar-account__popup .popup__subtitle {
+  margin: 4px 0;
+}
+
+
+.sidebar-account__popup .popup__content-title {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.sidebar-account__popup .popup__main--right {
+  width: 100%;
+}
+
+.logout_img {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: inherit;
+  height: 300px;
+}
+
+.logout_img img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.sidebar-account__popup .popup__button {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 24px;
+  gap: 12px;
+}
+
+.sidebar-account__popup .popup__button button.btn--filled.pri {
+  padding: 0 36px 0 36px;
+}
+
+.sidebar-account__popup .popup__button button.btn--outlined.pri {
+  padding: 0 36px 0 36px;
+}
+
+.btn-logout {
+  display: flex;
+  align-items: center;
+  color: red;
+}
+
+.btn-logout:hover {
+  cursor: pointer;
+  color: var(--dollar-red);
+}
+
+.sidebar-account__popup .btn.btn--outlined.pri.btn-cancel {
+  display: flex;
+  align-items: center;
+}
+
+@media only screen and (max-width: 48rem) {
+
+  .logout_img {
+    height: 250px;
+  }
+
+}
+
+@media only screen and (max-width: 26rem) {
+  #sidebar {
+    display: none;
+  }
+} */

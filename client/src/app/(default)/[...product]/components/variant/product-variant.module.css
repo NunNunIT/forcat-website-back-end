@@ -1,0 +1,53 @@
+.variant {
+    width: 100%;
+    height: 52px;
+    padding: 4px 8px;
+    border: 1px solid var(--outline1);
+    border-radius: 8px;
+    text-decoration: none;
+    color: var(--black);
+    font-weight: 500;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    position: relative;
+}
+
+.variant__active {
+    outline: 2px solid var(--outline2);
+}
+
+.variant__active .variant__tick-div {
+    display: block;
+}
+
+.variant__display {
+    display: block;
+}
+
+.variant:hover {
+    outline: 2px solid var(--outline2);
+}
+
+.variant__tick-div {
+    width: 20px;
+    aspect-ratio: 1 / 1;
+    display: none;
+    position: absolute !important;
+    top: -6px;
+    right: -4px;
+    position: relative;
+}
+
+.variant__image-div {
+    width: 48px;
+    height: 48px;
+    position: relative;
+}
+
+.variant__name {
+    width: calc(100% - 48px - 8px - 8px);
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}

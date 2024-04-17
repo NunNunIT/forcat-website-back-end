@@ -1,0 +1,120 @@
+.search-result__heading--disable {
+  display: none;
+  position: sticky;
+  width: 100%;
+  max-width: 1152px;
+  top: -1px;
+  /* left: 0;
+  right: 0; */
+  flex-direction: row;
+  justify-content: space-between;
+  font-size: 13px;
+  border-bottom: 0.5px solid #d9d9d9;
+  z-index: 998;
+  background-color: white;
+  justify-content: space-between;
+  padding: 0;
+}
+
+.search-result__sort--disable {
+  display: flex;
+  align-items: center;
+  padding: 4px 24px 8px 24px;
+}
+
+.search-result__sort--disable:hover {
+  cursor: pointer;
+  color: brown;
+  border-bottom: 1px solid brown;
+  padding: 4px 24px 7px 24px;
+}
+
+.search-result__sort--disable.active {
+  display: none;
+  color: brown;
+  border-bottom: 1px solid brown;
+  padding: 4px 24px 7px 24px;
+}
+
+.search-result__heading--disable span {
+  font-size: 1.5rem;
+  margin-right: 12px;
+}
+
+.filter-option {
+  display: none;
+}
+
+.filter-popup {
+  display: none;
+  position: fixed;
+  padding-top: 64px;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  z-index: 9999;
+  overflow-y: auto;
+  transition: opacity 0.3s ease-in-out, transform 0.3s ease;
+  transform: translateX(-100%);
+}
+
+.filter-popup.show {
+  display: block;
+  transform: translateX(0);
+}
+
+.filter-popup__main {
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  background-color: #fafafa;
+  border-radius: 8px 0 0 8px;
+  width: 82%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: 12px;
+  overflow-y: auto;
+  transition: transform 0.3s ease;
+  transform: translateX(-100%);
+}
+
+.filter-popup.show .filter-popup__main {
+  transform: translateX(0);
+}
+
+.filter-popup__section__main {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  margin-top: 12px;
+  width: 100%;
+  display: flex;
+  gap: 2%;
+}
+
+.filter-popup-options {
+  width: 49%;
+  margin-bottom: 8px;
+}
+
+.filter-popup__btn {
+  display: flex;
+  margin: 12px 0;
+  justify-content: flex-end;
+  gap: 12px;
+}
+
+@media only screen and (max-width: 26rem) {
+  .search-result__sort--disable.active {
+    display: block;
+  }
+
+  .search-result__heading--disable {
+    display: flex;
+    padding: 12px 12px 0 12px;
+  }
+}

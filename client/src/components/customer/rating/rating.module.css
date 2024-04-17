@@ -1,0 +1,7 @@
+.rating__stars {
+    color: var(--fire-orange);
+}
+
+.star-empty {
+    color: var(--dark11);
+}
