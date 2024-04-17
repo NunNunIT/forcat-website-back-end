@@ -47,8 +47,10 @@ const userSchema = new mongoose.Schema(
     ],
     recent_notification: [
       {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: "Notification",
+        _id: {
+          type: mongoose.Schema.Types.ObjectId,
+          ref: "Notification",
+        }
       },
     ],
     recommended_products: [
