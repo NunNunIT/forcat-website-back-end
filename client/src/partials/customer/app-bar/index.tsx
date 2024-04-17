@@ -4,8 +4,6 @@
 import classNames from "classnames/bind";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-// import { isActiveClass } from "@/utils";
-import { useState } from "react";
 
 // use scss
 import styles from "./styles.module.css";

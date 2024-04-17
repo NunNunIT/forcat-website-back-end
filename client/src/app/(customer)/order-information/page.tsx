@@ -1,12 +1,12 @@
 "use client";
 
 // import libs
-import React, { useState, useEffect } from "react";
-import axios from "axios";
-import Link from "next/link";
 import { notFound } from "next/navigation";
+import Link from "next/link";
+import React, { useState, useEffect } from "react";
 import { Provider } from "react-redux";
 import { store } from "@/redux/store";
+import axios from "axios";
 
 // import components
 import { OrderProduct } from "./components";

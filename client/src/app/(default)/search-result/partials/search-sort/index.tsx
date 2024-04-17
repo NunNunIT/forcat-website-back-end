@@ -1,7 +1,10 @@
 "use client";
 
-import { useState, useEffect } from "react";
+// import libs
 import classNames from "classnames/bind";
+import { useState, useEffect } from "react";
+
+// import css
 import styles from "./search-sort.module.css";
 
 const cx = classNames.bind(styles);
@@ -91,8 +94,7 @@ export default function SearchResultSort() {
   return (
     <div
       className={cx("search-result__sort", "search-result__sort__cover")}
-      onClick={(e: any) => handleFilterItemClick(e)}
-    >
+      onClick={(e: any) => handleFilterItemClick(e)}>
       <p className={cx("search-result__sort-title")}>Sắp xếp theo:</p>
       <div className={cx("search-result__sort-content")}>
         <p>Nổi bật</p>
@@ -102,8 +104,7 @@ export default function SearchResultSort() {
         className={cx(
           "dropdown-content--sort",
           "dropdown-content--sort__cover"
-        )}
-      >
+        )}>
         <div className={cx("dropdown-options")}>
           <input
             className={cx("sort-option")}

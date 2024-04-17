@@ -293,7 +293,8 @@ export default function CartWrapper({
       type: "addBuyItems",
       payload: buyList,
     });
-    console.log(store.getState().cart.buyItems);
+
+    // console.log(store.getState().cart.buyItems);
   };
 
   return (

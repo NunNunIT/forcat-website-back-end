@@ -1,12 +1,18 @@
 "use client";
 
 // import libs
-import React, { useState, useEffect } from "react";
+import classNameNames from "classnames/bind";
 import Image from "next/image";
 import Link from "next/link";
-import classNameNames from "classnames/bind";
+import React, { useState, useEffect } from "react";
+
+// import utils
 import { BACKEND_URL } from "@/utils/commonConst";
+
+// import components
 import { CustomerLogo, CustomerHeaderItemUlt } from "@/components";
+
+// import css
 import styles from "./header-main.module.css";
 
 const cx = classNameNames.bind(styles);
@@ -19,8 +25,8 @@ export default function CustomerHeaderMain({
   searchParams?: { [key: string]: string };
 }) {
   const searchKey = searchParams ?? 0;
-  console.log("searchKey từ Header", searchKey);
-  console.log("searchKey từ Header",  searchParams);
+  // console.log("searchKey từ Header", searchKey);
+  // console.log("searchKey từ Header", searchParams);
   const [showSmartSearch, setShowSmartSearch] = useState(false);
   const [searchResults, setSearchResults] = useState([]);
   const [totalSearchResults, setTotalSearchResults] = useState(0);
@@ -46,7 +52,7 @@ export default function CustomerHeaderMain({
       }
       const data = await response.json();
       if (data.data.searchKey === inputValue) {
-        console.log("Trả về cho data", data.data.searchKey);
+        // console.log("Trả về cho data", data.data.searchKey);
         setSearchResults(data.data.recommendedProducts);
         setTotalSearchResults(data.data.totalProducts);
         setShowSmartSearch(true);
@@ -79,7 +85,7 @@ export default function CustomerHeaderMain({
               id="header__search-input"
               type="search"
               name="searchKey"
-              placeholder = { searchKey ? searchKey : "Bạn tìm gì..." }
+              placeholder={searchKey ? searchKey.toString() : "Bạn tìm gì..."}
               onChange={handleInputChange}
             />
             <button className={cx("header__search-btn")} type="submit">

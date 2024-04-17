@@ -1,20 +1,16 @@
 "use client";
 
 // import libs
-import React from "react";
-import Link from "next/link";
-import Image from "next/image";
-import { BACKEND_URL } from "@/utils/commonConst";
 import classNames from "classnames/bind";
+import React from "react";
 import { useState, useEffect } from "react";
-import Pagination from "@/components/customer/pagination";
 
 // import css
 import styles from "./search-result-container.module.css";
 const cx = classNames.bind(styles);
 
 // import components
-import { CustomerProductCard } from "@/components";
+import { CustomerProductCard, CustomerPagination } from "@/components";
 
 // import css
 import "./search-result.css";
@@ -25,14 +21,14 @@ export default function SearchResultPage({ searchKey, searchResults }) {
   const currentPage = searchResults.currentPage;
 
   let searchResultsProducts;
-  console.log("Từ khóa tìm kiếm", searchKey);
+  // console.log("Từ khóa tìm kiếm", searchKey);
 
   if (searchResults) {
     searchResultsProducts = searchResults.searchProducts;
   } else {
     searchResultsProducts = [];
   }
-  console.log("Từ khóa tìm kiếm", searchResultsProducts);
+  // console.log("Từ khóa tìm kiếm", searchResultsProducts);
 
   const [selectedFilterItem, setSelectedFilterItem] =
     useState<HTMLDivElement | null>(null);
@@ -528,7 +524,7 @@ export default function SearchResultPage({ searchKey, searchResults }) {
         </div>
         {totalPage > 1 && (
           <div className="pagination">
-            <Pagination maxPage={totalPage} currentPage={currentPage} />
+            <CustomerPagination maxPage={totalPage} currentPage={currentPage} />
           </div>
         )}
       </section>

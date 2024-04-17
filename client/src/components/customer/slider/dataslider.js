@@ -1,4 +1,4 @@
-export const Slider_Image_Data = [
+export const sliderImgs = [
   {
     id: 1,
     imageurl: "/imgs/slider/forcatshop-sell-every-cat-thing.png",

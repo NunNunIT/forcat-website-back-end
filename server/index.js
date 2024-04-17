@@ -30,13 +30,12 @@ mongoose
     console.log(err);
   });
 
-
 const app = express();
 
 // app.use(cors());
 app.use(
   cors({
-    origin: "http://localhost:3000", // replace with the URL of your frontend
+    origin: "http://127.0.0.1:3000", // replace with the URL of your frontend
     credentials: true,
   })
 );

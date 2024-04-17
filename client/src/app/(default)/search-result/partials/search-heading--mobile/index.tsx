@@ -1,7 +1,10 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
+// import libs
 import classNames from "classnames/bind";
+import React, { useState, useEffect } from "react";
+
+// import css
 import styles from "./search-heading--mobile.module.css";
 
 const cx = classNames.bind(styles);
@@ -14,7 +17,7 @@ export default function SearchResultHeadingMobile() {
     const sortBtns = document.querySelectorAll(
       ".search-result__sort--disable__cover"
     );
-    console.log(sortBtns);
+    // console.log(sortBtns);
 
     // Kiểm tra nếu có ít nhất một phần tử trong sortBtns
     if (sortBtns.length > 0) {

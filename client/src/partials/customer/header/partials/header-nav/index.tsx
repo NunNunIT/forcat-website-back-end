@@ -1,18 +1,17 @@
 "use client";
 // import libs
-import Link from "next/link";
-import Image from "next/image";
 import classNameNames from "classnames/bind";
 import Cookies from "js-cookie";
+import Link from "next/link";
+import Image from "next/image";
 import { useEffect, useState } from "react";
 
 // import components
 import { CustomerLogo } from "@/components";
+import { BACKEND_URL } from "@/utils/commonConst";
 
 // import css
 import styles from "./header-nav.module.css";
-
-import { BACKEND_URL, expirationTime } from "@/utils/commonConst";
 
 const cx = classNameNames.bind(styles);
 
@@ -23,9 +22,9 @@ interface IUserLocal {
 }
 
 export default function CustomerHeaderNav() {
-  const [currentUser, setCurrentUser] = useState<(IUserLocal | null)>(null); // Định nghĩa biến currentUser ở đây
+  const [currentUser, setCurrentUser] = useState<IUserLocal | null>(null); // Định nghĩa biến currentUser ở đây
 
-  const getCurrentUser = (): (IUserLocal | null) => {
+  const getCurrentUser = (): IUserLocal | null => {
     const storedUser = localStorage.getItem("currentUser");
     let currentUser = null;
     if (storedUser) {
@@ -39,10 +38,9 @@ export default function CustomerHeaderNav() {
   };
 
   useEffect(() => {
-    const user: (IUserLocal | null) = getCurrentUser();
+    const user: IUserLocal | null = getCurrentUser();
     setCurrentUser(user);
   }, []);
-
 
   const handleLogout = async (e) => {
     e.preventDefault();
@@ -96,8 +94,7 @@ export default function CustomerHeaderNav() {
         <CustomerLogo className={cx("header--mobile__logo")} white />
         <div className={cx("header__about-account")}>
           <div className={cx("dropdown-noti")}>
-            <Link href="/notifications"
-              className={cx("header__notifications")}>
+            <Link href="/notifications" className={cx("header__notifications")}>
               <span className="material-icons-outlined">notifications</span>
               Thông báo
             </Link>

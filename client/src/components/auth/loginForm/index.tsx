@@ -1,9 +1,9 @@
 "use client";
 // import libs
 import classNames from "classnames/bind";
+import Cookies from "js-cookie";
 import Link from "next/link";
 import { useState } from "react";
-import Cookies from "js-cookie";
 
 // import utils
 import { isValidEmail } from "@/utils/index";
@@ -23,7 +23,6 @@ const LoginForm = () => {
   const handleTogglePasswordVisibility = () => {
     setShowPassword(!showPassword);
   };
-
 
   const initialForms = {
     user_email: "",
@@ -81,16 +80,16 @@ const LoginForm = () => {
         let data = await res.json();
         setLoading(false);
         let accessTokens = await Cookies.get("accessToken");
-        console.log("Trước khi Set: ", accessTokens);
+        // console.log("Trước khi Set: ", accessTokens);
 
         // console.log("login success: ", data.message);
         Cookies.set("accessToken", data.token);
-        console.log("User", data.data)
+        // console.log("User", data.data);
         Cookies.set("currentUser", data.data._id);
         localStorage.setItem("currentUser", JSON.stringify(data.data));
 
         accessTokens = await Cookies.get("accessToken");
-        console.log("Sau khi set: ", accessTokens);
+        // console.log("Sau khi set: ", accessTokens);
 
         window.location.href = "/";
 
@@ -107,7 +106,7 @@ const LoginForm = () => {
           return;
         }
       } catch (error) {
-        console.log(error);
+        console.error(error);
         setLoading(false);
         setError(true);
       }
@@ -170,9 +169,7 @@ const LoginForm = () => {
         )}
       </div>
       <Link href="/forgot" className={cx("align-right")}>
-          <p>
-            Quên mật khẩu?
-          </p>
+        <p>Quên mật khẩu?</p>
       </Link>
       <button disabled={loading} className={cx("form-button")}>
         <h3>{loading ? "Đang xử lý..." : "Đăng nhập"}</h3>

@@ -1,6 +1,5 @@
+// import libs
 import type { Metadata } from "next";
-
-// import css
 
 export const metadata: Metadata = {
   description:

@@ -2,8 +2,10 @@
 import React from "react";
 import Image from "next/image";
 import Link from "next/link";
-// import components
+
+// import partials
 import { MobileLogout } from "./partials";
+
 // import css
 import "./page.css";
 

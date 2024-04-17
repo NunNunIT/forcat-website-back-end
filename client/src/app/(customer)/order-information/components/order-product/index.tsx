@@ -2,12 +2,11 @@
 
 // import libs
 import classNames from "classnames/bind";
-import Link from "next/link";
-import Image from "next/image";
 import { CldImage } from "next-cloudinary";
 
-import { IBuyInfo } from "../../utils";
+// import utils
 import { convertNumberToMoney } from "@/utils";
+import { IBuyInfo } from "../../utils";
 
 // import css
 import styles from "./order-product.module.css";

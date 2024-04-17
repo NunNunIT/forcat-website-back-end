@@ -1,8 +1,7 @@
 "use client";
+
 // import libs
-import React, { useEffect, useState, useRef, FormEvent } from "react";
-import Link from "next/link";
-// import components
+import React, { useEffect, useState, useRef } from "react";
 
 // import css
 import "./page.css";
@@ -193,8 +192,8 @@ export default function ChangePasswordPage() {
                   </span>
 
                   {errors.password && (
-                      <div className="error">{errors.password}</div>
-                    )}
+                    <div className="error">{errors.password}</div>
+                  )}
                 </div>
 
                 <div className="reset__input-wrap">
@@ -229,8 +228,8 @@ export default function ChangePasswordPage() {
                   </span>
 
                   {errors.confirmPassword && (
-                      <div className="error">{errors.confirmPassword}</div>
-                    )}
+                    <div className="error">{errors.confirmPassword}</div>
+                  )}
                 </div>
                 <div className="popup__button">
                   <button className="btn btn--filled pri save" type="submit">

@@ -2,7 +2,7 @@
 
 // import libs
 import classNames from "classnames/bind";
-import { CldImage, CldVideoPlayer } from "next-cloudinary";
+import { CldImage } from "next-cloudinary";
 
 // import components
 import { CustomerRating } from "@/components";
@@ -15,7 +15,6 @@ import { convertDateToHourDayMonthYear } from "@/utils";
 
 // import css
 import styles from "./review-item.module.css";
-import { relative } from "path";
 
 // use css
 const cx = classNames.bind(styles);

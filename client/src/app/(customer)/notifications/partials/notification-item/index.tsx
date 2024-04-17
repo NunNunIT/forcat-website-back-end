@@ -1,18 +1,17 @@
 "use client";
 
 // import libs
-import Image from "next/image";
 import classNames from "classnames/bind";
 import { useState, useEffect } from "react";
+
+// import utils
 import {
   convertDateToFormatHHMMDDMMYYYY,
   isActiveClassWithBool,
 } from "@/utils";
-
-// import utils
 import { BACKEND_URL } from "@/utils/commonConst";
 
-// import partials, components
+// import partials
 import { CustomerModal } from "..";
 
 // import css
@@ -25,7 +24,7 @@ export default function NotificationItem({
   allRead,
   ...props
 }: INotiProps) {
-  console.log("data props:", props);
+  // console.log("data props:", props);
   const [isRead, setIsRead] = useState<boolean>(props.is_read);
   const [isShowModal, setIsShowModal] = useState<boolean>(false);
   useEffect(() => {
@@ -45,7 +44,7 @@ export default function NotificationItem({
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify(postData), 
+      body: JSON.stringify(postData),
     });
   };
 

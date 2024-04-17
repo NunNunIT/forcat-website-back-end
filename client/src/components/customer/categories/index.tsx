@@ -1,23 +1,30 @@
 "use client";
-import { Swiper, SwiperSlide } from "swiper/react";
-import { Pagination, Navigation } from "swiper/modules";
+
+// import libs
 import classNames from "classnames/bind";
 import { useState, useEffect } from "react"; // Thêm useState và useEffect từ React
-import CustomerCategoryCard from "@/components/customer/category-card";
-import { productData } from "./data";
+import { Swiper, SwiperSlide } from "swiper/react";
+import { Pagination, Navigation } from "swiper/modules";
+
+// import components
+import { CustomerCategoryCard } from "@/components";
+
+// import css
 import "swiper/css";
 import "swiper/css/pagination";
 import "swiper/css/navigation";
 import styles from "./style.module.css";
 
+import { productData } from "./data";
+
 const cx = classNames.bind(styles);
 
 export default function Categories() {
-  const [loadedData, setLoadedData] = useState([]); 
+  const [loadedData, setLoadedData] = useState([]);
 
   useEffect(() => {
     setLoadedData(productData);
-  }, []); 
+  }, []);
 
   const PRODUCT = loadedData.map((item) => (
     <SwiperSlide key={item.id}>
@@ -68,8 +75,7 @@ export default function Categories() {
         navigation={true}
         loop={true}
         modules={[Pagination, Navigation]}
-        className="mySwiper"
-      >
+        className="mySwiper">
         {PRODUCT}
       </Swiper>
     </div>

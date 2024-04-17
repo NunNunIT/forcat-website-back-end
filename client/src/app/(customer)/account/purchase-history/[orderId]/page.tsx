@@ -1,28 +1,35 @@
-'use client'
+"use client";
 
 // import libs
 import useSWR, { Fetcher } from "swr";
 import { notFound } from "next/navigation";
-import Skeleton from 'react-loading-skeleton'
+import Skeleton from "react-loading-skeleton";
 
+// import utils
 import { BACKEND_URL_ORDERS } from "@/utils/commonConst";
 import {
-  convertDateToFormatHHMMDDMMYYYY, convertOrderStatusToStr,
+  convertDateToFormatHHMMDDMMYYYY,
+  convertOrderStatusToStr,
   parseNumToCurrencyStr,
   convertOrderStatusToIconData,
 } from "@/utils";
 
 // import components
-import { CustomerProductItemInOrderItem } from '@/components';
+import { CustomerProductItemInOrderItem } from "@/components";
 
 // import css
-import './page.css';
-import 'react-loading-skeleton/dist/skeleton.css'
+import "./page.css";
+import "react-loading-skeleton/dist/skeleton.css";
 
 interface IOrderDetailProps {
   _id: string;
-  order_buyer: { order_name: string, order_phone: string };
-  order_address: { street: string, ward: string, district: string, province: string };
+  order_buyer: { order_name: string; order_phone: string };
+  order_address: {
+    street: string;
+    ward: string;
+    district: string;
+    province: string;
+  };
   order_details: IProductItemInOrderItemProps[];
   order_total_cost: number;
   order_status: string;
@@ -31,15 +38,18 @@ interface IOrderDetailProps {
 }
 
 const fetcher: Fetcher<IOrderDetailProps, string> = async (url: string) => {
-  const res: IResponseJSON = await fetch(url).then(res => res.json());
+  const res: IResponseJSON = await fetch(url).then((res) => res.json());
 
-  if (!res.success)
-    throw res;
+  if (!res.success) throw res;
 
   return res.data as IOrderDetailProps;
-}
+};
 
-export default function PurchaseDetailPage({ params }: { params: { orderId: string } }) {
+export default function PurchaseDetailPage({
+  params,
+}: {
+  params: { orderId: string };
+}) {
   const { data, error, isLoading } = useSWR(
     BACKEND_URL_ORDERS + "/" + params.orderId,
     fetcher
@@ -80,13 +90,16 @@ export default function PurchaseDetailPage({ params }: { params: { orderId: stri
       </main>
     );
 
-  if (error)
-    return notFound();
+  if (error) return notFound();
 
   const {
-    _id, order_buyer, payment_id,
-    order_details, order_total_cost,
-    order_address, order_status,
+    _id,
+    order_buyer,
+    payment_id,
+    order_details,
+    order_total_cost,
+    order_address,
+    order_status,
     createdAt: order_date,
   } = data;
   const { order_name, order_phone } = order_buyer;
@@ -97,10 +110,14 @@ export default function PurchaseDetailPage({ params }: { params: { orderId: stri
       <div className="order-detail--top">
         <span className="order-detail__overview">
           <h2>Chi tiết hóa đơn: #{_id}</h2>
-          <span>Đặt lúc: {convertDateToFormatHHMMDDMMYYYY(new Date(order_date))}</span>
+          <span>
+            Đặt lúc: {convertDateToFormatHHMMDDMMYYYY(new Date(order_date))}
+          </span>
         </span>
         <span className={`order-detail__status ${order_status}`}>
-          <span className="material-icons">{convertOrderStatusToIconData(order_status)}</span>
+          <span className="material-icons">
+            {convertOrderStatusToIconData(order_status)}
+          </span>
           {convertOrderStatusToStr(order_status)}
         </span>
       </div>
@@ -121,7 +138,7 @@ export default function PurchaseDetailPage({ params }: { params: { orderId: stri
             </tr>
             <tr>
               <th>Địa chỉ: </th>
-              <td>{[street, ward, district, province].join(', ')}</td>
+              <td>{[street, ward, district, province].join(", ")}</td>
             </tr>
           </tbody>
         </table>
@@ -140,9 +157,12 @@ export default function PurchaseDetailPage({ params }: { params: { orderId: stri
           <span>Thông tin sản phẩm</span>
         </h2>
         <div className="order-detail__products-wrapper">
-          {order_details.map(product =>
-            <CustomerProductItemInOrderItem key={product.product_id_hashed} {...product} />
-          )}
+          {order_details.map((product) => (
+            <CustomerProductItemInOrderItem
+              key={product.product_id_hashed}
+              {...product}
+            />
+          ))}
         </div>
         <hr />
         <table className="order-detail__cost">

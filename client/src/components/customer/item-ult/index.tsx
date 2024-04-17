@@ -1,18 +1,22 @@
 // import libs
-import Image from "next/image";
-import Link from "next/link";
 import classNames from "classnames/bind";
-import { convertNumberToMoney } from "@/utils";
+import Link from "next/link";
 import { CldImage } from "next-cloudinary";
+
+// import utils
+import { convertNumberToMoney } from "@/utils";
 
 // import css
 import styles from "./style.module.css";
 
 const cx = classNames.bind(styles);
 
-export default function CustomerHeaderItemUlt({product}) {
+export default function CustomerHeaderItemUlt({ product }) {
   // Kiểm tra nếu giá lowest_price và product_price bằng nhau
-  const showPrice = product.lowest_price === product.product_price ? product.lowest_price : `${convertNumberToMoney(product.lowest_price)}đ`;
+  const showPrice =
+    product.lowest_price === product.product_price
+      ? product.lowest_price
+      : `${convertNumberToMoney(product.lowest_price)}đ`;
 
   return (
     <div className={cx("header__item-ult")}>

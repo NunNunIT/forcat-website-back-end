@@ -3,7 +3,7 @@
 // import libs
 import classNames from "classnames/bind";
 import Image from "next/image";
-import { CldImage, CldVideoPlayer } from "next-cloudinary";
+import { CldImage } from "next-cloudinary";
 
 // import components
 import { CustomerRating } from "@/components";

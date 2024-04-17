@@ -1,21 +1,24 @@
 "use client";
 // import libs
-import { Swiper, SwiperSlide } from "swiper/react";
 import classNames from "classnames/bind";
+import { Swiper, SwiperSlide } from "swiper/react";
 import { Autoplay, Pagination, Navigation } from "swiper/modules";
+
 // import components
-import CustomerSliderCard from "@/components/customer/slider-card";
-import { Slider_Image_Data } from "./dataslider";
+import { CustomerSliderCard } from "@/components";
+
 // import css
-import styles from "./styles.module.css";
 import "swiper/css";
 import "swiper/css/pagination";
 import "swiper/css/navigation";
+import styles from "./styles.module.css";
+
+import { sliderImgs } from "./dataslider";
 
 const cx = classNames.bind(styles);
 
 export default function CustomerSlider() {
-  const SLIDER_CARD = Slider_Image_Data.map((item) => (
+  const SLIDER_CARD = sliderImgs.map((item) => (
     <SwiperSlide className="custom-slide" key={item.id}>
       <CustomerSliderCard
         initValue={{

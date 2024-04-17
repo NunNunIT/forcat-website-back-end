@@ -1,15 +1,22 @@
 "use client";
+
+// import libs
+import classNames from "classnames/bind";
 import { useState, useEffect } from "react";
 import { Swiper, SwiperSlide } from "swiper/react";
-import classNames from "classnames/bind";
 import { Autoplay, Pagination, Navigation } from "swiper/modules";
-import { BACKEND_URL, CLOUDINARY_URL } from "@/utils/commonConst";
-import CustomerCarouselCard from "@/components/customer/carousel-card";
-import LoadingSpinner from "@/components/default/loading";
-import styles from "./carousel.module.css";
+
+// import utils
+import { BACKEND_URL } from "@/utils/commonConst";
+
+// import components
+import { CustomerCarouselCard, LoadingSpinner } from "@/components";
+
+// import css
 import "swiper/css";
 import "swiper/css/pagination";
 import "swiper/css/navigation";
+import styles from "./carousel.module.css";
 
 const cx = classNames.bind(styles);
 

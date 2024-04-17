@@ -4,7 +4,6 @@
 import classNames from "classnames/bind";
 import Link from "next/link";
 import { useEffect, useState } from "react";
-import { useRouter, redirect } from "next/navigation";
 
 // import utils
 import { isValidEmail } from "@/utils/index";
@@ -12,7 +11,6 @@ import { BACKEND_URL } from "@/utils/commonConst";
 
 // import css
 import styles from "../authForm.module.css";
-import { set } from "mongoose";
 
 const cx = classNames.bind(styles);
 
@@ -74,7 +72,7 @@ const ForgotForm = () => {
           newErrors.user_email = "Email này chưa đăng ký tài khoản!";
           setErrors(newErrors);
           return;
-        } 
+        }
         setCurrentForm(currentForm + 1);
         setStartCountdown(true);
       } catch (error) {
@@ -98,20 +96,20 @@ const ForgotForm = () => {
 
     // Check if the user pressed the backspace key
     if (keyCode === 8) {
-        // Remove the last character from the OTP
-        setOtp(otp.slice(0, -1));
+      // Remove the last character from the OTP
+      setOtp(otp.slice(0, -1));
     } else {
-        // Only allow number input
-        if (!value.match(/^[0-9]$/)) {
-            event.target.value = "";
-        } else {
-            // Check if otp length is less than 6 before adding new value
-            if (otp.length < 6) {
-                setOtp(otp + value);
-            }
+      // Only allow number input
+      if (!value.match(/^[0-9]$/)) {
+        event.target.value = "";
+      } else {
+        // Check if otp length is less than 6 before adding new value
+        if (otp.length < 6) {
+          setOtp(otp + value);
         }
+      }
     }
-};
+  };
   const moveToNext = (currentInput, nextInputId, prevInputId) => {
     if (currentInput.value.length >= 1) {
       const nextInput = document.getElementById(nextInputId);
@@ -182,7 +180,6 @@ const ForgotForm = () => {
     }
     setErrorOTP(newErrorOtp);
 
-        
     if (isValid) {
       try {
         setLoading(true);
@@ -191,7 +188,7 @@ const ForgotForm = () => {
           user_email: formData.user_email,
           otp: otp,
         };
-        console.log("Request body: ", requestBody);
+        // console.log("Request body: ", requestBody);
         const res = await fetch(BACKEND_URL + "/auth/verify-otp", {
           method: "POST",
           headers: {
@@ -211,18 +208,16 @@ const ForgotForm = () => {
           setOtp("");
           newErrorOtp = "Mã OTP không trùng khớp!";
           setErrorOTP(newErrorOtp);
-          console.log(errorOTP);
+          // console.log(errorOTP);
           return;
         }
         setCurrentForm(currentForm + 1);
       } catch (error) {
         setLoading(false);
         setError(true);
-        console.log("OTP verification failed");
+        // console.log("OTP verification failed");
       }
     }
-
-    
   };
 
   //xử lý form 3
@@ -286,7 +281,7 @@ const ForgotForm = () => {
         });
         const data = await res.json();
         setLoading(false);
-       
+
         alert("Đặt lại mật khẩu thành công!");
         window.location.href = "/login";
         // If no errors, move to homepage

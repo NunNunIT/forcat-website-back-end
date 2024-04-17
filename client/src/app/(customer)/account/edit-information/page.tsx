@@ -1,13 +1,16 @@
 "use client";
+
 // import libs
 import React, { useRef, useEffect, useState } from "react";
 import DatePicker from "react-datepicker";
-import "react-datepicker/dist/react-datepicker.css";
+
 // import components
 import Link from "next/link";
-import { convertDateFormat, convertDateFormatYMD } from "@/utils";
+import { convertDateFormatYMD } from "@/utils";
+
 // import css
 import "./page.css";
+import "react-datepicker/dist/react-datepicker.css";
 
 export default function EditInformationPage() {
   const [initialUserBirth, setInitialUserBirth] = useState<string>("");
@@ -199,7 +202,6 @@ export default function EditInformationPage() {
       return response;
     } catch (error: any) {
       console.error("Error sending update request:", error);
-      throw error;
     }
   };
 

@@ -1,7 +1,7 @@
 // import libs
+import type { Metadata, ResolvingMetadata } from "next";
 import Image from "next/image";
 import { notFound } from "next/navigation";
-import type { Metadata, ResolvingMetadata } from "next";
 
 // import partials
 import {

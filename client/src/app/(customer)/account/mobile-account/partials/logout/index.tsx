@@ -1,6 +1,7 @@
 "use client";
+
 // import libs
-import React, { useEffect, useRef, useState } from "react";
+import React, { useState } from "react";
 import Link from "next/link";
 import classNames from "classnames/bind";
 

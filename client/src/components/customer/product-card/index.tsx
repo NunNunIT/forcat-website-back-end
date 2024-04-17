@@ -1,10 +1,14 @@
 "use client";
 
 // import libs
-import Link from "next/link";
 import classNames from "classnames/bind";
+import Link from "next/link";
 import { CldImage } from "next-cloudinary";
+
+// import utils
 import { convertNumberToMoney } from "@/utils";
+
+// import components
 import { CustomerStarRating } from "@/components";
 
 // import css

@@ -1,7 +1,7 @@
 "use client";
 // import libs
-import Link from "next/link";
 import classNames from "classnames/bind";
+import Link from "next/link";
 import Image from "next/image";
 
 // import css

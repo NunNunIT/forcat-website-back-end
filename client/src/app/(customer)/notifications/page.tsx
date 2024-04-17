@@ -4,7 +4,7 @@
 import { useSearchParams } from "next/navigation";
 import useSWR, { Fetcher } from "swr";
 import { useState } from "react";
-import NotFound from "@/app/not-found";
+import { notFound } from "next/navigation";
 
 // import partials, components
 import { CustomerNotificationItem } from "./partials";
@@ -55,7 +55,7 @@ export default function NotificationPage() {
   const { data, error, isLoading } = useSWR<INotiProps[]>(fullURL, fetcher);
 
   if (!notificationTypes.includes(type)) {
-    return NotFound();
+    return notFound();
   }
   const handleOnClickReadAll = async () => {
     const postData = {

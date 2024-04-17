@@ -1,6 +1,5 @@
 // import libs
 import React from "react";
-import Link from "next/link";
 import Image from "next/image";
 import type { Metadata } from "next";
 
@@ -95,7 +94,7 @@ export default function AboutUsPage() {
                 alt="Chất lượng thật - Giá trị thật"></Image>
             </div>
             <h4>Nguyễn Thị Hồng Nhung</h4>
-            <p>"Slogan Slogannnn"</p>
+            <p>&quot;Slogan Slogannnn&quot;</p>
           </div>
           <div className="about-us__members__wrapper">
             <div className="about-us__members__imgs__cover">
@@ -106,7 +105,7 @@ export default function AboutUsPage() {
                 alt="Tích điểm"></Image>
             </div>
             <h4>Phan Nguyễn Hải Yến</h4>
-            <p>"Slogan Slogannnn"</p>
+            <p>&quot;Slogan Slogannnn&quot;</p>
           </div>
           <div className="about-us__members__wrapper">
             <div className="about-us__members__imgs__cover">
@@ -117,7 +116,7 @@ export default function AboutUsPage() {
                 alt="Hỗ trợ giao hàng toàn quốc"></Image>
             </div>
             <h4>Lê Đức Mạnh</h4>
-            <p>"Slogan Slogannnn"</p>
+            <p>&quot;Slogan Slogannnn&quot;</p>
           </div>
           <div className="about-us__members__wrapper">
             <div className="about-us__members__imgs__cover">
@@ -128,7 +127,7 @@ export default function AboutUsPage() {
                 alt="Hỗ trợ giao hàng toàn quốc"></Image>
             </div>
             <h4>Lê Trung Hiếu</h4>
-            <p>"Slogan Slogannnn"</p>
+            <p>&quot;Slogan Slogannnn&quot;</p>
           </div>
           <div className="about-us__members__wrapper">
             <div className="about-us__members__imgs__cover">
@@ -139,7 +138,7 @@ export default function AboutUsPage() {
                 alt="Hỗ trợ giao hàng toàn quốc"></Image>
             </div>
             <h4>Nguyễn Viết Kha</h4>
-            <p>"Slogan Slogannnn"</p>
+            <p>&quot;Slogan Slogannnn&quot;</p>
           </div>
           <div className="about-us__members__wrapper">
             <div className="about-us__members__imgs__cover">
@@ -150,7 +149,7 @@ export default function AboutUsPage() {
                 alt="Hỗ trợ giao hàng toàn quốc"></Image>
             </div>
             <h4>Nguyễn Nhật Tấn</h4>
-            <p>"Slogan Slogannnn"</p>
+            <p>&quot;Slogan Slogannnn&quot;</p>
           </div>
         </div>
       </section>

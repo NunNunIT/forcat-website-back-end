@@ -12,18 +12,15 @@ import {
 import styles from "./header.module.css";
 
 // import constant
-import { BACKEND_URL} from "@/utils/commonConst";
+import { BACKEND_URL } from "@/utils/commonConst";
 
 const cx = classNameNames.bind(styles);
 
 const categoryProducts = async () => {
   try {
-    const response = await fetch(
-      `${BACKEND_URL}/category/getCategory`,
-      {
-        next: { revalidate: 60 },
-      }
-    );
+    const response = await fetch(`${BACKEND_URL}/category/getCategory`, {
+      next: { revalidate: 60 },
+    });
     if (!response.ok) {
       throw new Error("Failed to fetch newest products");
     }
@@ -61,7 +58,7 @@ const headerLinks: IHeaderLinkProps[] = [
   },
 ];
 
-export default async function Header() {
+export default async function CustomerHeader() {
   const headerCategories = await categoryProducts();
 
   return (
@@ -70,7 +67,6 @@ export default async function Header() {
       <div className={cx("header__container")}>
         <CustomerHeaderMain />
         <CustomerHeaderMenu categories={headerCategories} links={headerLinks} />
-        
       </div>
     </header>
   );

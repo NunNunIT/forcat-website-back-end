@@ -1,9 +1,9 @@
 // import libs
 import classNames from "classnames/bind";
-import React from "react";
-import Image from "next/image";
 import Cookies from "js-cookie";
 import { GoogleAuthProvider, signInWithPopup, getAuth } from "firebase/auth";
+import Image from "next/image";
+import React from "react";
 
 // import utils
 import { BACKEND_URL } from "@/utils/commonConst";
@@ -22,7 +22,7 @@ export default function OAuth() {
       const auth = getAuth(app);
 
       const result = await signInWithPopup(auth, provider);
-      console.log(result);
+      // console.log(result);
       const res = await fetch(BACKEND_URL + "/auth/login/google", {
         method: "POST",
         headers: {
