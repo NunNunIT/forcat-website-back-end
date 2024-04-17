@@ -1,0 +1,207 @@
+.carousel__card {
+    background: var(--white);
+    cursor: pointer;
+    flex-direction: column;
+    border-radius: 8px;
+    position: relative;
+    margin: 0;
+    margin: 8px 0px;
+    transition: box-shadow 0.3s;
+    height: 100%;
+}
+
+.carousel__card a {
+    text-decoration: none;
+    color: #363636;
+}
+
+.carousel__card:hover {
+    cursor: pointer;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.25);
+}
+
+.carousel__card-main {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.carousel__card--badge {
+    position: absolute;
+    left: 0;
+    top: 20px;
+    text-transform: uppercase;
+    font-size: 13px;
+    font-weight: 700;
+    background: red;
+    color: #fff;
+    padding: 3px 10px;
+    z-index: 10;
+}
+
+.carousel__card .carousel__card--img {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    /* Ensure full width */
+    height: 250px;
+    border-radius: 8px 8px 0 0;
+    overflow: hidden;
+    /* Hide overflow to prevent border from showing */
+}
+
+.carousel__card .carousel__card--img img {
+    width: 100%;
+    /* Ensure image fills container */
+    height: auto;
+    /* Maintain aspect ratio */
+    border-radius: 8px;
+    /* Border radius for image */
+    object-fit: contain;
+}
+
+.carousel__card-details {
+    padding: 12px;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+}
+
+.carousel__card-category {
+    display: block;
+    font-size: 12px;
+    font-weight: 700;
+    text-transform: uppercase;
+    color: #ccc;
+    margin-bottom: 4px;
+}
+
+.carousel__card-details h4 {
+    display: block;
+    margin-bottom: 4px;
+    /* text-transform: uppercase; */
+    color: #363636;
+    text-decoration: none;
+    transition: 0.3s;
+}
+
+.carousel__card-details h4:hover {
+    color: #d99a59;
+}
+
+.carousel__card-details p {
+    line-height: 22px;
+    color: #999;
+    margin: 8px 0;
+    /* Add margin for spacing */
+}
+
+.carousel__card-details h4 {
+    height: 3.3em;
+    /* Chiều cao tối đa của thành phần h4 */
+    max-height: 3.3em;
+    /* Thay đổi giá trị tùy thích */
+    /* Ẩn bớt nội dung vượt quá chiều cao */
+    overflow: hidden;
+}
+
+.carousel__card-bottom-details {
+    overflow: hidden;
+    border-top: 1px solid #eee;
+    padding: 14px 12px;
+    display: flex;
+    /* Add display flex */
+    align-items: flex-end;
+    /* Align items to flex-end */
+}
+
+.carousel__card-bottom-details div {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.carousel__card-price {
+    font-size: 20px;
+    color: var(--dollar-red2);
+    font-weight: 700;
+}
+
+.carousel__card-price small {
+    font-size: 80%;
+    font-weight: 400;
+    text-decoration: line-through;
+    display: inline-block;
+    margin-right: 5px;
+    color: var(--dark7);
+}
+
+.carousel__card-rate {
+    display: flex;
+    flex-direction: row;
+    gap: 2px;
+    margin-bottom: 4px;
+}
+
+.carousel__card-rate .material-symbols-outlined {
+    color: orange;
+}
+
+.carousel__card-rate p {
+    color: var(--dark10);
+}
+
+.display-none {
+    /* display: none; */
+    opacity: 0;
+}
+
+@media screen and (max-width: 70rem) {
+    .carousel__card-bottom-details div {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 0
+    }
+
+    .carousel__card-details p{
+        display: none
+    }
+
+    .carousel__card-price {
+        display: flex;
+        flex-direction: column;
+    }
+
+    .carousel__card-price small {
+        margin-right: 0px;
+    }
+}
+
+@media screen and (max-width: 48rem) {
+    .carousel__card {
+        height: auto;
+        /* Auto height for smaller screens */
+    }
+
+    .carousel__card .carousel__card--img {
+        height: 140px;
+        /* Reduced height for image container */
+    }
+
+    .carousel__card-bottom-details {
+        padding: 12px;
+    }
+
+    .carousel__card-details p {
+        line-height: 18px;
+    }
+
+    .carousel__card-bottom-details div {
+        /* display: ; */
+        align-items: left;
+        gap: 0
+    }
+
+}

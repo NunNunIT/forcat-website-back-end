@@ -1,20 +1,19 @@
 import mongoose from "mongoose";
-import { createSlug } from "../utils/createSlug.js";
 
 const orderSchema = new mongoose.Schema(
   {
     customer_id: {
-      type: String,
+      type: mongoose.Schema.Types.ObjectId,
       required: true,
       ref: "User", // Tham chiếu đến collection người dùng (User)
     },
     staff_id: {
-      type: String,
+      type: mongoose.Schema.Types.ObjectId,
+      default: "661754e675fd4037c93d0dd8",
       ref: "User", // Tham chiếu đến collection nhân viên (Staff), nếu có
     },
     payment_id: {
-      type: String,
-      required: true,
+      type: mongoose.Schema.Types.ObjectId,
       ref: "Payment", // Tham chiếu đến collection thanh toán (Payment)
     },
     order_buyer: {
@@ -28,7 +27,7 @@ const orderSchema = new mongoose.Schema(
       province: String,
     },
     order_note: String,
-    order_shipping_cost: Number,
+    order_shipping_cost: { type: Number, default: 0 },
     order_total_cost: Number,
     order_process_info: [
       {
@@ -36,11 +35,15 @@ const orderSchema = new mongoose.Schema(
         date: Date,
       },
     ],
+    order_status: { type: String, default: "unpaid" },
     order_details: [
       {
         product_id: {
-          type: String,
+          type: mongoose.Schema.Types.ObjectId,
           ref: "Product", // Tham chiếu đến collection sản phẩm (Product)
+        },
+        variant_id: {
+          type: String,
         },
         quantity: Number,
         unit_price: Number,
@@ -49,6 +52,22 @@ const orderSchema = new mongoose.Schema(
   },
   { timestamps: true }
 );
+
+orderSchema.pre("save", function (next) {
+  this.order_process_info = [
+    {
+      status: "unpaid",
+      date: new Date(),
+    },
+  ];
+
+  this.order_total_cost = this.order_details.reduce(
+    (total, item) => total + item.quantity * item.unit_price,
+    this.order_shipping_cost
+  );
+
+  next();
+});
 
 const Order = mongoose.model("Order", orderSchema);
 export default Order;

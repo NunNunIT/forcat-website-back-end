@@ -1,5 +1,4 @@
 import mongoose from "mongoose";
-import { createSlug } from "../utils/createSlug.js";
 
 const userSchema = new mongoose.Schema(
   {
@@ -48,8 +47,10 @@ const userSchema = new mongoose.Schema(
     ],
     recent_notification: [
       {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: "Notification",
+        _id: {
+          type: mongoose.Schema.Types.ObjectId,
+          ref: "Notification",
+        }
       },
     ],
     recommended_products: [
@@ -63,6 +64,9 @@ const userSchema = new mongoose.Schema(
         product: {
           type: mongoose.Schema.Types.ObjectId,
           ref: "Product",
+        },
+        variant_id: {
+          type: mongoose.Schema.Types.ObjectId,
         },
         quantity: {
           type: Number,

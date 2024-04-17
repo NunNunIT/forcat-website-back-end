@@ -1,0 +1,81 @@
+button {
+  height: 2rem;
+  overflow: hidden;
+
+  display: flex;
+  align-items: stretch;
+  border-radius: .5rem;
+  outline: none;
+
+  font-weight: 600;
+  cursor: pointer;
+
+  background: transparent;
+}
+
+.btn_:hover {
+  box-shadow:
+    0 1px 3px 1px rgba(0, 0, 0, 0.2),
+    0 0 2px 0 rgba(0, 0, 0, 0.2);
+}
+
+.btn_:active {
+  box-shadow:
+    0 -1px 3px 1px rgba(0, 0, 0, 0.2),
+    0 0 2px 0 rgba(0, 0, 0, 0.2);
+}
+
+.btn_:active>span {
+  background: rgba(0, 0, 0, 0.02);
+}
+
+.btn_>span {
+  padding-inline: 1rem;
+
+  display: flex;
+  align-items: center;
+}
+
+.btn_.pri_ {
+  background: white;
+  color: var(--primary-mau0-1);
+}
+
+.btn_.btn--outlined_.pri_ {
+  border: 2px solid var(--primary-mau0-1);
+}
+
+.notification-container {
+  width: 80%;
+  max-width: 1152px;
+
+  margin: 1rem auto;
+  display: grid;
+  grid-template-areas: "sidebar content";
+  grid-template-columns: 3fr 9fr;
+  gap: 1rem;
+}
+
+.notification-container a {
+  color: black;
+}
+
+@media screen and (max-width: 1024px) {
+  .notification-container {
+    width: 90%;
+
+    grid-template-columns: 4fr 8fr;
+  }
+}
+
+@media screen and (max-width: 768px) {}
+
+@media screen and (max-width: 416px) {
+  .notification-container {
+    width: 100%;
+
+    padding-inline: 1rem;
+
+    display: flex;
+  }
+}

@@ -1,6 +1,5 @@
 import Article from '../models/article.model.js';
 import resHandler from '../handlers/response.handler.js';
-import { createSlug } from '../utils/createSlug.js';
 
 const getSomeRelatedArticle = async ({ article_slug }) => {
   const numberLimitArticle = 5;
@@ -26,9 +25,7 @@ const getSomeRelatedArticle = async ({ article_slug }) => {
 
 export const create = async (req, res, next) => {
   try {
-    const { article_name } = req.body;
-    const article_slug = createSlug(article_name);
-    const article = await Article.create({ ...req.body, article_slug });
+    const article = await Article.create({ ...req.body });
 
     return resHandler.created(res, article);
   } catch (err) {
@@ -40,26 +37,37 @@ export const create = async (req, res, next) => {
   }
 }
 
+export const readUnlimited = async (req, res, next) => {
+  try {
+    const articles = await Article.find({}, { _id: 0, article_description: 0 }).exec();
+
+    return resHandler.ok(res, articles);
+  } catch (err) {
+    next(err);
+  }
+}
+
 export const readAll = async (req, res, next) => {
-  const pageNumber = (req.params.page > 0 ? req.params.page : 1);
-  const numberLimitedArticle = (req.params.limit > 0 ? req.params.limit : 10);
+  const page = (req.query?.page > 0 ? req.query?.page : 1);
+  const limit = (req.query?.limit > 0 ? req.query?.limit : 10);
 
   try {
     // Construct query object for filtering (if applicable)
     const query = {};
 
-    const sorted_fields = {
-      createdAt: -1,
-    }
+    const sorted_fields = { createdAt: -1, }
+
+    // Count the total number of articles
+    const maxPage = Math.ceil(await Article.countDocuments(query).exec() / limit);
 
     // Perform efficient pagination with skip and limit
     const articles = await Article.find(query, { _id: 0, article_description: 0 })
-      .skip((pageNumber - 1) * numberLimitedArticle) // Calculate skip based on page number
-      .limit(numberLimitedArticle)
+      .skip((page - 1) * limit) // Calculate skip based on page number
+      .limit(limit)
       .sort(sorted_fields) // Sort by creation date (optional)
       .exec(); // Execute the query
 
-    return resHandler.ok(res, articles);
+    return resHandler.ok(res, { articles, maxPage });
   } catch (err) {
     next(err);
   }

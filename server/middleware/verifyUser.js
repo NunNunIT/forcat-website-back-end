@@ -1,17 +1,18 @@
 import jwt from 'jsonwebtoken';
-import { errorHandler } from './error.js';
+import responseHandler from '../handlers/response.handler.js';
 
-export const verifyToken = (req, res, next) => {
-    const token = req.cookies.access_token;
+export const verifyAccessToken = (req, res, next) => {
+  // console.log(JSON.stringify(req.cookies));
+  const token = req.cookies.accessToken;
+  if (!token)
+    return responseHandler.unauthorize(res, 'You are not authenticated!');
 
-    if (!token) return next(errorHandler(401, 'You are not authenticated!'));
+  try {
+    const user = jwt.verify(token, process.env.JWT_SECRET_KEY);
+    req.user = user;
 
-    jwt.verify(token, process.env.JWT_SECRET, (err, user) => {
-        if (err) return next(errorHandler(403, 'Token is not valid!'));
-
-        req.user = user;
-        next();
-    });
-
-
+    next();
+  } catch (err) {
+    return responseHandler.error(res, err.message);
+  }
 }
