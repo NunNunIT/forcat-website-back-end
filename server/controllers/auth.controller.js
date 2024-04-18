@@ -167,8 +167,8 @@ async function sendEmail(email, otp) {
   let mailOptions = {
     from: process.env.EMAIL,
     to: email,
-    subject: "OTP for email verification",
-    text: `Your OTP is ${otp}`,
+    subject: "Mã OTP xác thực email",
+    text: `Mã OTP của bạn là ${otp}`,
   };
 
   await transporter.sendMail(mailOptions);
@@ -191,7 +191,6 @@ export const forgot = async (req, res, next) => {
     }
 
     const otp = createOTP();
-    console.log("OTP là", otp)
 
     // Create a JWT with the OTP as the payload and a 60 second expiry
     const otpToken = jwt.sign({ otp: otp }, process.env.JWT_SECRET_KEY, {

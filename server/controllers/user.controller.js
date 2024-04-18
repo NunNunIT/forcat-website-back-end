@@ -111,7 +111,8 @@ export const changePassword = async (req, res, next) => {
 
 export const getInforUser = async (req, res, next) => {
   try {
-    const { user_id } = req.body;
+    const { user_id } = req.user;
+    console.log("In ra từ middleware", user_id)
 
     // Kiểm tra xem user_id có tồn tại không
     if (!user_id) {

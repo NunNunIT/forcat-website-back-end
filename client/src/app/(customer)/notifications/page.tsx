@@ -63,12 +63,13 @@ export default function NotificationPage() {
     };
 
     // Gửi yêu cầu đánh dấu tất cả thông báo đã đọc
-    await fetch(`${BACKEND_URL}/noti/readAllNoti`, {
+    await fetch(`${BACKEND_URL}/notifications/readAll`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
       },
       body: JSON.stringify(postData),
+      credentials: "include",
     });
 
     // Update state to indicate all notifications have been read

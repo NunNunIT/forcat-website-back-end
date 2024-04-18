@@ -2,7 +2,8 @@ import Notification from "../models/notification.model.js"; // Import model noti
 import responseHandler from "../handlers/response.handler.js";
 
 export const getAllNoti = async (req, res, next) => {
-  const user_id = req.user?.id ?? req.query?.user_id ?? "661754a9ae209b64b08e6874";
+  const user_id = req.user ?? req.user?.id ?? req.query?.user_id ?? "661754a9ae209b64b08e6874";
+  console.log("In ra từ middleware", user_id)
   if (!user_id) {
     return responseHandler.unauthorize(res, "You are not authenticated!");
   }
@@ -175,7 +176,10 @@ export const setReadNoti = async (req, res, next) => {
 };
 
 export const setReadAllNoti = async (req, res, next) => {
-  const user_id = req.user?.id ?? req.body?.user_id ?? req.query?.user_id ?? "661754a9ae209b64b08e6874";
+  // const user_id = req.user?.id ?? req.body?.user_id ?? req.query?.user_id ?? "661754a9ae209b64b08e6874";
+  const user_id = req.user.id;
+  console.log("In ra từ middleware", user_id)
+
   if (!user_id)
     return responseHandler.unauthorize(res, "You are not authenticated!");
 

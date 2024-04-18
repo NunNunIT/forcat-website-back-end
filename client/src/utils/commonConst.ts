@@ -1,7 +1,7 @@
 // File: utils/common.ts
 
 // export const BACKEND_URL: string = "https://forcat-wehttp://localhost:8080/bsite-back-end.onrender.com/api";
-export const BACKEND_URL: string = "/api";
+export const BACKEND_URL: string = "http://localhost:8080/api";
 export const BACKEND_URL_ORDERS: string = BACKEND_URL + "/orders";
 export const ORDER_STATUS_LIST: string[] = [
   "all",
