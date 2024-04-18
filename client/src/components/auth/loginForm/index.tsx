@@ -1,7 +1,6 @@
 "use client";
 // import libs
 import classNames from "classnames/bind";
-import Cookies from "js-cookie";
 import Link from "next/link";
 import { useState } from "react";
 
@@ -69,29 +68,23 @@ const LoginForm = () => {
       try {
         setLoading(true);
         setErrors(initialForms);
-        ("use server");
         const res = await fetch(`${BACKEND_URL}/auth/login`, {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
           },
-          body: JSON.stringify(formData), // Assuming formData is an object
+          body: JSON.stringify(formData),
+          credentials: "include", // This will include the cookies in the request
         });
         let data = await res.json();
         setLoading(false);
-        let accessTokens = await Cookies.get("accessToken");
-        // console.log("Trước khi Set: ", accessTokens);
 
-        // console.log("login success: ", data.message);
-        Cookies.set("accessToken", data.token);
-        // console.log("User", data.data);
-        Cookies.set("currentUser", data.data._id);
-        localStorage.setItem("currentUser", JSON.stringify(data.data));
-
-        accessTokens = await Cookies.get("accessToken");
-        // console.log("Sau khi set: ", accessTokens);
-
-        window.location.href = "/";
+        if (data.status === 200) {
+          console.log("Login successful");
+          // Set the localStorage and currentUser state
+          localStorage.setItem("currentUser", JSON.stringify(data.data._id));
+          // window.location.href = "/";
+        }
 
         if (data.status == 404) {
           newErrors.user_email = "Tài khoản không tồn tại!";

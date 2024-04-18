@@ -140,7 +140,7 @@ export const loginWithGoogle = async (req, res, next) => {
 };
 
 export const logout = (req, res, next) => {
-  const accessToken = req.cookies.access_token;
+  const accessToken = req.cookies.accessToken;
 
   res.clearCookie("accessToken");
   return responseHandler.ok(res, undefined, "Logout success");
