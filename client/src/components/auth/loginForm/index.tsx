@@ -83,7 +83,7 @@ const LoginForm = () => {
           console.log("Login successful");
           // Set the localStorage and currentUser state
           localStorage.setItem("currentUser", JSON.stringify(data.data._id));
-          // window.location.href = "/";
+          window.location.href = "/"; //xác thực thành công thì điều hướng về home
         }
 
         if (data.status == 404) {

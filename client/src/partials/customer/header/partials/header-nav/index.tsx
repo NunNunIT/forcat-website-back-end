@@ -110,7 +110,7 @@ export default function CustomerHeaderNav() {
           {currentUser ? (
             <div className={cx("header__auth")}>
               <span className="material-icons-outlined">account_circle</span>
-              <Link href="/profile" className={cx("header__auth-login")}>
+              <Link href="/account/information" className={cx("header__auth-login")}>
                 {currentUser.user_name}
               </Link>
               <form onSubmit={handleLogout}>

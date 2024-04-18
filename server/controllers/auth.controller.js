@@ -183,7 +183,6 @@ export const forgot = async (req, res, next) => {
     }
 
     const otp = createOTP();
-    console.log("OTP là", otp)
 
     // Create a JWT with the OTP as the payload and a 60 second expiry
     const otpToken = jwt.sign({ otp: otp }, process.env.JWT_SECRET_KEY, {

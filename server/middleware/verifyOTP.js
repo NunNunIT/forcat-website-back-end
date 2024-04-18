@@ -9,7 +9,6 @@ export const verifyOtp = async (req, res, next) => {
 
   try {
     const otpToken = req.cookies.otpToken;
-    console.log("OTP Cookies", otpToken)
 
     if (!otpToken) {
       return responseHandler.badRequest(res, "No OTP token found");
