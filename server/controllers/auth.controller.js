@@ -83,7 +83,15 @@ export const loginWithGoogle = async (req, res, next) => {
   try {
     const checkUser = await User.findOne({ user_email: req.body.email });
     if (checkUser) {
-      const { user_password: hashedPassword, ...rest } = user._doc;
+      const {
+        user_password: passwordToDiscard,
+        createdAt: createdAtToDiscard,
+        updatedAt: updatedAtToDiscard,
+        user_role: roleToDiscard,
+        user_active: isActiveToDiscard,
+        __v: versionToDiscard,
+        ...rest
+      } = user._doc;
 
       const token = jwt.sign({ id: user._id, role: checkUser.user_role }, process.env.JWT_SECRET_KEY);
       const expiryDate = new Date(Date.now() + HOUR); // 1 hour
@@ -94,7 +102,7 @@ export const loginWithGoogle = async (req, res, next) => {
         secure: true,
       });
 
-      return responseHandler.ok(res, rest);
+      return responseHandler.token(res, rest, token);
     }
 
     const generatedPassword =

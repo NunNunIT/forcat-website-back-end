@@ -1,6 +1,6 @@
 import User from "../models/user.model.js";
 import jwt from "jsonwebtoken";
-import bcryptjs from "bcrypt";
+import bcryptjs from "bcryptjs";
 import responseHandler from "../handlers/response.handler.js";
 
 //bộ test
@@ -106,5 +106,31 @@ export const changePassword = async (req, res, next) => {
     return res.status(200).json({ message: "Password updated successfully" });
   } catch (error) {
     next(error);
+  }
+};
+
+export const getInforUser = async (req, res, next) => {
+  try {
+    const { user_id } = req.body;
+
+    // Kiểm tra xem user_id có tồn tại không
+    if (!user_id) {
+      return res.status(400).json({ error: "Missing user_id in request body" });
+    }
+
+    // Tìm kiếm người dùng trong cơ sở dữ liệu
+    const user = await User.findById(user_id);
+
+    // Kiểm tra xem người dùng có tồn tại không
+    if (!user) {
+      return responseHandler.notFound(res, "User does found");
+    }
+
+    // Trả về thông tin của người dùng
+    return res.status(200).json({ message: "User updated successfully", user });
+  } catch (error) {
+    // Xử lý lỗi nếu có
+    console.error("Error in getInforUser:", error);
+    return res.status(500).json({ error: "Internal server error" });
   }
 };
