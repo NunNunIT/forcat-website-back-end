@@ -3,6 +3,7 @@
 // import libs
 import { useSearchParams, usePathname, useRouter } from "next/navigation";
 import useSWR, { Fetcher } from "swr";
+import { Suspense } from "react";
 
 // import utils
 import { BACKEND_URL_ORDERS, ORDER_STATUS_LIST } from "@/utils/commonConst";
@@ -67,39 +68,41 @@ export default function PurchaseHistoryPage() {
   }
 
   return (
-    <div className="account-purchase-history__main">
-      <CustomerHistoryStatusNav />
+    <Suspense>
+      <div className="account-purchase-history__main">
+        <CustomerHistoryStatusNav />
 
-      <section className="purchase-history__purchase-item-list">
-        {isLoading && (
-          <>
-            <SkeletonOrderItem />
-            <SkeletonOrderItem />
-          </>
-        )}
-        {!isLoading && error && (
-          <p>
-            Đã có lỗi xảy ra: &#39;{error.message?.message || error.message}
-            &#39;
-          </p>
-        )}
-        {!isLoading && !error && data.orders.length === 0 && (
-          <p>Bạn chưa có đơn hàng nào</p>
-        )}
-        {!isLoading &&
-          !error &&
-          data.orders.map((order: IOrderItemProps) => (
-            <CustomerOrderItem key={order._id} {...order} mutate={mutate} />
-          ))}
+        <section className="purchase-history__purchase-item-list">
+          {isLoading && (
+            <>
+              <SkeletonOrderItem />
+              <SkeletonOrderItem />
+            </>
+          )}
+          {!isLoading && error && (
+            <p>
+              Đã có lỗi xảy ra: &#39;{error.message?.message || error.message}
+              &#39;
+            </p>
+          )}
+          {!isLoading && !error && data.orders.length === 0 && (
+            <p>Bạn chưa có đơn hàng nào</p>
+          )}
+          {!isLoading &&
+            !error &&
+            data.orders.map((order: IOrderItemProps) => (
+              <CustomerOrderItem key={order._id} {...order} mutate={mutate} />
+            ))}
 
-        {/* Pagination */}
-        {!isLoading && !error && data?.maxPage > 1 && (
-          <CustomerPagination
-            currentPage={parseInt(currentPage)}
-            maxPage={data?.maxPage ?? 1}
-          />
-        )}
-      </section>
-    </div>
+          {/* Pagination */}
+          {!isLoading && !error && data?.maxPage > 1 && (
+            <CustomerPagination
+              currentPage={parseInt(currentPage)}
+              maxPage={data?.maxPage ?? 1}
+            />
+          )}
+        </section>
+      </div>
+    </Suspense>
   );
 }
