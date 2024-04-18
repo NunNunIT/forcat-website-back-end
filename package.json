@@ -4,7 +4,7 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "dev": "concurrently --names \"BE,FE\" \"node ./server/index.js\" \"next start ./client\"",
+    "dev": "concurrently --names \"BE,FE\" \"node ./server/index.js\" \"next dev ./client\"",
     "build": "next build ./client",
     "start": "concurrently --names \"BE,FE\" \"node ./server/index.js\" \"next start ./client\"",
     "lint": "next lint ./client"
@@ -35,6 +35,7 @@
     "next-redux-wrapper": "^8.1.0",
     "nodemailer": "^6.9.13",
     "nodemon": "^3.1.0",
+    "normalize.css": "^8.0.1",
     "npm": "^10.2.5",
     "react": "^18",
     "react-datepicker": "^6.6.0",
