@@ -13,7 +13,9 @@ const quicksand = Quicksand({
 export const metadata: Metadata = {
   applicationName: "ForCat",
   referrer: "origin-when-cross-origin",
-  keywords: ["cửa hàng, phụ kiện, thú cưng, ForCat, ForCatShop"],
+  keywords: [
+    "cửa hàng, phụ kiện, thú cưng, ForCat, ForCatShop, FORCAT, FORCATSHOP, forcat, forcatshop,forCat, Forcat,forcatShop,forCatShop, thu cung, thú cung, phụ kien, phụ kiện mèo, phu kien meo, FORcat, forCAT",
+  ],
   title: {
     template: "ForCat | %s ",
     default: "ForCat",

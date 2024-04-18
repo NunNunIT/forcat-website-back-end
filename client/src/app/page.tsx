@@ -15,7 +15,7 @@ import { BACKEND_URL } from "@/utils/commonConst";
 import "./page.css";
 
 export const metadata: Metadata = {
-  title: "Trang chủ",
+  title: "ForCat | Trang chủ",
   description:
     "Chào mừng bạn đến với ForCat Shop - nơi mang lại những trải nghiệm tuyệt vời cho bạn và thú cưng của bạn. Tại đây, chúng tôi cam kết cung cấp những sản phẩm chất lượng và dịch vụ tận tâm nhất để giúp bạn chăm sóc và yêu thương thú cưng của mình. Khám phá ngay bộ sưu tập sản phẩm đa dạng và đăng ký tài khoản để nhận ưu đãi đặc biệt. Hãy bắt đầu hành trình mua sắm và chăm sóc thú cưng của bạn tại ForCat Shop ngay hôm nay!",
 };
