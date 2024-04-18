@@ -21,7 +21,7 @@ export default function CustomerProductCard({ product }) {
   return (
     <div className={cx("product-card")}>
       <Link
-        href={`/${product.product_slug}?pid=${product.product_id_hashed}`}
+        href={`/${product.product_slug}?pid=${product.product_id}`}
         className={cx("product__card-main")}>
         {product.highest_discount ? (
           <div className={cx("product__card--badge")}>
@@ -48,7 +48,7 @@ export default function CustomerProductCard({ product }) {
         </div>
         <div className={cx("product-bottom-details")}>
           <div className={cx("product-price")}>
-            <h2>
+            <h3>
               {product.highest_discount && product.lowest_price ? (
                 <>
                   {convertNumberToMoney(product.lowest_price)}đ
@@ -57,7 +57,7 @@ export default function CustomerProductCard({ product }) {
               ) : (
                 <>{convertNumberToMoney(product.product_price)}đ</>
               )}
-            </h2>
+            </h3>
           </div>
         </div>
       </Link>
