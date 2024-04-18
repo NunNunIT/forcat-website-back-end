@@ -175,9 +175,10 @@ export const setReadNoti = async (req, res, next) => {
   }
 };
 
+//BACKEND
 export const setReadAllNoti = async (req, res, next) => {
+  const user_id = req.user?.id;
   // const user_id = req.user?.id ?? req.body?.user_id ?? req.query?.user_id ?? "661754a9ae209b64b08e6874";
-  const user_id = req.user.id;
   console.log("In ra từ middleware", user_id)
 
   if (!user_id)
