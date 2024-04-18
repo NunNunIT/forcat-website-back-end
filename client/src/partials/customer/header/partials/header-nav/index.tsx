@@ -1,7 +1,6 @@
 "use client";
 // import libs
 import classNameNames from "classnames/bind";
-import Cookies from "js-cookie";
 import Link from "next/link";
 import Image from "next/image";
 import { useEffect, useState } from "react";
@@ -31,10 +30,6 @@ export default function CustomerHeaderNav() {
       currentUser = JSON.parse(storedUser);
     }
     return currentUser;
-    // const currentUser = storedUser
-    //   ? JSON.parse(storedUser)
-    //   : null;
-    // return currentUser;
   };
 
   useEffect(() => {
@@ -44,7 +39,6 @@ export default function CustomerHeaderNav() {
 
   const handleLogout = async (e) => {
     e.preventDefault();
-    const accessTokens = Cookies.get("accessToken");
 
     try {
       const res = await fetch(`${BACKEND_URL}/auth/logout`, {
@@ -56,8 +50,6 @@ export default function CustomerHeaderNav() {
       });
 
       if (res.ok) {
-        Cookies.remove("accessToken");
-        Cookies.remove("currentUser");
         localStorage.removeItem("currentUser");
         setCurrentUser(null);
         window.location.reload(); // Đặt currentUser thành null sau khi đăng xuất
@@ -118,7 +110,7 @@ export default function CustomerHeaderNav() {
           {currentUser ? (
             <div className={cx("header__auth")}>
               <span className="material-icons-outlined">account_circle</span>
-              <Link href="/profile" className={cx("header__auth-login")}>
+              <Link href="/account/information" className={cx("header__auth-login")}>
                 {currentUser.user_name}
               </Link>
               <form onSubmit={handleLogout}>
