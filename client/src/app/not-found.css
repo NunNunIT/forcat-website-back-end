@@ -26,3 +26,16 @@
     background-color: var(--blue6);
     color: var(--white);
 }
+
+@media only screen and (max-width: 768px) {
+    .not-found-container {
+        width: 400px;
+        height: 400px;
+    }
+
+    .not-found__image-div {
+        position: relative;
+        width: 200px;
+        height: 200px;
+    }
+}

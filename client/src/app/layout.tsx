@@ -26,8 +26,12 @@ export const metadata: Metadata = {
     images: [
       {
         url: "https://res.cloudinary.com/dmjwq3ebx/image/upload/v1713440707/SEO_Images/Open%20Graph%20Image/openGraph_img.png",
+        alt: "Ảnh nền",
+        width: 1200,
+        height: 630,
       },
     ],
+    type: "website",
   },
 };
 

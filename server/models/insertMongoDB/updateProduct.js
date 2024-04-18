@@ -106,9 +106,33 @@ const updateAllProductsVariantSlugs = async function () {
   }
 };
 
+async function updateProductRatings() {
+  try {
+    // Lấy tất cả sản phẩm từ cơ sở dữ liệu
+    const products = await Product.find({});
+    // Lặp qua từng sản phẩm
+    for (let i = 0; i < products.length; i++) {
+      const product = products[i];
+      // Tạo giá trị ngẫu nhiên trong khoảng từ 3.5 đến 5 với một số thập phân từ 1 đến 5
+      const randomRating = (Math.random() * (5 - 3.5) + 3.5).toFixed(1);
+      // Cập nhật giá trị mới cho product_avg_rating
+      product.product_avg_rating = parseFloat(randomRating);
+      // Lưu sản phẩm đã được cập nhật
+      await product.save();
+    }
+    console.log("Cập nhật đánh giá sản phẩm thành công!");
+  } catch (error) {
+    console.error("Lỗi khi cập nhật đánh giá sản phẩm:", error);
+  }
+}
+
+// Gọi hàm để cập nhật đánh giá cho tất cả sản phẩm
+updateProductRatings();
+
+
 // Gọi hàm để cập nhật variant_slug cho tất cả sản phẩm
 // updateAllProductsVariantSlugs();
 
 // Gọi hàm để cập nhật sản phẩm
 // updateProducts();
-updateProductVariants();
+// updateProductVariants();
