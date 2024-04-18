@@ -12,18 +12,23 @@ dotenv.config();
 const HOUR = 3600000;
 
 export const register = async (req, res, next) => {
-  const { user_email, user_name, user_password } = req.body;
+  const {
+    user_email,
+    user_name,
+    user_password
+  } = req.body;
   if (!(user_email && user_name && user_password))
     return responseHandler.badRequest(res, "All input is required");
 
-  const checkUser = await User.findOne({ user_email });
+  const checkUser = await User.findOne({
+    user_email
+  });
 
   if (checkUser)
     return responseHandler.badRequest(res, "Username already used");
 
   const user_data = {
-    user_login_name:
-      user_name.split(" ").join("").toLowerCase() +
+    user_login_name: user_name.split(" ").join("").toLowerCase() +
       Math.random().toString(36).slice(-8),
     user_name,
     user_password: bcryptjs.hashSync(user_password, 10),
@@ -31,18 +36,45 @@ export const register = async (req, res, next) => {
   };
 
   try {
-    await User.create(user_data);
-    console.log('Đăng ký thành công')
-    return responseHandler.created(res);
+    const newUser = await User.create(user_data);
+    const {
+      user_password: passwordToDiscard,
+      createdAt: createdAtToDiscard,
+      updatedAt: updatedAtToDiscard,
+      user_role: roleToDiscard,
+      user_active: isActiveToDiscard,
+      __v: versionToDiscard,
+      ...rest
+    } = newUser._doc;
+
+    const token = jwt.sign({
+      id: newUser._id,
+      role: newUser.user_role
+    }, process.env.JWT_SECRET_KEY);
+    const expiryDate = new Date(Date.now() + HOUR); // 1 hour
+
+    res.cookie("accessToken", token, {
+      httpOnly: true,
+      expires: expiryDate,
+      sameSite: "none",
+      secure: true,
+    });
+
+    return responseHandler.token(res, rest, token);
   } catch (error) {
     next(error);
   }
 };
 
 export const login = async (req, res, next) => {
-  const { user_email, user_password } = req.body;
+  const {
+    user_email,
+    user_password
+  } = req.body;
 
-  const checkUser = await User.findOne({ user_email });
+  const checkUser = await User.findOne({
+    user_email
+  });
   if (!checkUser)
     return responseHandler.notFound(res, "Tài khoản không tồn tại!");
 
@@ -63,7 +95,10 @@ export const login = async (req, res, next) => {
       ...rest
     } = checkUser._doc;
 
-    const token = jwt.sign({ id: checkUser._id, role: checkUser.user_role }, process.env.JWT_SECRET_KEY);
+    const token = jwt.sign({
+      id: checkUser._id,
+      role: checkUser.user_role
+    }, process.env.JWT_SECRET_KEY);
     const expiryDate = new Date(Date.now() + HOUR); // 1 hour
 
     res.cookie("accessToken", token, {
@@ -81,7 +116,9 @@ export const login = async (req, res, next) => {
 
 export const loginWithGoogle = async (req, res, next) => {
   try {
-    const checkUser = await User.findOne({ user_email: req.body.email });
+    const checkUser = await User.findOne({
+      user_email: req.body.email
+    });
     if (checkUser) {
       const {
         user_password: passwordToDiscard,
@@ -93,7 +130,10 @@ export const loginWithGoogle = async (req, res, next) => {
         ...rest
       } = user._doc;
 
-      const token = jwt.sign({ id: user._id, role: checkUser.user_role }, process.env.JWT_SECRET_KEY);
+      const token = jwt.sign({
+        id: user._id,
+        role: checkUser.user_role
+      }, process.env.JWT_SECRET_KEY);
       const expiryDate = new Date(Date.now() + HOUR); // 1 hour
       res.cookie("accessToken", token, {
         httpOnly: true,
@@ -112,8 +152,7 @@ export const loginWithGoogle = async (req, res, next) => {
 
     const user_data = {
       user_name: req.body.user_name,
-      user_login_name:
-        req.body.user_name.split(" ").join("").toLowerCase() +
+      user_login_name: req.body.user_name.split(" ").join("").toLowerCase() +
         Math.random().toString(36).slice(-8),
       user_email: req.body.user_email,
       user_password: hashedPassword,
@@ -132,7 +171,10 @@ export const loginWithGoogle = async (req, res, next) => {
     } = user._doc;
 
 
-    const token = jwt.sign({ id: user._id, role: user.user_role }, process.env.JWT_SECRET_KEY);
+    const token = jwt.sign({
+      id: user._id,
+      role: user.user_role
+    }, process.env.JWT_SECRET_KEY);
     const expiryDate = new Date(Date.now() + HOUR); // 1 hour
     res.cookie("accessToken", token, {
       httpOnly: true,
@@ -176,11 +218,15 @@ async function sendEmail(email, otp) {
 
 
 export const forgot = async (req, res, next) => {
-  const { user_email } = req.body;
+  const {
+    user_email
+  } = req.body;
 
   try {
     // Find the user in the database
-    const user = await User.findOne({ user_email });
+    const user = await User.findOne({
+      user_email
+    });
 
     // Check if user exists
     if (!user) {
@@ -193,7 +239,9 @@ export const forgot = async (req, res, next) => {
     const otp = createOTP();
 
     // Create a JWT with the OTP as the payload and a 60 second expiry
-    const otpToken = jwt.sign({ otp: otp }, process.env.JWT_SECRET_KEY, {
+    const otpToken = jwt.sign({
+      otp: otp
+    }, process.env.JWT_SECRET_KEY, {
       expiresIn: "60s",
     });
 
@@ -215,11 +263,16 @@ export const forgot = async (req, res, next) => {
 };
 
 export const resetPassword = async (req, res, next) => {
-  const { newPassword, user_email } = req.body;
+  const {
+    newPassword,
+    user_email
+  } = req.body;
 
   try {
     // Find the user in the database
-    const user = await User.findOne({ user_email });
+    const user = await User.findOne({
+      user_email
+    });
 
     // Check if user exists
     if (!user) {
