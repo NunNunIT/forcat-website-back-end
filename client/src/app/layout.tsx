@@ -1,7 +1,6 @@
 // use metadata
 import type { Metadata } from "next";
 import { Quicksand } from "next/font/google";
-import { GoogleAnalytics } from "@next/third-parties/google";
 
 // use styles
 import "./global.css";
@@ -44,7 +43,6 @@ export default function CustomerLayout({
   return (
     <html lang="vi" className={quicksand.className}>
       <body>{children}</body>
-      <GoogleAnalytics gaId="G-YQ5DTD2VQS" />
     </html>
   );
 }
