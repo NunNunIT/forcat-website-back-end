@@ -31,7 +31,7 @@
 .app-bar__element {
     width: 10rem;
     display: flex;
-    flex-direction: column; 
+    flex-direction: column;
     justify-content: center;
     align-items: center;
     text-decoration: none;
@@ -39,22 +39,16 @@
 }
 
 .app-bar__element a.active {
-    color: var(--primary-mau0-2); 
+    color: var(--primary-mau0-2);
 }
 
-
-
-@media screen and (max-width: 40rem) {
+@media screen and (max-width: 64rem) {
     .app-bar {
         display: flex;
     }
 }
 
 @media screen and (max-width: 26rem) {
-    .app-bar {
-        display: flex;
-    }
-    
     .app-bar__container {
         width: 95vw;
     }

@@ -67,9 +67,9 @@ export default async function Home() {
   let discountProducts = await fetchDiscountProducts();
   return (
     <>
-      <CustomerHeader></CustomerHeader>
+      <CustomerHeader />
       <main className="main-container">
-        <CustomerSlider></CustomerSlider>
+        <CustomerSlider />
         <div className="content-container">
           <h1 className="tip-products__label">
             <Link href="/search-result" className="tip-products__title">
@@ -103,12 +103,10 @@ export default async function Home() {
               {newestProducts &&
                 newestProducts.length &&
                 newestProducts.map((product) => (
-                  <>
-                    <CustomerProductCard
-                      key={product.product_id}
-                      product={product}
-                    />
-                  </>
+                  <CustomerProductCard
+                    key={product.product_id}
+                    product={product}
+                  />
                 ))}
             </div>
           </div>
@@ -170,19 +168,17 @@ export default async function Home() {
               {discountProducts &&
                 discountProducts.length &&
                 discountProducts.map((product) => (
-                  <>
-                    <CustomerProductCard
-                      key={product.product_id}
-                      product={product}
-                    />
-                  </>
+                  <CustomerProductCard
+                    key={product.product_id}
+                    product={product}
+                  />
                 ))}
             </div>
           </div>
         </section>
       </main>
-      <CustomerFooter></CustomerFooter>
-      <CustomerAppBar></CustomerAppBar>
+      <CustomerFooter />
+      <CustomerAppBar />
     </>
   );
 }
