@@ -8,6 +8,7 @@ import {
   resetPassword,
 } from "../controllers/auth.controller.js";
 import { verifyOtp } from "../middleware/verifyOTP.js";
+import { verifyUserAccessToken } from "../middleware/verifyUser.js";
 import cookieParser from "cookie-parser";
 
 const router = express.Router();
@@ -19,6 +20,8 @@ router.post("/register", register);
 router.post("/login", login);
 router.post("/login/google", loginWithGoogle);
 router.post("/logout", logout);
+router.post("/verify-access-token", verifyUserAccessToken);
+
 
 router.post("/forgot", forgot);
 router.post("/verify-otp", verifyOtp);

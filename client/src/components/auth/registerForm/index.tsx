@@ -213,7 +213,7 @@ const RegisterForm = () => {
           <span
             className={cx("material-icons-outlined eye-open", "icon")}
             onClick={handleToggleConfirmPassword}>
-            {showPassword ? "visibility_off" : "visibility"}
+            {showConfirmPassword ? "visibility_off" : "visibility"}
           </span>
         </div>
         {errors.passwordRepeat && (
