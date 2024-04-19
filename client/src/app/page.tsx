@@ -87,7 +87,7 @@ export default async function Home() {
               </Link>
               <span className="tip-products__title-after"></span>
             </h1>
-            <CustomerCarouselSlider></CustomerCarouselSlider>
+            <CustomerCarouselSlider />
           </div>
         </div>
 

@@ -82,7 +82,8 @@ export default function OrderItem(props: IOrderItemProps) {
         <div className={cx("order-item__button-wrapper")}>
           <Link
             className={`btn btn--outlined pri`}
-            href={`/account/purchase-history/${props._id}`}>
+            href={`/account/purchase-history/${props._id}`}
+          >
             <span>Xem chi tiết</span>
           </Link>
           {props.order_status == "unpaid" && (

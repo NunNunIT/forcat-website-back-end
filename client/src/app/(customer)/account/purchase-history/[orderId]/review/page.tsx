@@ -36,8 +36,9 @@ export default function ReviewPage({
     <div className="review">
       <h2>Đánh giá sản phẩm</h2>
       <div className="review-wrapper">
-        {(isLoading && <CustomerSkeletonReviewItem />) ||
-          data.map((item: IReviewItem) => (
+        {isLoading
+          ? <CustomerSkeletonReviewItem />
+          : data.map((item: IReviewItem) => (
             <CustomerReviewItem
               key={item.product_id_hashed}
               order_id={params.orderId}

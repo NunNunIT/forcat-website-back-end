@@ -23,11 +23,9 @@ export default function HistoryStatusNav() {
       {["all", "unpaid", "delivering", "finished", "cancel"].map((status) => (
         <Link
           key={status}
-          className={cx(
-            "purchase-history__status",
-            isActiveClass(currentStatus, status)
-          )}
-          href={pathName + "?" + (status === "all" ? "" : `status=${status}`)}>
+          className={cx("purchase-history__status", isActiveClass(currentStatus, status))}
+          href={pathName + "?" + (status === "all" ? "" : `status=${status}`)}
+        >
           {convertOrderStatusToStr(status)}
         </Link>
       ))}

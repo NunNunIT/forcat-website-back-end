@@ -47,9 +47,9 @@ export default function CustomerHeaderMain({
       const response = await fetch(
         `${BACKEND_URL}/productList/searchRecommended?searchKey=${inputValue}`
       );
-      // if (!response.ok) {
-      //   throw new Error("Failed to fetch search results");
-      // }
+      if (!response.ok) {
+        throw new Error("Failed to fetch search results");
+      }
       const data = await response.json();
       if (data.data.searchKey === inputValue) {
         // console.log("Trả về cho data", data.data.searchKey);
