@@ -176,6 +176,9 @@ export const getNewestProducts = async (req, res, next) => {
           : null, // Giảm giá cao nhất
         product_sold_quantity: product.product_sold_quanity, // Số lượng bán được
         category_name: product.category_names[0],
+        variant_id: lowestPriceVariant._id,
+        variant_name: lowestPriceVariant.variant_name,
+        variant_slug: lowestPriceVariant.variant_slug,
       };
     });
 
@@ -246,6 +249,9 @@ export const getTopRatedProducts = async (req, res, next) => {
           : null, // Giảm giá cao nhất
         product_sold_quantity: product.product_sold_quanity, // Số lượng bán được
         category_name: product.category_names[0],
+        variant_id: lowestPriceVariant._id,
+        variant_name: lowestPriceVariant.variant_name,
+        variant_slug: lowestPriceVariant.variant_slug,
       };
     });
 
@@ -326,9 +332,9 @@ export const getDiscountProducts = async (req, res, next) => {
           : null,
         product_sold_quantity: product.product_sold_quanity,
         category_name: product.category_names[0],
-        variant_name: lowestPriceVariant
-          ? lowestPriceVariant.variant_name
-          : null,
+        variant_id: lowestPriceVariant._id,
+        variant_name: lowestPriceVariant.variant_name,
+        variant_slug: lowestPriceVariant.variant_slug,
       };
     });
 
@@ -402,6 +408,9 @@ export const getSearchRecommended = async (req, res) => {
         product_img: product.product_imgs[0], // Lấy ảnh đầu tiên trong mảng product_imgs
         product_price: lowestPriceVariant.price, // Giá thấp nhất
         lowest_price: lowestPriceVariant.discountedPrice, // Giá gốc
+        variant_id: lowestPriceVariant._id,
+        variant_name: lowestPriceVariant.variant_name,
+        variant_slug: lowestPriceVariant.variant_slug,
       };
     });
 

@@ -266,15 +266,15 @@
   color: var(--dark12);
 }
 
-@media only screen and (max-width: 1024px) {
+@media only screen and (max-width: 1025px) {
   .header__nav-container {
     width: 90%;
   }
 }
 
-@media only screen and (max-width: 768px) {}
+@media only screen and (max-width: 769px) {}
 
-@media only screen and (max-width: 640px) {
+@media only screen and (max-width: 641px) {
 
   .header--mobile__noti-support {
     display: flex;
@@ -286,7 +286,7 @@
   }
 }
 
-@media screen and (max-width: 416px) {
+@media screen and (max-width: 417px) {
   .header__nav-container {
     width: 100%;
     padding-inline: 1rem;

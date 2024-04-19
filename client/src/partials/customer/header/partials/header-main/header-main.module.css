@@ -313,7 +313,7 @@ img.dropdown-cart__img--empty {
   background-color: var(--bg-white);
 }
 
-@media screen and (max-width: 1024px) {
+@media screen and (max-width: 1025px) {
   .header__main {
     margin-bottom: 1rem;
   }
@@ -331,7 +331,7 @@ img.dropdown-cart__img--empty {
   }
 }
 
-@media screen and (max-width: 768px) {
+@media screen and (max-width: 769px) {
   .header__main {
     justify-content: flex-start;
   }
@@ -343,7 +343,7 @@ img.dropdown-cart__img--empty {
   }
 }
 
-@media screen and (max-width: 480px) {
+@media screen and (max-width: 417px) {
   .header__search-bar-wrapper {
     width: 100%;
     justify-content: flex-start;

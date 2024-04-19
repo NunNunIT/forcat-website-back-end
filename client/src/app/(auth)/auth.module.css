@@ -1,8 +1,16 @@
+.main-container {
+	width: 100%;
+	margin: 0;
+	background-color: #ffffff;
+}
+
+
 .auth_main {
+	margin: 0 auto;
 	display: grid;
 	grid-template-columns: 1fr 1fr;
-	/* Chia layout thành 2 cột bằng nhau */
-	width: 80vw;
+	width: 80%;
+	max-width: 1152px;
 	padding: 20px;
 	gap: 20px;
 	background-color: #ffffff;

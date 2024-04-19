@@ -74,7 +74,7 @@ const LoginForm = () => {
             "Content-Type": "application/json",
           },
           body: JSON.stringify(formData), // Assuming formData is an object
-          credentials: "include",
+          credentials: "include", 
         });
         let data = await res.json();
         setLoading(false);
