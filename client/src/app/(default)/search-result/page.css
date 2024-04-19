@@ -111,7 +111,7 @@
   width: 50%;
 }
 
-@media only screen and (max-width: 64rem) {
+@media only screen and (max-width: 1024px) {
   .dropdown-content--sort {
     top: 67%;
     right: 11%;
@@ -119,7 +119,7 @@
 }
 
 /*Responsive-tablet*/
-@media only screen and (max-width: 48rem) {
+@media only screen and (max-width: 768px) {
   .search-result__container {
     width: 90%;
   }
@@ -219,7 +219,7 @@
 }
 
 /*Responsive-smartphone*/
-@media only screen and (max-width: 26rem) {
+@media only screen and (max-width: 416px) {
   .search-result__container {
     width: 100%;
   }

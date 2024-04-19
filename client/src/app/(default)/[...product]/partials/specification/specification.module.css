@@ -87,7 +87,7 @@
     font-weight: 500;
 }
 
-@media only screen and (max-width: 26rem) {
+@media only screen and (max-width: 416px) {
     .specifications {
         border: none;
     }

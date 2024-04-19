@@ -88,18 +88,23 @@
 
 .product-details h4 {
   font-weight: 500;
-  display: -webkit-box; /* Thêm đối tượng flexbox */
-  -webkit-line-clamp: 2; /* Số lượng dòng hiển thị tối đa */
+  display: -webkit-box;
+  /* Thêm đối tượng flexbox */
+  -webkit-line-clamp: 2;
+  /* Số lượng dòng hiển thị tối đa */
   -webkit-box-orient: vertical;
   margin-bottom: 4px;
   color: #363636;
   text-decoration: none;
   transition: 0.3s;
-  height: auto; /* Bỏ thuộc tính chiều cao cứng */
-  max-height: none; /* Bỏ thuộc tính chiều cao tối đa */
+  height: auto;
+  /* Bỏ thuộc tính chiều cao cứng */
+  max-height: none;
+  /* Bỏ thuộc tính chiều cao tối đa */
   overflow: hidden;
   text-overflow: ellipsis;
-  white-space: normal; /* Cho phép văn bản xuống dòng */
+  white-space: normal;
+  /* Cho phép văn bản xuống dòng */
 }
 
 
@@ -135,7 +140,7 @@
   display: inline-block;
   margin-left: 8px;
   color: var(--dark7);
-  
+
 }
 
 .product-rate {
@@ -147,14 +152,14 @@
   color: orange;
 }
 
-@media only screen and (max-width: 64rem) {
+@media only screen and (max-width: 1024px) {
   .product-card {
     width: 32%;
     height: 414px;
   }
 }
 
-@media only screen and (max-width: 48rem) {
+@media only screen and (max-width: 768px) {
   .product-card {
     width: 32%;
     height: 300px;
@@ -164,7 +169,7 @@
     width: 70%;
     padding: 18px 12px 12px 12px;
   }
-  
+
 
   .product-details p {
     /* font-size: 0.875rem; */
@@ -187,7 +192,7 @@
   }
 }
 
-@media only screen and (max-width: 26rem) {
+@media only screen and (max-width: 416px) {
   .product-card {
     width: 49%;
     height: 316px;

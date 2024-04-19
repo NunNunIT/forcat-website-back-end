@@ -283,7 +283,7 @@ input::-webkit-calendar-picker-indicator {
 }
 
 /* 1024px - Mini PC */
-@media screen and (max-width: 64rem) {
+@media screen and (max-width: 1024px) {
   .order-pay__submit button {
     width: 31%;
   }
@@ -294,7 +294,7 @@ input::-webkit-calendar-picker-indicator {
 }
 
 /* 768px - Tablet */
-@media screen and (max-width: 48rem) {
+@media screen and (max-width: 768px) {
   h2 {
     font-size: 1.25rem;
   }
@@ -349,7 +349,7 @@ input::-webkit-calendar-picker-indicator {
 }
 
 /* 416px - Mobile */
-@media screen and (max-width: 26rem) {
+@media screen and (max-width: 416px) {
   h2 {
     font-size: 1rem;
   }

@@ -68,3 +68,23 @@
     font-size: 1.25rem;
     color: var(--blue6);
 }
+
+@media only screen and (max-width: 1024px) {
+    .review-filter__group {
+        grid-template-columns: repeat(9, 1fr)
+    }
+}
+
+@media only screen and (max-width: 768px) {
+    .review-filter__group {
+        grid-template-columns: repeat(5, 1fr);
+        gap: 4px;
+    }
+}
+
+@media only screen and (max-width: 416px) {
+    .review-filter__group {
+        grid-template-columns: repeat(4, 1fr);
+        gap: 4px;
+    }
+}
