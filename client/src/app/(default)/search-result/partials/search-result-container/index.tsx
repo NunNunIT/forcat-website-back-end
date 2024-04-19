@@ -522,11 +522,9 @@ export default function SearchResultPage({ searchKey, searchResults }) {
               </>
             ))}
         </div>
-        {totalPage > 1 && (
-          <div className="pagination">
-            <CustomerPagination maxPage={totalPage} currentPage={currentPage} />
-          </div>
-        )}
+        <div className="pagination">
+          <CustomerPagination maxPage={totalPage} />
+        </div>
       </section>
     </main>
   );
