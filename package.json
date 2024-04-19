@@ -10,6 +10,7 @@
     "lint": "next lint ./client"
   },
   "dependencies": {
+    "@next/third-parties": "^14.2.2",
     "@reduxjs/toolkit": "^2.2.2",
     "axios": "^1.6.8",
     "bcrypt": "^5.1.1",
@@ -29,12 +30,13 @@
     "material-icons": "^1.13.12",
     "moment": "^2.30.1",
     "mongoose": "^8.2.2",
-    "next": "14.0.4",
+    "next": "^14.2.2",
     "next-auth": "^5.0.0-beta.3",
     "next-cloudinary": "^6.3.0",
     "next-redux-wrapper": "^8.1.0",
     "nodemailer": "^6.9.13",
     "nodemon": "^3.1.0",
+    "normalize.css": "^8.0.1",
     "npm": "^10.2.5",
     "react": "^18",
     "react-datepicker": "^6.6.0",
@@ -47,7 +49,8 @@
     "swiper": "^11.0.7",
     "swr": "^2.2.5",
     "tweetnacl": "^1.0.3",
-    "unidecode": "^1.0.1"
+    "unidecode": "^1.0.1",
+    "vite": "^5.2.9"
   },
   "devDependencies": {
     "@types/jsonwebtoken": "^9.0.6",

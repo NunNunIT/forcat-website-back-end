@@ -144,7 +144,7 @@
     z-index: 1;
 }
 
-@media only screen and (max-width: 64rem) {
+@media only screen and (max-width: 1024px) {
     .review-header {
         grid-template-columns: 300px 1fr;
     }
@@ -167,7 +167,7 @@
 
 }
 
-@media only screen and (max-width: 64rem) {
+@media only screen and (max-width: 768px) {
     .review-header {
         grid-template-columns: 250px 1fr;
     }
@@ -182,7 +182,7 @@
 
 }
 
-@media only screen and (max-width: 26rem) {
+@media only screen and (max-width: 416px) {
     .review-header {
         grid-template-columns: none;
         gap: 12px;

@@ -2,6 +2,7 @@
 
 // import libs
 import classNames from "classnames/bind";
+import { useState, useEffect } from "react";
 
 // import css
 import styles from "./rating.module.css";
@@ -15,27 +16,27 @@ export default function CustomerRating({
 }: {
   initValue: IRating;
 }) {
-  let responsiveFontSize;
+  const [responsiveFontSize, setResponsiveFontSize] = useState(
+    initValue.fontSize
+  );
 
-  if (typeof window !== "undefined") {
+  useEffect(() => {
     if (window.innerWidth == 1024 && window.innerWidth > 768) {
       if (initValue.fontSize == "24px") {
-        responsiveFontSize = "20px";
+        setResponsiveFontSize("20px");
       }
     } else if (window.innerWidth <= 768 && window.innerWidth > 416) {
       if (initValue.fontSize == "24px") {
-        responsiveFontSize = "16px";
+        setResponsiveFontSize("16px");
       }
     } else if (window.innerWidth <= 416) {
       if (initValue.fontSize == "24px") {
-        responsiveFontSize = "20px";
+        setResponsiveFontSize("20px");
       }
     }
-  }
+  }, []);
 
-  const starStyle = {
-    fontSize: responsiveFontSize,
-  };
+  console.log(responsiveFontSize);
 
   return (
     <div className={cx("rating__stars")}>
@@ -49,7 +50,7 @@ export default function CustomerRating({
             return (
               <span
                 key={index}
-                style={starStyle}
+                style={{ fontSize: responsiveFontSize }}
                 className={cx("material-icons-round", "star-fill")}>
                 star
               </span>
@@ -58,7 +59,7 @@ export default function CustomerRating({
             return (
               <span
                 key={index}
-                style={starStyle}
+                style={{ fontSize: responsiveFontSize }}
                 className={cx("material-icons-round", "star-empty")}>
                 star
               </span>

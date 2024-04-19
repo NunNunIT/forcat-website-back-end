@@ -1,3 +1,4 @@
+@import "normalize.css";
 @import "material-icons/iconfont/material-icons.css";
 
 :root {
@@ -238,19 +239,19 @@ a {
   color: var(--red)
 }
 
-@media only screen and (max-width: 64rem) {
+@media only screen and (max-width: 1024px) {
   html {
     font-size: 14px;
   }
 }
 
-@media only screen and (max-width: 48rem) {
+@media only screen and (max-width: 768px) {
   html {
     font-size: 12px;
   }
 }
 
-@media only screen and (max-width: 26rem) {
+@media only screen and (max-width: 416px) {
   html {
     font-size: 12px;
   }

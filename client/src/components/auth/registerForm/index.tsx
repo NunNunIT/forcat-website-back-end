@@ -107,13 +107,14 @@ const RegisterForm = () => {
           body: JSON.stringify(formData), // Assuming formData is an object
         });
         const data = await res.json();
-        setLoading(false);
-
         if (data.status != 200) {
           newErrors.user_email = "Email đã được sử dụng!";
           setErrors(newErrors);
           return;
         }
+        setLoading(false);
+        localStorage.setItem("currentUser", JSON.stringify(data.data));
+        window.location.href = "/"; //xác thực thành công thì điều hướng về home
       } catch (error) {
         setLoading(false);
         setError(true);
@@ -213,7 +214,7 @@ const RegisterForm = () => {
           <span
             className={cx("material-icons-outlined eye-open", "icon")}
             onClick={handleToggleConfirmPassword}>
-            {showPassword ? "visibility_off" : "visibility"}
+            {showConfirmPassword ? "visibility_off" : "visibility"}
           </span>
         </div>
         {errors.passwordRepeat && (

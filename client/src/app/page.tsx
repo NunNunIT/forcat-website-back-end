@@ -15,7 +15,7 @@ import { BACKEND_URL } from "@/utils/commonConst";
 import "./page.css";
 
 export const metadata: Metadata = {
-  title: "Trang chủ",
+  title: "ForCat | Trang chủ",
   description:
     "Chào mừng bạn đến với ForCat Shop - nơi mang lại những trải nghiệm tuyệt vời cho bạn và thú cưng của bạn. Tại đây, chúng tôi cam kết cung cấp những sản phẩm chất lượng và dịch vụ tận tâm nhất để giúp bạn chăm sóc và yêu thương thú cưng của mình. Khám phá ngay bộ sưu tập sản phẩm đa dạng và đăng ký tài khoản để nhận ưu đãi đặc biệt. Hãy bắt đầu hành trình mua sắm và chăm sóc thú cưng của bạn tại ForCat Shop ngay hôm nay!",
 };
@@ -67,9 +67,9 @@ export default async function Home() {
   let discountProducts = await fetchDiscountProducts();
   return (
     <>
-      <CustomerHeader></CustomerHeader>
+      <CustomerHeader />
       <main className="main-container">
-        <CustomerSlider></CustomerSlider>
+        <CustomerSlider />
         <div className="content-container">
           <h1 className="tip-products__label">
             <Link href="/search-result" className="tip-products__title">
@@ -103,12 +103,10 @@ export default async function Home() {
               {newestProducts &&
                 newestProducts.length &&
                 newestProducts.map((product) => (
-                  <>
-                    <CustomerProductCard
-                      key={product.product_id}
-                      product={product}
-                    />
-                  </>
+                  <CustomerProductCard
+                    key={product.product_id}
+                    product={product}
+                  />
                 ))}
             </div>
           </div>
@@ -170,19 +168,17 @@ export default async function Home() {
               {discountProducts &&
                 discountProducts.length &&
                 discountProducts.map((product) => (
-                  <>
-                    <CustomerProductCard
-                      key={product.product_id}
-                      product={product}
-                    />
-                  </>
+                  <CustomerProductCard
+                    key={product.product_id}
+                    product={product}
+                  />
                 ))}
             </div>
           </div>
         </section>
       </main>
-      <CustomerFooter></CustomerFooter>
-      <CustomerAppBar></CustomerAppBar>
+      <CustomerFooter />
+      <CustomerAppBar />
     </>
   );
 }
