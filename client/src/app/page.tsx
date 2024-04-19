@@ -77,7 +77,7 @@ export default async function Home() {
             </Link>
             <span className="tip-products__title-after"></span>
           </h1>
-          <CustomerCategories></CustomerCategories>
+          <CustomerCategories/>
         </div>
         <div className="wrapper color">
           <div className="content-container">

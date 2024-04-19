@@ -36,7 +36,7 @@ const getFullBackendURLOrders = (status: string, page: string): string => {
 };
 
 export default function PurchaseHistoryPage() {
-  // console.log("Bé cưwng", localStorage.getItem("currentUser"));
+  // console.log("Bé cưng", localStorage.getItem("currentUser"));
 
   // use pathName, router
   const pathName = usePathname();
@@ -98,7 +98,6 @@ export default function PurchaseHistoryPage() {
           {/* Pagination */}
           {!isLoading && !error && data?.maxPage > 1 && (
             <CustomerPagination
-              currentPage={parseInt(currentPage)}
               maxPage={data?.maxPage ?? 1}
             />
           )}
