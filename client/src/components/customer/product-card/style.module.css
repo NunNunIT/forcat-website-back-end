@@ -155,14 +155,18 @@
 @media only screen and (max-width: 1024px) {
   .product-card {
     width: 32%;
-    height: 414px;
+    height: 420px;
+  }
+
+  .product-tumb {
+    width: 80%;
   }
 }
 
 @media only screen and (max-width: 768px) {
   .product-card {
     width: 32%;
-    height: 300px;
+    height: 320px;
   }
 
   .product-tumb {

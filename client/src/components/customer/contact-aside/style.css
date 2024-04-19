@@ -1,0 +1,115 @@
+.contact-aside__container {
+    display: block;
+    position: fixed;
+    bottom: 40px;
+    left: 45px;
+    transition: all 0.5s ease 0s;
+    transition: background-color .3s, opacity .5s, visibility .5s;
+    /* opacity: 0; */
+    /* visibility:hidden;  */
+    z-index: 1000;
+    text-align: center;
+}
+
+.contact-aside__container ul {
+    padding: 0;
+    margin: 0;
+    list-style-type: none;
+}
+
+.contact-aside__container li {
+    list-style-type: none;
+    margin-top: 12px;
+}
+
+.contact-aside__icon {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 50px;
+    height: 50px;
+    line-height: 44px;
+    color: #fff;
+    border-radius: 50%;
+    cursor: pointer;
+    box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.11);
+    background-size: auto;
+    background-repeat: no-repeat;
+    background-position: center;
+    border-radius: 50%;
+    box-shadow: 0 2px 5px gray;
+    cursor: pointer;
+}
+
+.contact-aside__icon.facebook {
+    background-color: #1876F1;
+}
+
+.contact-aside__icon-img.facebook {
+    padding: 6px;
+}
+
+
+.contact-aside__icon-img {
+    border-radius: 50%;
+}
+
+.contact-aside__icon-img.call {
+    padding: 12px;
+    background-color: var(--dollar-red2); 
+}
+
+.contact-aside__tooltip-text {
+    position: absolute;
+    top: 10px;
+    left: 55px;
+    z-index: 9;
+    height: 32px;
+    line-height: 26px;
+    padding: 3px 10px;
+    width: auto;
+    border-radius: 5px;
+    font-size: 11px;
+    color: #fff;
+    text-align: center;
+    white-space: nowrap;
+    cursor: pointer;
+    background-color: black;
+    visibility: hidden;
+    opacity: 0;
+    -ms-transition: all 200ms linear;
+    -webkit-transition: all 200ms linear;
+    transition: all 200ms linear;
+}
+
+.contact-aside__tooltip-text::after {
+    content: "";
+    width: 0;
+    height: 0;
+    border-width: 5px;
+    border-style: solid;
+    border-color: transparent transparent transparent black;
+    position: absolute;
+    right: 100%;
+    top: 0;
+    bottom: 0;
+    margin: auto;
+    -ms-transition: all 200ms linear;
+    -webkit-transition: all 200ms linear;
+    transition: all 200ms linear;
+    transform-origin: center;
+    transform: rotate(180deg);
+}
+
+.contact-aside__item:hover .contact-aside__tooltip-text {
+    visibility: visible;
+    opacity: 1;
+}
+
+@media only screen and (max-width: 64rem)
+{
+    .contact-aside__container {
+        left: 30px;
+    }
+}
