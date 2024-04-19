@@ -41,7 +41,7 @@ function convertOrderStatusToStr(order_status: string): string {
       return "Đã hủy";
   }
 
-  console.log("Unexpected Order Status: ", order_status);
+  // console.log("Unexpected Order Status: ", order_status);
   return "Unexpected Order Status";
 }
 
@@ -74,7 +74,10 @@ function convertDateToFormatHHMMDDMMYYYY(date: Date): string {
   return `${date.toLocaleTimeString(
     locales,
     timeOptions
-  )} ${date.toLocaleDateString(locales, dateOptions)}`;
+  )} ${date.toLocaleDateString(
+    locales,
+    dateOptions
+  )}`;
 }
 
 function convertPaymentToStr(payment_type: string): string {

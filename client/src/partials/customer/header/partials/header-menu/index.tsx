@@ -89,29 +89,34 @@ function CustomerHeaderMenuSubCategoryItem(
             <span className="material-icons-outlined">chevron_right</span>
           </Link>
         </div>
-        {hasProducts ? (
-          <div className={cx("cate-dropdown__products")}>
-            {products.map((product: IProductProps, index: number) => (
-              <CustomerHeaderMenuProductItem key={index} {...product} />
-            ))}
-          </div>
-        ) : (
-          <div className={cx("cate-dropdown__products--not-found")}>
-            <span
-              className={cx(
-                "cate-dropdown__products--not-found__img-container"
-              )}>
-              <Image
-                src="/imgs/nothing-result.png"
-                alt="Not found result"
-                fill
-              />
-            </span>
-            <span className={cx("cate-dropdown__products--not-found__text")}>
-              Không tìm thấy sản phẩm!
-            </span>
-          </div>
-        )}
+        {hasProducts
+          ? (
+            <div className={cx("cate-dropdown__products")}>
+              {products.map((product: IProductProps, index: number) => (
+                <CustomerHeaderMenuProductItem
+                  key={index}
+                  {...product}
+                />
+              ))}
+            </div>
+          ) 
+          : (
+            <div className={cx("cate-dropdown__products--not-found")}>
+              <span
+                className={cx(
+                  "cate-dropdown__products--not-found__img-container"
+                )}
+              >
+                <Image src="/imgs/nothing-result.png"
+                  alt="Not found result"
+                  fill
+                />
+              </span>
+              <span className={cx("cate-dropdown__products--not-found__text")}>
+                Không tìm thấy sản phẩm!
+              </span>
+            </div>
+          )}
       </div>
     </li>
   );

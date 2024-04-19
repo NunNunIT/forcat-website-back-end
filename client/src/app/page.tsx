@@ -87,7 +87,7 @@ export default async function Home() {
               </Link>
               <span className="tip-products__title-after"></span>
             </h1>
-            <CustomerCarouselSlider></CustomerCarouselSlider>
+            <CustomerCarouselSlider />
           </div>
         </div>
 
@@ -104,7 +104,7 @@ export default async function Home() {
                 newestProducts.length &&
                 newestProducts.map((product) => (
                   <CustomerProductCard
-                    key={product.product_id}
+                    key={product.product_id_hashed}
                     product={product}
                   />
                 ))}
@@ -169,7 +169,7 @@ export default async function Home() {
                 discountProducts.length &&
                 discountProducts.map((product) => (
                   <CustomerProductCard
-                    key={product.product_id}
+                    key={product.product_id_hashed}
                     product={product}
                   />
                 ))}

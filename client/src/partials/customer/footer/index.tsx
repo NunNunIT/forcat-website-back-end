@@ -124,7 +124,8 @@ export default function Footer() {
               <span className="material-icons-outlined">mail</span>
               <Link
                 href={`mailto:${email}`}
-                className={cx("footer__list-item")}>
+                className={cx("footer__list-item")}
+              >
                 {email}
               </Link>
             </div>
