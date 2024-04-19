@@ -17,7 +17,7 @@ export default function CustomerCategoryCard({
 }) {
   return (
     <div className={cx("category-card")}>
-      <Link href="#" className={cx("category__link")}>
+      <Link href={`/search-result?searchKey=${initValue.name}`} className={cx("category__link")}>
         <div className={cx("category-image-div")}>
           <Image
             className={cx("category__link-image")}
