@@ -47,9 +47,9 @@ export default function CustomerHeaderMain({
       const response = await fetch(
         `${BACKEND_URL}/productList/searchRecommended?searchKey=${inputValue}`
       );
-      if (!response.ok) {
-        throw new Error("Failed to fetch search results");
-      }
+      // if (!response.ok) {
+      //   throw new Error("Failed to fetch search results");
+      // }
       const data = await response.json();
       if (data.data.searchKey === inputValue) {
         // console.log("Trả về cho data", data.data.searchKey);
@@ -119,14 +119,15 @@ export default function CustomerHeaderMain({
       </div>
 
       <div className={cx("dropdown-cart")}>
-        <a
+        <Link
           href="/cart"
           className={cx("header__cart-container")}
-          title="Giỏ hàng">
+          title="Giỏ hàng"
+        >
           <div className={cx("header__cart")}>
             <span className="material-icons">shopping_cart</span>
           </div>
-        </a>
+        </Link>
         <div className={cx("dropdown-cart__content-container")}>
           <div className={cx("dropdown-cart__content")}>
             <div className={cx("dropdown-cart__unauth-user")}>
@@ -143,8 +144,8 @@ export default function CustomerHeaderMain({
               </span>
             </div>
             <div className={cx("unauth-content__btn")}>
-              <a href="/login">Đăng nhập</a>
-              <a href="/register">Đăng ký</a>
+              <Link href="/login">Đăng nhập</Link>
+              <Link href="/register">Đăng ký</Link>
             </div>
           </div>
         </div>

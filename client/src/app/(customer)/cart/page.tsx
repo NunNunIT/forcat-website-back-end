@@ -536,13 +536,13 @@ export default function CartPage() {
           </Link>
           <div className="cart-bill-row cart-bill-policy">
             Bằng việc tiến hành đặt mua hàng, bạn đồng ý với{" "}
-            <a className="cart-bill-policy__link" href="#">
+            <Link className="cart-bill-policy__link" href="#">
               Điều khoản dịch vụ
-            </a>{" "}
+            </Link>{" "}
             và{" "}
-            <a className="cart-bill-policy__link" href="/privacy-policy">
+            <Link className="cart-bill-policy__link" href="/privacy-policy">
               Chính sách bảo mật
-            </a>{" "}
+            </Link>{" "}
             của ForCat.
           </div>
         </section>

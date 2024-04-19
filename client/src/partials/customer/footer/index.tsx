@@ -110,7 +110,8 @@ export default function Footer() {
               <Link
                 href={locationURL}
                 target="_blank"
-                className={cx("footer__list-item")}>
+                className={cx("footer__list-item")}
+              >
                 Linh Trung, Thủ Đức, Hồ Chí Minh
               </Link>
             </div>
