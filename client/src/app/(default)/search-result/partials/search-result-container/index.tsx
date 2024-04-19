@@ -516,7 +516,7 @@ export default function SearchResultPage({ searchKey, searchResults }) {
             searchResultsProducts.map((product) => (
               <>
                 <CustomerProductCard
-                  key={product.product_id}
+                  key={product.product_id_hashed}
                   product={product}
                 />
               </>
