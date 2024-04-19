@@ -21,7 +21,7 @@ const encryptData = (data) => {
   // Convert the encrypted data to base64 for string representation
   const base64Encoded = Buffer.from(encryptedData).toString("base64");
 
-  // Change + to %2B
+  // Change special letter
   const encryptedString = encodeURIComponent(base64Encoded)
     .replaceAll("%21", "!")
     .replaceAll("%27", "'")

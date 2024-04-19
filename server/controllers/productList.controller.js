@@ -1,5 +1,6 @@
 import Product from "../models/product.model.js"; // Import model sản phẩm
 import responseHandler from "../handlers/response.handler.js";
+import { encryptData } from "../utils/security.js";
 
 // Hàm tính độ phù hợp của một sản phẩm dựa trên từ khóa tìm kiếm
 const calculateRelevance = (product, searchKey) => {
@@ -28,6 +29,7 @@ const calculateRelevance = (product, searchKey) => {
       relevance += 1; // Tăng điểm nếu từ khóa xuất hiện trong tên sản phẩm
       keywordCount += 1;
     }
+
     if (
       product.product_description &&
       product.product_description.toLowerCase().includes(keyword.toLowerCase())
@@ -35,6 +37,7 @@ const calculateRelevance = (product, searchKey) => {
       relevance += 1; // Tăng điểm nếu từ khóa xuất hiện trong mô tả sản phẩm
       keywordCount += 1;
     }
+
     if (product.category_names) {
       product.category_names.forEach((category) => {
         if (
@@ -46,6 +49,7 @@ const calculateRelevance = (product, searchKey) => {
         }
       });
     }
+
     if (product.product_variants) {
       product.product_variants.forEach((variant) => {
         if (
@@ -72,6 +76,7 @@ const calculateRelevance = (product, searchKey) => {
     ) {
       return count + 1;
     }
+
     if (product.category_names) {
       product.category_names.forEach((category) => {
         if (
@@ -82,6 +87,7 @@ const calculateRelevance = (product, searchKey) => {
         }
       });
     }
+
     if (product.product_variants) {
       product.product_variants.forEach((variant) => {
         if (
@@ -154,7 +160,7 @@ export const getNewestProducts = async (req, res, next) => {
 
       // Biến đổi dữ liệu sản phẩm theo yêu cầu
       return {
-        product_id: product._id,
+        product_id_hashed: encryptData(product._id),
         product_name: product.product_name,
         product_slug: product.product_slug,
         product_avg_rating: product.product_avg_rating,
@@ -170,6 +176,9 @@ export const getNewestProducts = async (req, res, next) => {
           : null, // Giảm giá cao nhất
         product_sold_quantity: product.product_sold_quanity, // Số lượng bán được
         category_name: product.category_names[0],
+        variant_id: lowestPriceVariant._id,
+        variant_name: lowestPriceVariant.variant_name,
+        variant_slug: lowestPriceVariant.variant_slug,
       };
     });
 
@@ -224,7 +233,7 @@ export const getTopRatedProducts = async (req, res, next) => {
 
       // Biến đổi dữ liệu sản phẩm theo yêu cầu
       return {
-        product_id: product._id,
+        product_id_hashed: encryptData(product._id),
         product_name: product.product_name,
         product_slug: product.product_slug,
         product_avg_rating: product.product_avg_rating,
@@ -240,6 +249,9 @@ export const getTopRatedProducts = async (req, res, next) => {
           : null, // Giảm giá cao nhất
         product_sold_quantity: product.product_sold_quanity, // Số lượng bán được
         category_name: product.category_names[0],
+        variant_id: lowestPriceVariant._id,
+        variant_name: lowestPriceVariant.variant_name,
+        variant_slug: lowestPriceVariant.variant_slug,
       };
     });
 
@@ -304,7 +316,7 @@ export const getDiscountProducts = async (req, res, next) => {
       );
 
       return {
-        product_id: product._id,
+        product_id_hashed: encryptData(product._id),
         product_name: product.product_name,
         product_slug: product.product_slug,
         product_avg_rating: product.product_avg_rating,
@@ -320,9 +332,9 @@ export const getDiscountProducts = async (req, res, next) => {
           : null,
         product_sold_quantity: product.product_sold_quanity,
         category_name: product.category_names[0],
-        variant_name: lowestPriceVariant
-          ? lowestPriceVariant.variant_name
-          : null,
+        variant_id: lowestPriceVariant._id,
+        variant_name: lowestPriceVariant.variant_name,
+        variant_slug: lowestPriceVariant.variant_slug,
       };
     });
 
@@ -390,12 +402,15 @@ export const getSearchRecommended = async (req, res) => {
       );
 
       return {
-        product_id: product._id,
+        product_id: encryptData(product._id),
         product_name: product.product_name,
         product_slug: product.product_slug,
         product_img: product.product_imgs[0], // Lấy ảnh đầu tiên trong mảng product_imgs
         product_price: lowestPriceVariant.price, // Giá thấp nhất
         lowest_price: lowestPriceVariant.discountedPrice, // Giá gốc
+        variant_id: lowestPriceVariant._id,
+        variant_name: lowestPriceVariant.variant_name,
+        variant_slug: lowestPriceVariant.variant_slug,
       };
     });
 
@@ -420,8 +435,16 @@ export const getSearchRecommended = async (req, res) => {
 // Controller tìm kiếm + bộ lọc kết quả tìm kiếm
 export const search = async (req, res) => {
   try {
-    let { searchKey, category, rating, minPrice, maxPrice, sortBy, discount, page } =
-      req.query;
+    let {
+      searchKey,
+      category,
+      rating,
+      minPrice,
+      maxPrice,
+      sortBy,
+      discount,
+      page,
+    } = req.query;
     const perPage = 20;
     const pageNumber = parseInt(page) || 1;
 
@@ -488,7 +511,7 @@ export const search = async (req, res) => {
       .skip(skip)
       .limit(perPage)
       .select(
-        "product_name product_description category_names product_imgs product_avg_rating product_variants product_sold_quanity product_slug"
+        "product_name product_description category_names product_imgs product_avg_rating product_variants product_sold_quanity product_slug updatedAt"
       ); // Chọn các trường cần trả về
 
     products = sortSearchResults(products, req.query.searchKey);
@@ -527,7 +550,7 @@ export const search = async (req, res) => {
 
       // Biến đổi dữ liệu sản phẩm theo yêu cầu
       return {
-        product_id: product._id,
+        product_id_hashed: encryptData(product._id),
         product_name: product.product_name,
         product_slug: product.product_slug,
         product_avg_rating: product.product_avg_rating,
@@ -546,6 +569,7 @@ export const search = async (req, res) => {
         variant_id: lowestPriceVariant._id,
         variant_name: lowestPriceVariant.variant_name,
         variant_slug: lowestPriceVariant.variant_slug,
+        updatedAt: product.updatedAt,
       };
     });
 

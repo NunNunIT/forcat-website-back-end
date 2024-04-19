@@ -30,13 +30,12 @@ mongoose
     console.log(err);
   });
 
-
 const app = express();
 
 // app.use(cors());
 app.use(
   cors({
-    origin: "http://localhost:3000", // replace with the URL of your frontend
+    origin: "https://forcatshop.com", // replace with the URL of your frontend
     credentials: true,
   })
 );
@@ -55,7 +54,7 @@ app.use("/api/articles", articleRoutes);
 app.use("/api/cart", cartRoutes);
 app.use("/api/reviews", reviewRoutes);
 app.use("/api/orders", orderRoutes);
-app.use("/api/noti", notiRoutes);
+app.use("/api/notifications", notiRoutes);
 app.use("/api/category", categoryRoutes);
 
 app.use((err, req, res, next) => {

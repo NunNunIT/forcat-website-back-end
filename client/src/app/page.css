@@ -1,0 +1,168 @@
+.main-container {
+  width: 100%;
+  margin: -0.5rem auto;
+  background-color: #fffbf3;
+}
+
+.content-container {
+  width: 80%;
+  margin: 0 auto;
+  padding: 12px 0;
+  max-width: 1152px;
+  display: flex;
+  flex-direction: column;
+}
+
+.wrapper--white {
+  background-color: #fff;
+}
+
+.wrapper.color {
+  width: 100vw;
+  margin: 0 auto;
+  background-color: var(--yellow10);
+  /* padding: 0px 0px 2px 0; */
+}
+
+section {
+  max-width: 1152px;
+}
+
+.tip-products-wrapper {
+  border-radius: 4px;
+  display: inherit;
+  flex-direction: column;
+  padding: 24px 12px;
+}
+
+.tip-products-wrapper.new-products {
+  /* background-color: var(--white); */
+  /* margin-top: 154px; */
+  /* background: #ab6e48;
+  background: -moz-linear-gradient(top, #ab6e48 0%, #7f3e00 100%);
+  background: -webkit-linear-gradient(top, #ab6e48 0%, #7f3e00 100%);
+  background: linear-gradient(to right, #ab6e48 0%, #7f3e00 100%); */
+  background-color: white;
+}
+
+.tip-products-wrapper.new-products .tip-products__img {
+  height: 100px;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+
+/* .tip-products-wrapper.sale-products {
+  background: #ffa62e;
+  background: -moz-linear-gradient(left, #ffa62e 0%, #ea4c2d 100%);
+  background: -webkit-linear-gradient(left, #ffa62e 0%, #ea4c2d 100%);
+  background: linear-gradient(to right, #ffa62e 0%, #ea4c2d 100%) !important;
+} */
+
+.tip-products__label {
+  display: flex;
+  padding: 12px 0px;
+  flex-direction: column;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  color: var(--white);
+}
+
+.tip-products__title {
+  text-decoration: none;
+  color: black;
+}
+
+.tip-products__title-after::after {
+  content: "::after";
+  content: "";
+  display: block;
+  width: 40px;
+  height: 2px;
+  background: #000000;
+  margin: 10px auto 15px;
+}
+
+.tip-products__see-all-btn {
+  text-decoration: none;
+  color: var(--white);
+  font-size: 18px;
+}
+
+.see-all-btn:hover,
+.tip-products__see-all-btn:hover {
+  color: yellow;
+}
+
+.tip-products__more:hover {
+  color: yellow;
+}
+
+.tip-products__content {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: flex-start;
+  gap: 1.2%;
+}
+
+.tip-products__item {
+  flex: 0 0 19%;
+}
+
+.banner-wrapper {
+  margin: 12px 0;
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  gap: 2%;
+  flex-wrap: wrap;
+}
+
+.banner-img--full {
+  display: block;
+  width: 100%;
+  aspect-ratio: 37 / 6;
+  /* height: 183px; */
+  /* object-fit: cover; */
+  position: relative;
+}
+
+.banner-img--half {
+  display: block;
+  width: 49%;
+  max-width: 49%;
+  aspect-ratio: 8 / 5;
+  /* height: 358px; */
+  /* object-fit: cover; */
+  position: relative;
+}
+
+.banner-img {
+  border-radius: .5rem;
+}
+
+@media screen and (max-width: 1025px) {
+  .content-container {
+    width: 90%;
+  }
+
+  .tip-products__content {
+    gap: 2%;
+  }
+}
+
+@media screen and (max-width: 417px) {
+  .main-container {
+    width: 100%;
+
+    margin: 0 auto;
+    /* padding-inline: .5rem; */
+  }
+
+  .content-container {
+    width: 100%;
+    padding: 0 1rem;
+  }
+}

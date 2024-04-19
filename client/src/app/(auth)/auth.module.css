@@ -1,0 +1,112 @@
+.main-container {
+	width: 100%;
+	margin: 0;
+	background-color: #ffffff;
+}
+
+
+.auth_main {
+	margin: 0 auto;
+	display: grid;
+	grid-template-columns: 1fr 1fr;
+	width: 80%;
+	max-width: 1152px;
+	padding: 20px;
+	gap: 20px;
+	background-color: #ffffff;
+	border-radius: 8px;
+}
+
+.auth__forms-wrap {
+	background-color: #ffffff;
+	/* Màu nền trắng */
+	padding: 20px;
+	/* Khoảng cách bên trong phần tử */
+	box-sizing: border-box;
+	/* Tính cả border vào kích thước tổng */
+	border-radius: 8px;
+	border: 2px solid var(--outline-gray);
+	transition: all 0.3s ease;
+	width: 100%;
+}
+
+.auth__image {
+	height: 100px !important;
+}
+
+.auth__image-wrap {
+	position: relative;
+	aspect-ratio: 1 / 1;
+	transition: all 0.3s ease;
+}
+
+.auth__image {
+	height: 750px !important;
+	border-radius: 12px;
+	position: relative !important;
+}
+
+@media only screen and (max-width: 1024px) {
+
+	/* Thiết lập điều kiện cho các thiết bị di động */
+	.auth_main {
+		grid-template-columns: 1fr;
+		/* Chia layout thành 2 cột bằng nhau */
+		width: 100vw;
+		background-color: var(--white);
+		padding: 0;
+		margin: 0;
+	}
+
+	.auth__forms-wrap {
+		padding: 0;
+		background-color: none;
+		border: none;
+	}
+
+
+	.auth__image-wrap {
+		display: none;
+		/* Ẩn phần auth__image-wrap */
+	}
+}
+
+.auth__image-wrap.register {
+	animation: slideInCenterLeft 1s ease forwards;
+}
+
+.auth__image-wrap.login {
+	animation: slideInCenterRight 1s ease forwards;
+}
+
+.auth__forms-wrap.login {
+	animation: slideInCenterLeft 1s ease forwards;
+}
+
+.auth__forms-wrap.register {
+	animation: slideInCenterRight 1s ease forwards;
+}
+
+@keyframes slideInCenterLeft {
+	from {
+		opacity: 0;
+		transform: translateX(-50%);
+	}
+
+	to {
+		opacity: 1;
+		transform: translateX(0);
+	}
+}
+
+@keyframes slideInCenterRight {
+	from {
+		opacity: 0;
+		transform: translateX(50%);
+	}
+
+	to {
+		opacity: 1;
+		transform: translateX(0);
+	}
+}
