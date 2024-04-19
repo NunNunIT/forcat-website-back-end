@@ -1,6 +1,7 @@
 // use metadata
 import type { Metadata } from "next";
 import { Quicksand } from "next/font/google";
+import { GoogleAnalytics } from "@next/third-parties/google";
 
 // use styles
 import "./global.css";
@@ -14,7 +15,7 @@ export const metadata: Metadata = {
   applicationName: "ForCat",
   referrer: "origin-when-cross-origin",
   keywords: [
-    "cửa hàng, phụ kiện, thú cưng, ForCat, ForCatShop, FORCAT, FORCATSHOP, forcat, forcatshop,forCat, Forcat,forcatShop,forCatShop, thu cung, thú cung, phụ kien, phụ kiện mèo, phu kien meo, FORcat, forCAT",
+    "cửa hàng, phụ kiện, thú cưng, ForCat, ForCatShop, FORCAT, FORCATSHOP, forcat, forcatshop,forCat, Forcat,forcatShop,forCatShop, thu cung, thú cung, phụ kien, phụ kiện mèo, phu kien meo, FORcat, forCAT,ForCat Shop - Cửa hàng phụ kiện thú cưng, forcat shop, ForCat Shop, FORCAT SHOP, Forcat Shop, Forcat shop, forcat shop - cửa hàng phụ kiện thú cưng",
   ],
   title: {
     template: "ForCat | %s ",
@@ -43,6 +44,7 @@ export default function CustomerLayout({
   return (
     <html lang="vi" className={quicksand.className}>
       <body>{children}</body>
+      {/* <GoogleAnalytics gaId="G-YQ5DTD2VQS" /> */}
     </html>
   );
 }
