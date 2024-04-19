@@ -1,5 +1,5 @@
 .product-card {
-  /* width: 24%;*/
+  /* width: 24%; */
   width: 19%;
   /* height: 434px; */
   height: 400px;
@@ -45,7 +45,7 @@
   background: red;
   color: #fff;
   padding: 3px 10px;
-  z-index: 999;
+  z-index: 999 !important;
 }
 
 .product-tumb {
