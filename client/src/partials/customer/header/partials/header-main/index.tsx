@@ -24,7 +24,7 @@ export default function CustomerHeaderMain({
   params?: { "*": string };
   searchParams?: { [key: string]: string };
 }) {
-  const {searchKey} = searchParams;
+  const searchKey = searchParams?.searchKey;
   console.log("searchKey từ Header", searchKey);
   console.log("searchKey từ Header", searchParams);
   const [showSmartSearch, setShowSmartSearch] = useState(false);
