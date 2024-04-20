@@ -3,6 +3,8 @@
 // import libs
 import React, { useEffect, useState, useRef } from "react";
 
+import { BACKEND_URL } from "@/utils/commonConst";
+
 // import css
 import "./page.css";
 
@@ -82,32 +84,40 @@ export default function ChangePasswordPage() {
 
     if (isAllValid) {
       const reset = {
-        user_old_password: oldPassword,
-        user_new_password: password,
+        oldPassword: oldPassword,
+        newPassword: password,
       };
+      console.log("Preparing to call API");
       //  API call here
+      try {
+        const response = await fetch(`${BACKEND_URL}/user/change-password`, {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(reset),
+          credentials: "include",
+        });
 
-      //   await fetch("/auth/changePass", {
-      //     method: "POST",
-      //     body: JSON.stringify(reset),
-      //     headers: {
-      //         "Content-Type": "application/json",
-      //     },
-      // })
-      //     .then((res) => res.json())
-      //     .then((back) => {
-      //         if (back.status == "notMatchOldPassword") {
-      //             setError(oldPassword, back.message)
-      //         } else {
-      //             const successModal = document.querySelector('.success-modal')
-      //             successModal.style.display = 'flex'
-      //             setTimeout(() => {
-      //                 successModal.style.display = 'none'
-      //             }, 1000)
+        if (!response.ok) {
+          console.log(`API call failed with status ${response.status}`);
+          throw new Error("Error updating password");
+        }
 
-      //             location.reload()
-      //         }
-      //     })
+        console.log("API called successfully");
+
+        const data = await response.json();
+
+        if (data.message) {
+          alert(data.message);
+          window.location.href = "/account/information";
+        } else {
+          throw new Error("Error updating password");
+        }
+      } catch (error) {
+        console.error("Error:", error);
+      }
+
     }
   };
 

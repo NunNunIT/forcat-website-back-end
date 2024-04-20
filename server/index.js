@@ -33,16 +33,22 @@ mongoose
 const app = express();
 
 // app.use(cors());
+// app.use(
+//   cors({
+//     origin: function (origin, callback) {
+//       const whitelist = ["https://forcatshop.com", "http://localhost:3000"]; // replace with your URLs
+//       if (whitelist.indexOf(origin) !== -1) {
+//         callback(null, true);
+//       } else {
+//         callback(new Error("Not allowed by CORS"));
+//       }
+//     },
+//     credentials: true,
+//   })
+// );
 app.use(
   cors({
-    origin: function (origin, callback) {
-      const whitelist = ["https://forcatshop.com", "http://localhost:3000"]; // replace with your URLs
-      if (whitelist.indexOf(origin) !== -1) {
-        callback(null, true);
-      } else {
-        callback(new Error("Not allowed by CORS"));
-      }
-    },
+    origin: "http://localhost:3000",
     credentials: true,
   })
 );

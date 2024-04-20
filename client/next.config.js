@@ -29,6 +29,12 @@ export default {
         port: "", // Không cần chỉ định cổng
         pathname: "/**", // Đường dẫn cụ thể của hình ảnh (ở đây là tất cả các đường dẫn)
       },
+      {
+        protocol: "https", // Giao thức sử dụng (ở đây là HTTPS)
+        hostname: "gcs.tripi.vn", // Thêm hostname của gcs.tripi.vn (để hiển thị avater mặc định của user)
+        port: "", // Không cần chỉ định cổng
+        pathname: "/**", // Đường dẫn cụ thể của hình ảnh (ở đây là tất cả các đường dẫn)
+      },
     ],
   },
 };

@@ -15,57 +15,54 @@ import responseHandler from "../handlers/response.handler.js";
 
 
 //api để test, không sử dụng trong thực tế
-export const getUserByEmail = async (req, res, next) => {
-  const { user_email } = req.body;
+// export const getUserByEmail = async (req, res, next) => {
+//   const { user_email } = req.body;
 
-  try {
-    // Find the user in the database
-    const user = await User.findOne({ user_email });
+//   try {
+//     // Find the user in the database
+//     const user = await User.findOne({ user_email });
 
-    // Check if user exists
-    if (!user) {
-      return responseHandler.notFound(res, "User does not exist");
-    }
+//     // Check if user exists
+//     if (!user) {
+//       return responseHandler.notFound(res, "User does not exist");
+//     }
 
-    return res.status(200).json(user);
-  } catch (error) {
-    next(error);
-  }
-};
-//api để test, không sử dụng trong thực tế
-export const deleteUserByEmail = async (req, res, next) => {
-  const { user_email } = req.body;
+//     return res.status(200).json(user);
+//   } catch (error) {
+//     next(error);
+//   }
+// };
+// //api để test, không sử dụng trong thực tế
+// export const deleteUserByEmail = async (req, res, next) => {
+//   const { user_email } = req.body;
 
-  try {
-    // Find the user in the database
-    const user = await User.findOne({ user_email });
+//   try {
+//     // Find the user in the database
+//     const user = await User.findOne({ user_email });
 
-    // Check if user exists
-    if (!user) {
-      return responseHandler.notFound(res, "User does not exist");
-    }
+//     // Check if user exists
+//     if (!user) {
+//       return responseHandler.notFound(res, "User does not exist");
+//     }
 
-    // Delete the user
-    await User.deleteOne({ user_email });
+//     // Delete the user
+//     await User.deleteOne({ user_email });
 
-    return res.status(200).json({ message: "User deleted successfully" });
-  } catch (error) {
-    next(error);
-  }
-};
+//     return res.status(200).json({ message: "User deleted successfully" });
+//   } catch (error) {
+//     next(error);
+//   }
+// };
 
 export const edit = async (req, res, next) => {
-  const { user_name, user_birth, user_gender, user_phone, user_address } =
+  const user_id = req.user.id;
+  const { user_name, user_birth, user_gender, user_phone, user_address} =
     req.body;
 
   try {
-    // Get the user's id from the cookie
-    const token = req.cookies.access_token;
-    const decoded = jwt.verify(token, process.env.JWT_SECRET_KEY);
-    const userId = decoded.id;
 
     // Find the user in the database and update their details
-    const user = await User.findByIdAndUpdate(userId, req.body, { new: true });
+    const user = await User.findByIdAndUpdate(user_id, req.body, { new: true });
 
     if (!user) {
       return responseHandler.notFound(res, "User does found");
@@ -78,24 +75,32 @@ export const edit = async (req, res, next) => {
 };
 
 export const changePassword = async (req, res, next) => {
+  console.log("changePassword called");
+
+  const user_id = req.user.id;
   const { oldPassword, newPassword } = req.body;
 
-  try {
-    // Get the user's id from the cookie
-    const token = req.cookies.access_token;
-    const decoded = jwt.verify(token, process.env.JWT_SECRET_KEY);
-    const userId = decoded.id;
+  console.log(`User ID: ${user_id}`);
+  console.log(`Old Password: ${oldPassword}`);
+  console.log(`New Password: ${newPassword}`);
 
+  try {
     // Find the user in the database
-    const user = await User.findById(userId);
+    const user = await User.findById(user_id);
+
+    console.log(`User: ${JSON.stringify(user)}`);
 
     if (!user) {
+      console.log("User not found");
       return res.status(404).json({ message: "User not found" });
     }
 
     const isMatch = bcryptjs.compareSync(oldPassword, user.user_password);
 
+    console.log(`Password match: ${isMatch}`);
+
     if (!isMatch) {
+      console.log("Old password is incorrect");
       return res.status(400).json({ message: "Old password is incorrect" });
     }
 
@@ -103,35 +108,28 @@ export const changePassword = async (req, res, next) => {
 
     await user.save();
 
+    console.log("Password updated successfully");
     return res.status(200).json({ message: "Password updated successfully" });
   } catch (error) {
+    console.log(`Error: ${error}`);
     next(error);
   }
 };
 
-export const getInforUser = async (req, res, next) => {
+export const getInfoUser = async (req, res, next) => {
+  const user_id = req.user.id;
+
   try {
-    const { user_id } = req.user;
-    console.log("In ra từ middleware", user_id)
-
-    // Kiểm tra xem user_id có tồn tại không
-    if (!user_id) {
-      return res.status(400).json({ error: "Missing user_id in request body" });
-    }
-
-    // Tìm kiếm người dùng trong cơ sở dữ liệu
+    // Find the user in the database
     const user = await User.findById(user_id);
 
-    // Kiểm tra xem người dùng có tồn tại không
+    // Check if user exists
     if (!user) {
-      return responseHandler.notFound(res, "User does found");
+      return responseHandler.notFound(res, "User does not exist");
     }
 
-    // Trả về thông tin của người dùng
     return res.status(200).json({ message: "User updated successfully", user });
   } catch (error) {
-    // Xử lý lỗi nếu có
-    console.error("Error in getInforUser:", error);
     return res.status(500).json({ error: "Internal server error" });
   }
 };
