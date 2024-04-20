@@ -8,6 +8,7 @@
     "news-detail aside"
     "related-news related-news";
   grid-template-columns: 9fr 3fr;
+  gap: 1rem;
 }
 
 .news-detail-page {
