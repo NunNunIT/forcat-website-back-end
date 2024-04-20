@@ -2,12 +2,16 @@
 import type { Metadata, ResolvingMetadata } from "next";
 import { notFound } from "next/navigation";
 
+// import partials
+import { CustomerTableOfContent } from "./partials";
+
 // import utils
 import { BACKEND_URL_NEWS } from "@/utils/commonConst";
 import { convertDateToHourDayMonthYear } from "@/utils";
 
 // import css
 import "./page.css";
+import { CustomerNewsItem } from "../partials";
 
 interface IResponseNewsDetail {
   article_name: string;
@@ -28,7 +32,6 @@ async function getNewsDetail(
   aid: string
 ) {
   try {
-    console.log(`${BACKEND_URL_NEWS}/${slug}/${aid.replaceAll("/", "%2F")}`)
     const res = await fetch(
       `${BACKEND_URL_NEWS}/${slug}/${aid}`, {
       next: { revalidate: 60 },
@@ -60,12 +63,12 @@ export async function generateMetadata(
   const article: IResponseNewsDetail = await getNewsDetail(newsSlug, aid);
 
   return {
-    title: article.article_name,
+    title: `Tin tức | ${article.article_name}`,
     description: article.article_short_description,
   };
 }
 
-export default async function ProductPage({
+export default async function NewsDetailPage({
   params,
   searchParams,
 }: {
@@ -76,6 +79,8 @@ export default async function ProductPage({
   const aid = searchParams.aid;
 
   const newsDetail: IResponseNewsDetail = await getNewsDetail(newsSlug, aid);
+
+  // const contentWithID = parseHTML(newsDetail.article_content);
 
   return (
     <main className="news-detail-page-container">
@@ -98,7 +103,24 @@ export default async function ProductPage({
           dangerouslySetInnerHTML={{ __html: newsDetail.article_content }}
         />
       </article>
-      <aside className="news-detail-page__aside"></aside>
+      <aside className="news-detail-page__aside">
+        <CustomerTableOfContent
+          targetClassName="news-detail-page"
+        />
+      </aside>
+      <section className="news-detail-page__related-page">
+        <h2>Các bài viết liên quan</h2>
+        <div className="related-page-container">
+          {newsDetail.related_articles.length > 0 && (
+            newsDetail.related_articles.map((newsItem) => (
+              <CustomerNewsItem
+                key={newsItem.article_id_hashed}
+                {...newsItem}
+              />
+            ))
+          )}
+        </div>
+      </section>
     </main>
   );
 }

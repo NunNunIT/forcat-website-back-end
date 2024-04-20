@@ -63,20 +63,13 @@ export default async function NewsPage({
       <aside className="news__group-banner">
         <div className="news__banner-container">
           <Image
-            src="/imgs/banner/banner_1.png"
+            src="/imgs/banner/banner.webp"
             alt="The first banner in news-page"
             fill
           />
         </div>
-        <div className="news__banner-container">
-          <Image
-            src="/imgs/banner/banner_2.png"
-            alt="The second banner in news-page"
-            fill
-          />
-        </div>
       </aside>
-      <CustomerPagination className={"news__pagination"} maxPage={data.maxPage} />
+      <CustomerPagination className="news__pagination" maxPage={data.maxPage} />
     </main>
   );
 }

@@ -1,6 +1,8 @@
 import Article from "../models/article.model.js";
 import resHandler from "../handlers/response.handler.js";
 import { encryptData, decryptData } from "../utils/security.js";
+import { parseRawHTML } from "../utils/parseRawHTML.js";
+import { parse } from "path";
 
 const hashArticleId = (article) => {
   article._doc.article_id_hashed = encryptData(article._doc._id);
@@ -19,7 +21,7 @@ const getSomeRelatedArticle = async ({ article_slug }) => {
     const articles = await Article.find({
       article_slug: { $ne: article_slug }, // Exclude the current article
     }, {
-      article_description: 0,
+      article_content: 0,
     }).limit(numberLimitArticle)
       .sort(sortedFields)
       .exec();
@@ -72,7 +74,7 @@ export const readAll = async (req, res, next) => {
     const maxPage = Math.ceil(await Article.countDocuments(query).exec() / limit);
 
     // Perform efficient pagination with skip and limit
-    const articles = await Article.find(query, { article_description: 0 })
+    const articles = await Article.find(query, { article_content: 0 })
       .skip((page - 1) * limit) // Calculate skip based on page number
       .limit(limit)
       .sort(sorted_fields) // Sort by creation date (optional)
@@ -105,6 +107,7 @@ export const readOne = async (req, res, next) => {
     }
 
     const relatedArticles = await getSomeRelatedArticle(article);
+    article._doc.article_content = parseRawHTML(article.article_content);
     article._doc.related_articles = relatedArticles;
 
     return resHandler.ok(res, article);

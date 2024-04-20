@@ -154,6 +154,16 @@
   --swiper-navigation-size: 1em !important;
 }
 
+:root {
+  --header-height-without-nav: 112px;
+}
+
+@media screen and (max-width: 769px) {
+  :root {
+    --header-height-without-nav: 60px;
+  }
+}
+
 * {
   padding: 0;
   margin: 0;
@@ -184,6 +194,7 @@ body {
 html {
   font-size: 16px;
   line-height: 1.5;
+  scroll-behavior: smooth;
 }
 
 body {
@@ -239,19 +250,19 @@ a {
   color: var(--red)
 }
 
-@media only screen and (max-width: 64rem) {
+@media only screen and (max-width: 1025px) {
   html {
     font-size: 14px;
   }
 }
 
-@media only screen and (max-width: 48rem) {
+@media only screen and (max-width: 769px) {
   html {
     font-size: 12px;
   }
 }
 
-@media only screen and (max-width: 26rem) {
+@media only screen and (max-width: 417px) {
   html {
     font-size: 12px;
   }

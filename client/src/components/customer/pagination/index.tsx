@@ -19,7 +19,6 @@ interface IPaginationProps {
 const cx = classNames.bind(styles);
 
 export default function Pagination(props: IPaginationProps) {
-  const router = useRouter();
   const pathName = usePathname();
   const searchParams = useSearchParams();
   if (props.maxPage <= 1) {
@@ -47,7 +46,7 @@ export default function Pagination(props: IPaginationProps) {
   };
 
   return (
-    <div className={cx("pagination-container")}>
+    <div className={`${cx("pagination-container")} ${props.className}`}>
       {/* The first pagination button */}
       <PaginationButton
         disabled={currentPage === 1}
