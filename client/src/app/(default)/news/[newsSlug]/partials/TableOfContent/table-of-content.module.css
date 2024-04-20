@@ -29,6 +29,10 @@
   cursor: pointer;
 }
 
+.table-of-content__title h2{
+  margin: 0;
+}
+
 .table-of-content-container[open] .icon-on {
   display: inline;
 }
