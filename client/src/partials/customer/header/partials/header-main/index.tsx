@@ -24,7 +24,7 @@ export default function CustomerHeaderMain({
   params?: { "*": string };
   searchParams?: { [key: string]: string };
 }) {
-  const {searchKey} = searchParams;
+  const searchKey = searchParams?.searchKey ?? 0;
   console.log("searchKey từ Header", searchKey);
   console.log("searchKey từ Header", searchParams);
   const [showSmartSearch, setShowSmartSearch] = useState(false);
@@ -104,7 +104,7 @@ export default function CustomerHeaderMain({
               id="header__search-input"
               type="search"
               name="searchKey"
-              placeholder={searchKey ? searchKey.toString() : "Bạn tìm gì..."}
+              placeholder={searchKey ? searchKey : "Bạn tìm gì..."}
               onChange={handleInputChange}
             />
             <button className={cx("header__search-btn")} type="submit">

@@ -402,7 +402,7 @@ export const getSearchRecommended = async (req, res) => {
       );
 
       return {
-        product_id: encryptData(product._id),
+        product_id_hashed: encryptData(product._id),
         product_name: product.product_name,
         product_slug: product.product_slug,
         product_img: product.product_imgs[0], // Lấy ảnh đầu tiên trong mảng product_imgs
