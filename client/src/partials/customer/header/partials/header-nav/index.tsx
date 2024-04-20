@@ -1,4 +1,5 @@
 "use client";
+
 // import libs
 import classNameNames from "classnames/bind";
 import Link from "next/link";
@@ -20,7 +21,14 @@ const cx = classNameNames.bind(styles);
 interface IUserLocal {
   _id: string;
   user_name: string;
-  user_avt_img: string;
+  user_avt: string;
+  recent_notification: {
+    _id: string;
+    notification_type: string;
+    notification_name: string;
+    notification_description: string;
+    createdAt: string;
+  }[],
 }
 
 export default function CustomerHeaderNav() {
@@ -62,6 +70,7 @@ export default function CustomerHeaderNav() {
       // console.error("Logout error:", error);
     }
   };
+
   return (
     <nav className={cx("header__nav")}>
       <div className={cx("header__nav-container")}>
@@ -97,18 +106,42 @@ export default function CustomerHeaderNav() {
             </Link>
             <div className={cx("dropdown-noti__content-container")}>
               <div className={cx("dropdown-noti__content")}>
-                <div className={cx("dropdown-noti__unauth-user")}>
-                  <div className={cx("unauth-user__img-container")}>
-                    <Image src="/imgs/unauth-user.png" alt="unauth-user" fill />
-                  </div>
-                  <span className={cx("unauth-content__noti")}>
-                    Đăng nhập để xem Thông báo
-                  </span>
-                </div>
-                <div className={cx("unauth-content__btn")}>
-                  <Link href="/login">Đăng nhập</Link>
-                  <Link href="/register">Đăng ký</Link>
-                </div>
+                {currentUser
+                  ? (<>{
+                    currentUser.recent_notification.length > 0
+                      ? (currentUser.recent_notification.map((noti, index: number) =>
+                        <Link key={index} href={`notifications?type=${noti.notification_type}`}>
+                          <h5>{noti.notification_name}</h5>
+                          <p>Lúc: {convertDateToFormatHHMMDDMMYYYY(new Date(noti.createdAt))}</p>
+                        </Link>
+                      ))
+                      : (<>
+                        <div className={cx("dropdown-noti--empty")}>
+                          <Image
+                            src="/imgs/nothing-result.png"
+                            alt="Hình ảnh của bạn không có thông báo mới"
+                            fill
+                          />
+                        </div>
+                        <span className={cx("empty-content__noti")}>
+                          Bạn chưa có thông báo mới nào
+                        </span>
+                      </>)
+                  }</>)
+                  : (<>
+                    <div className={cx("dropdown-noti__unauth-user")}>
+                      <div className={cx("unauth-user__img-container")}>
+                        <Image src="/imgs/unauth-user.png" alt="unauth-user" fill />
+                      </div>
+                      <span className={cx("unauth-content__noti")}>
+                        Đăng nhập để xem Thông báo
+                      </span>
+                    </div>
+                    <div className={cx("unauth-content__btn")}>
+                      <Link href="/login">Đăng nhập</Link>
+                      <Link href="/register">Đăng ký</Link>
+                    </div>
+                  </>)}
               </div>
             </div>
           </div>

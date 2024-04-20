@@ -1,9 +1,9 @@
 "use client";
 
 // import libs
-import Link from "next/link";
-import { useSearchParams, usePathname } from "next/navigation";
 import classNames from "classnames/bind";
+import { useSearchParams, usePathname } from "next/navigation";
+import Link from "next/link";
 
 // import utils
 import { isActiveClass, convertOrderStatusToStr } from "@/utils";
@@ -16,6 +16,7 @@ const cx = classNames.bind(styles);
 export default function HistoryStatusNav() {
   const searchParams = useSearchParams();
   const currentStatus = searchParams.get("status") ?? "all";
+
   const pathName = usePathname();
 
   return (
@@ -23,8 +24,17 @@ export default function HistoryStatusNav() {
       {["all", "unpaid", "delivering", "finished", "cancel"].map((status) => (
         <Link
           key={status}
-          className={cx("purchase-history__status", isActiveClass(currentStatus, status))}
-          href={pathName + "?" + (status === "all" ? "" : `status=${status}`)}
+          className={
+            cx(
+              "purchase-history__status",
+              isActiveClass(currentStatus, status)
+            )
+          }
+          href={
+            pathName
+            + "?"
+            + (status === "all" ? "" : `status=${status}`)
+          }
         >
           {convertOrderStatusToStr(status)}
         </Link>

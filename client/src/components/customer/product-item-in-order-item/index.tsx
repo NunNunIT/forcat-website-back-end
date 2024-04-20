@@ -1,3 +1,5 @@
+"use client";
+
 // import libs
 import classNames from "classnames/bind";
 import Link from "next/link";
@@ -15,6 +17,7 @@ export default function ProductItemInOrderItem(
   props: IProductItemInOrderItemProps
 ) {
   const price_final: number = props.price_discount ?? props.unit_price;
+  console.log(props.product_img);
 
   return (
     <div className={cx("product-item")}>
@@ -27,7 +30,6 @@ export default function ProductItemInOrderItem(
       </div>
       <div className={cx("product-item__detail")}>
         <h5>
-          {/* TODO: implement the link */}
           <Link
             className={cx("product-item__name")}
             href={`/${props.product_slug}?pid=${props.product_id_hashed}`}

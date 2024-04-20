@@ -42,12 +42,10 @@ export const create = async (req, res, next) => {
   const orderInfo = req.body;
 
   const user_id = req.user?.id;
-  //  ?? req.query?.user_id ?? "661754a9ae209b64b08e6874";
   if (!user_id)
     return responseHandler.unauthorize(res, "You are not authenticated!");
 
   const role = req.user?.role;
-  //  ?? "user";
   if (!role === "user")
     return responseHandler.forbidden(res, "You are not authorized!");
 
@@ -83,7 +81,6 @@ export const create = async (req, res, next) => {
 // [GET] /api/orders/
 export const readAll = async (req, res, next) => {
   const user_id = req.user?.id;
-  // ?? req.query?.user_id ?? "661754a9ae209b64b08e6874";
   if (!user_id)
     return responseHandler.unauthorize(res, "You are not authenticated!");
 
@@ -139,11 +136,11 @@ export const readAll = async (req, res, next) => {
 
 // [GET] /api/orders/:order_id
 export const readOne = async (req, res, next) => {
-  const user_id = req.user?.id ?? req.query?.id ?? "661754a9ae209b64b08e6874";
+  const user_id = req.user?.id;
   if (!user_id)
     return responseHandler.unauthorize(res, "You are not authenticated!");
 
-  const role = req.user?.role ?? "user";
+  const role = req.user?.role;
   if (!role || !["admin", "user", "staff"].includes(role))
     return responseHandler.forbidden(res, "You are not authorized!");
 
@@ -185,11 +182,11 @@ export const update = async (req, res, next) => {
 
 // [POST] /api/orders/:order_id/:order_status
 export const updateStatus = async (req, res, next) => {
-  const user_id = req.user?.id ?? req.query?.user_id ?? "661754a9ae209b64b08e6874";
+  const user_id = req.user?.id;
   if (!user_id)
     return responseHandler.unauthorize(res, "You are not authenticated!");
 
-  const role = req.user?.role ?? "user";
+  const role = req.user?.role;
   if (!role || !["admin", "user", "staff"].includes(role))
     return responseHandler.forbidden(res, "You are not authorized!");
 
@@ -243,11 +240,11 @@ export const updateStatus = async (req, res, next) => {
 // [GET] a/pi/orders/:order_id/reviews
 // Lấy tất cả reviews bên trong order_id
 export const readAllReviews = async (req, res, next) => {
-  const user_id = req.user?.id ?? req.query?.user_id ?? "661754a9ae209b64b08e6874";
+  const user_id = req.user?.id;
   if (!user_id)
     return responseHandler.unauthorize(res, "You are not authenticated!");
 
-  const role = req.user?.role ?? "user";
+  const role = req.user?.role;
   if (!role || !["admin", "user", "staff"].includes(role))
     return responseHandler.forbidden(res, "You are not authorized!");
 

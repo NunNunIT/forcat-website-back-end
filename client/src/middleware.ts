@@ -23,7 +23,7 @@ async function fetchUser(accessToken: String) {
 }
 
 export async function middleware(request: NextRequest) {
-  let accessTokenString = request.cookies.get("accessToken");
+  const accessTokenString = request.cookies.get("accessToken");
 
   if (
     !accessTokenString &&

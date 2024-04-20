@@ -1,9 +1,6 @@
-"use client";
-
 // import libs
-import useSWR, { Fetcher } from "swr";
 import { notFound } from "next/navigation";
-import Skeleton from "react-loading-skeleton";
+import { cookies } from "next/headers";
 
 // import utils
 import { BACKEND_URL_ORDERS } from "@/utils/commonConst";
@@ -37,61 +34,35 @@ interface IOrderDetailProps {
   createdAt: string;
 }
 
-const fetcher: Fetcher<IOrderDetailProps, string> = async (url: string) => {
-  const res: IResponseJSON = await fetch(url).then((res) => res.json());
+const fetcher = async (url: string) => {
+  try {
+    const res: Response = await fetch(url, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        "Cookie": `accessToken=${cookies().get("accessToken").value}`,
+      },
+      credentials: "include",
+    });
+    const json: IResponseJSON = await res.json();
+    return json.data as IOrderDetailProps;
+  } catch (error) {
+    console.error(error);
+    return notFound();
+  }
+}
 
-  // if (!res.success) throw res;
+const getFullBackendURLOrder = (orderId: string): string => {
+  return `${BACKEND_URL_ORDERS}/${orderId}`;
+}
 
-  return res.data as IOrderDetailProps;
-};
-
-export default function PurchaseDetailPage({
+export default async function PurchaseDetailPage({
   params,
 }: {
   params: { orderId: string };
 }) {
-  const { data, error, isLoading } = useSWR(
-    BACKEND_URL_ORDERS + "/" + params.orderId,
-    fetcher
-  );
-
-  // if isLoading
-  if (isLoading)
-    return (
-      <main className="order-detail">
-        <div className="order-detail--top">
-          <span className="order-detail__overview">
-            <h2>Chi tiết hóa đơn: #{params.orderId}</h2>
-            <Skeleton />
-          </span>
-          <Skeleton />
-        </div>
-        <div className="order-detail__info-receive">
-          <h2>
-            <span className="material-icons">location_on</span>
-            <span>Thông tin nhận hàng</span>
-          </h2>
-          <Skeleton className="order-detail__info-receive-data" count={3} />
-        </div>
-        <div className="order-detail__paying-method">
-          <h2>
-            <span className="material-icons">credit_card</span>
-            <span>Thông tin thanh toán</span>
-          </h2>
-          <Skeleton className="order-detail__info-receive-data" />
-        </div>
-        <div className="order-detail__products">
-          <h2>
-            <span className="material-icons">shopping_bag</span>
-            <span>Thông tin sản phẩm</span>
-          </h2>
-          <Skeleton className="order-detail__products-wrapper" count={3} />
-        </div>
-      </main>
-    );
-
-  if (error) return notFound();
-
+  const fullURL = getFullBackendURLOrder(params.orderId);
+  const data = await fetcher(fullURL);
   const {
     _id,
     order_buyer,
@@ -109,7 +80,7 @@ export default function PurchaseDetailPage({
     <main className="order-detail">
       <div className="order-detail--top">
         <span className="order-detail__overview">
-          <h2>Chi tiết hóa đơn: #{_id}</h2>
+          <h2>Chi tiết hóa đơn: #{params.orderId}</h2>
           <span>
             Đặt lúc: {convertDateToFormatHHMMDDMMYYYY(new Date(order_date))}
           </span>
@@ -148,7 +119,6 @@ export default function PurchaseDetailPage({
           <span className="material-icons">credit_card</span>
           <span>Thông tin thanh toán</span>
         </h2>
-        {/* <PaymentType id={payment_id} /> */}
         <span>Thanh toán bằng thẻ tín dụng</span>
       </div>
       <div className="order-detail__products">

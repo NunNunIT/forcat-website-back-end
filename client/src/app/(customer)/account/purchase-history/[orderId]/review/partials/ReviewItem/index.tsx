@@ -96,7 +96,6 @@ export default function ReviewItem(props: IReviewItem) {
   };
   const handleSubmitForm = async (e) => {
     e.preventDefault();
-    // alert(JSON.stringify(dataForm));
     const RES = await axios.post(BACKEND_URL_REVIEWS, dataForm);
     const json: IResponseJSON = RES.data;
 

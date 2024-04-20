@@ -181,11 +181,6 @@ interface IResponseJSON {
   data?: Object;
 }
 
-interface ResponseOrderHistory {
-  orders: IOrderItemProps[];
-  maxPage: number;
-}
-
 interface IReviewItem {
   product_id_hashed: string;
   product_name: string;
