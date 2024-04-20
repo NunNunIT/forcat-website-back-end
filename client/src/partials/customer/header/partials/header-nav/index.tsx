@@ -82,7 +82,7 @@ export default function CustomerHeaderNav() {
           </div>
           <Link href="#" className={cx("header__support-info__hotline")}>
             <span className="material-icons-outlined">call</span>
-            Hotline: 1900 123 789
+            Hotline: 0559 695 594
           </Link>
         </div>
         <CustomerLogo className={cx("header--mobile__logo")} white />

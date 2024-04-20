@@ -118,7 +118,7 @@ export default function Footer() {
             <div className={cx("footer__list-item")}>
               <span className="material-icons-outlined">call</span>
               <span className={cx("footer__list-item", "phone")}>
-                1900 123 789
+               0559 695 594
               </span>
             </div>
             <div className={cx("footer__list-item")}>
