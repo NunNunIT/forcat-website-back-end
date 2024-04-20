@@ -58,7 +58,7 @@
   font-weight: bold;
 }
 
-@media screen and (max-width: 1024px) {
+@media screen and (max-width: 1025px) {
   .notification__aside {
     top: 5rem;
   }

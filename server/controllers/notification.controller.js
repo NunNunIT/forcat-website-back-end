@@ -2,13 +2,12 @@ import Notification from "../models/notification.model.js"; // Import model noti
 import responseHandler from "../handlers/response.handler.js";
 
 export const getAllNoti = async (req, res, next) => {
-  const user_id = req.user ?? req.user?.id ?? req.query?.user_id ?? "661754a9ae209b64b08e6874";
-  console.log("In ra từ middleware", user_id)
+  const user_id = req.user?.id;
   if (!user_id) {
     return responseHandler.unauthorize(res, "You are not authenticated!");
   }
 
-  const role = req.user?.role ?? "user";
+  const role = req.user?.role;
   if (!["admin", "staff", "user"].includes(role)) {
     return responseHandler.forbidden(res, "You are not authorized!");
   }
@@ -65,73 +64,6 @@ export const getAllNoti = async (req, res, next) => {
   }
 };
 
-// export const getNoti = async (req, res, next) => {
-//   // const notiType = req.query.type; // Lấy từ truy vấn loại thông báo từ query parameter
-//   // const userID = req.params.user_id; // test
-
-//   // if (notiType)
-
-//   const page = parseInt(req.query.page) || 1; // Trang mặc định là 1
-//   const perPage = 10; // Số lượng thông báo trên mỗi trang
-
-//   try {
-//     const totalNoti = await Notification.countDocuments({
-//       $or: [
-//         {
-//           $and: [
-//             { notification_type: notiType },
-//             {
-//               "users.usersList": { $in: [{ _id: userID }] },
-//             },
-//             // Thêm điều kiện này để bỏ qua giá trị isRead
-//             { "users.usersList": { $elemMatch: { _id: userID } } },
-//           ],
-//         },
-//         {
-//           $and: [
-//             { notification_type: notiType },
-//             {
-//               "users.isAll": true,
-//             },
-//           ],
-//         },
-//       ],
-//     });
-
-//     const totalPages = Math.ceil(totalNoti / perPage); // Tính tổng số trang
-
-//     const noti = await Notification.find({
-//       $or: [
-//         {
-//           $and: [
-//             { notification_type: notiType },
-//             {
-//               "users.usersList": { $in: [{ _id: userID }] },
-//             },
-//           ],
-//         },
-//         {
-//           $and: [
-//             { notification_type: notiType },
-//             {
-//               "users.isAll": true,
-//             },
-//           ],
-//         },
-//       ],
-//     }).skip((page - 1) * perPage) // Bỏ qua thông báo trên các trang trước đó
-//       .limit(perPage); // Giới hạn số lượng thông báo trên mỗi trang
-//     console.log("Console log:", noti);
-//     if (!noti) {
-//       return responseHandler.badRequest(res, "Empty");
-//     }
-
-//     return responseHandler.ok(res, { notifications: noti, totalPages });
-//   } catch (error) {
-//     return responseHandler.error(res);
-//   }
-// };
-
 export const setReadNoti = async (req, res, next) => {
   const user_id = req.user?.id ?? req.body?.user_id ?? req.query?.user_id ?? "661754a9ae209b64b08e6874";
   if (!user_id)
@@ -175,16 +107,12 @@ export const setReadNoti = async (req, res, next) => {
   }
 };
 
-//BACKEND
 export const setReadAllNoti = async (req, res, next) => {
   const user_id = req.user?.id;
-  // const user_id = req.user?.id ?? req.body?.user_id ?? req.query?.user_id ?? "661754a9ae209b64b08e6874";
-  console.log("In ra từ middleware", user_id)
-
   if (!user_id)
     return responseHandler.unauthorize(res, "You are not authenticated!");
 
-  const role = req.user?.role ?? "user";
+  const role = req.user?.role;
   if (!role || !["user"].includes(role))
     return responseHandler.forbidden(res, "You are not authorized!");
 

@@ -5,6 +5,7 @@ import Link from "next/link";
 import Image from "next/image";
 import classNames from "classnames/bind";
 import { usePathname, useSearchParams } from "next/navigation";
+import { Suspense } from "react";
 
 // import utils
 import { isActiveClassWithBool } from "@/utils";
