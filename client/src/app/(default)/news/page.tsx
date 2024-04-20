@@ -28,7 +28,7 @@ interface IResponseNews {
   maxPage: number;
 }
 
-export const fetcher = async (url: string) => {
+const fetcher = async (url: string) => {
   const res: Response = await fetch(url, {
     next: { revalidate: 60 },
   });
@@ -47,7 +47,7 @@ export default async function NewsPage({
   const page = searchParams?.page ?? "1";
   const limit = searchParams?.limit ?? "2";
   const fullURL: string = getFullBackendArticleUrl(page, limit);
-  const data = await fetcher(fullURL);
+  const data: IResponseNews = await fetcher(fullURL);
 
   return (
     <main className="news-page__container">
