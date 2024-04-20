@@ -1,4 +1,4 @@
-.article__link {
+.news__link {
   text-decoration: none;
   color: black;
 
@@ -6,18 +6,18 @@
   border: 1px solid rgba(white, 0.2);
 }
 
-.article__container {
-  grid-area: 'article-summary';
+.news__container {
+  grid-area: 'news-item';
 
   overflow: clip;
-  border-radius: 1rem;
+  border-radius: .5rem;
 
-  background: rgba(255, 255, 255, 0.2);
+  background-color: white;
 
   transition: .2s ease-in-out;
 }
 
-.article__container:hover {
+.news__container:hover {
   box-shadow: 0 9px 11.5px -3px rgba(0, 0, 0, 0.1),
     0 18.5px 28.5px 0 rgba(0, 0, 0, 0.034),
     0 7px 37.5px 0 rgba(0, 0, 0, 0.026);
@@ -25,7 +25,7 @@
   transform: translateY(-.25rem);
 }
 
-.article__content-container {
+.news__content-container {
   padding: 1rem;
 
   display: flex;
@@ -33,7 +33,7 @@
   gap: .25rem;
 }
 
-.article__type {
+.news__type {
   width: min-content;
   text-wrap: nowrap;
 
@@ -45,34 +45,34 @@
   font-weight: bold;
 }
 
-.article__name {
-  max-height: 2.75em;
+.news__name {
+  height: 2.75em;
   overflow: hidden;
   text-overflow: ellipsis;
 
   color: var(--primary-mau0-2);
 }
 
-.article__container:hover .article__name {
+.news__container:hover .news__name {
   text-decoration: underline;
 }
 
-.article__author {
+.news__author {
   white-space: nowrap;
 }
 
-.article__info>address {
+.news__info>address {
   display: flex;
   justify-content: space-between;
   align-items: center;
 }
 
-.article__info time {
+.news__info time {
   font-family: monospace;
 }
 
-.article__short-description {
-  max-height: 2.5em;
+.news__short-description {
+  height: 2.5em;
 
   margin-top: 1.5rem;
   line-height: 1.25em;
@@ -81,23 +81,13 @@
   text-overflow: ellipsis;
 }
 
-.article__cover-container {
+.news__cover-container {
   position: relative;
   width: 100%;
   aspect-ratio: 16/9;
-
-  overflow: hidden;
-  border-radius: 1rem;
 }
 
-.article__container img {
+.news__container img {
   transition: .2s ease-in-out;
   object-fit: cover;
-
-  overflow: clip;
-  border-radius: 1rem;
 }
-
-/* .article__container:hover img {
-  transform: scale(1.02);
-} */

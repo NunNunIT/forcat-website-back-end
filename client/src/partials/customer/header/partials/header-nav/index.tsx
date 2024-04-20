@@ -118,6 +118,7 @@ export default function CustomerHeaderNav() {
               <Link href="/account/information" className={cx("header__auth-login")}>
                 {currentUser.user_name}
               </Link>
+              {"|"}
               <form onSubmit={handleLogout}>
                 <button type="submit" className={cx("header__auth-logout-btn")}>
                   Đăng xuất

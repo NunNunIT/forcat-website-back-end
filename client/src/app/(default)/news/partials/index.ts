@@ -1,1 +1,1 @@
-export {default as ArticleSummary} from "./article-summary"
+export { default as CustomerNewsItem } from "./news-item"
