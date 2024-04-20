@@ -64,7 +64,7 @@ export default function CustomerHeaderMain({
 
   const handleInputChange = (event) => {
     const inputValue = event.target.value;
-    // console.log("Giá trị nhạp vào", inputValue);
+    // console.log("Giá trị nhập vào", inputValue);
     setInputValue(inputValue);
     if (!inputValue) {
       setShowSmartSearch(false);

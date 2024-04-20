@@ -510,3 +510,10 @@ input[type="number"] {
 .swiper-pagination-bullet.swiper-pagination-bullet-active {
   background: var(--fire-orange) !important;
 }
+
+.tag-make-fill-blank {
+  width: 100%;
+  max-width: 1152px;
+  margin: 0 auto;
+  height: 100%;
+}
