@@ -25,7 +25,7 @@ export default function ArticleItem(props: INewsItemProps) {
   return (
     <Link
       className={cx("news__link")}
-      href={`/news/${article_slug}?aid=${aid}`}
+      href={`/news/${article_slug}?aid=${encodeURIComponent(aid)}`}
     >
       <article className={cx("news__container")}>
         <div className={cx("news__content-container")}>

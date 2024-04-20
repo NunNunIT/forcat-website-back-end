@@ -33,7 +33,7 @@ async function getNewsDetail(
 ) {
   try {
     const res = await fetch(
-      `${BACKEND_URL_NEWS}/${slug}/${aid.replaceAll("/", "%2F")}`, {
+      `${BACKEND_URL_NEWS}/${slug}/${aid}`, {
       next: { revalidate: 60 },
     });
     if (!res.ok) return notFound();
