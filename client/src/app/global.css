@@ -505,8 +505,6 @@ input[type="number"] {
   }
 }
 
-
-
 .swiper-pagination-bullet.swiper-pagination-bullet-active {
   background: var(--fire-orange) !important;
 }

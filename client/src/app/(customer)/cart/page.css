@@ -245,7 +245,7 @@ section {
     display: none;
 }
 
-@media only screen and (max-width: 64rem) {
+@media only screen and (max-width: 1024px) {
     .cart {
         width: 90%;
         grid-template-columns: 650px 1fr;
@@ -272,7 +272,7 @@ section {
     }
 }
 
-@media only screen and (max-width: 48rem) {
+@media only screen and (max-width: 768px) {
     .cart {
         grid-template-columns: none;
     }
@@ -378,7 +378,7 @@ section {
     }
 }
 
-@media only screen and (max-width: 26rem) {
+@media only screen and (max-width: 416px) {
     .cart {
         width: 100%;
         margin: 0;

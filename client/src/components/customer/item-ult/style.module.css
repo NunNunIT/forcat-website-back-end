@@ -14,7 +14,7 @@
 }
 
 .header__item-ult__thumbs {
-    width: 60px;
+    width: 50px;
     display: inline-block;
     text-align: right;
     aspect-ratio: 1/1;
@@ -24,6 +24,8 @@
 
 .header__item-ult__thumbs__img {
     object-fit: cover;
+    width: 100%;
+    height: 100%
 }
 
 .header__item-ult__thumbs__link {
@@ -31,16 +33,15 @@
     color: black;
     outline: none;
     display: block;
-    max-width: 100%;
     width: 100%;
-    max-width: 100%;
-    aspect-ratio: 1 / 1;
+    /* max-width: 100%; */
     position: relative;
+    aspect-ratio: 1 / 1;
 }
 
 .header__item-ult__title {
     position: relative;
-    width: calc(100% - 40px);
+    width: calc(100% - 60px);
     padding-right: 5px;
     text-align: left;
     float: left;

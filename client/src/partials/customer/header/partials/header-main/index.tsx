@@ -4,7 +4,7 @@
 import classNameNames from "classnames/bind";
 import Image from "next/image";
 import Link from "next/link";
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 
 // import utils
 import { BACKEND_URL } from "@/utils/commonConst";
@@ -24,13 +24,14 @@ export default function CustomerHeaderMain({
   params?: { "*": string };
   searchParams?: { [key: string]: string };
 }) {
-  const searchKey = searchParams ?? 0;
-  // console.log("searchKey từ Header", searchKey);
-  // console.log("searchKey từ Header", searchParams);
+  const {searchKey} = searchParams;
+  console.log("searchKey từ Header", searchKey);
+  console.log("searchKey từ Header", searchParams);
   const [showSmartSearch, setShowSmartSearch] = useState(false);
   const [searchResults, setSearchResults] = useState([]);
   const [totalSearchResults, setTotalSearchResults] = useState(0);
   const [inputValue, setInputValue] = useState("");
+  const smartSearchRef = useRef(null);
 
   useEffect(() => {
     const timer = setTimeout(() => {
@@ -42,6 +43,25 @@ export default function CustomerHeaderMain({
     return () => clearTimeout(timer);
   }, [inputValue]);
 
+  useEffect(() => {
+    // Add event listener when component mounts
+    window.addEventListener("mousedown", handleClickOutside);
+
+    // Remove event listener when component unmounts
+    return () => {
+      window.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, []);
+
+  const handleClickOutside = (event) => {
+    if (
+      smartSearchRef.current &&
+      !smartSearchRef.current.contains(event.target)
+    ) {
+      setShowSmartSearch(false);
+    }
+  };
+
   const fetchSearchResults = async (inputValue) => {
     try {
       const response = await fetch(
@@ -52,19 +72,18 @@ export default function CustomerHeaderMain({
       // }
       const data = await response.json();
       if (data.data.searchKey === inputValue) {
-        // console.log("Trả về cho data", data.data.searchKey);
+        console.log("Trả về cho data", data.data.searchKey);
         setSearchResults(data.data.recommendedProducts);
         setTotalSearchResults(data.data.totalProducts);
         setShowSmartSearch(true);
       }
     } catch (error) {
-      // console.error(error);
+      console.error(error);
     }
   };
 
   const handleInputChange = (event) => {
     const inputValue = event.target.value;
-    // console.log("Giá trị nhập vào", inputValue);
     setInputValue(inputValue);
     if (!inputValue) {
       setShowSmartSearch(false);
@@ -94,6 +113,7 @@ export default function CustomerHeaderMain({
           </div>
         </form>
         <div
+          ref={smartSearchRef}
           className={cx("header__smart-search-wrapper", {
             "display-block": showSmartSearch,
           })}
@@ -103,7 +123,7 @@ export default function CustomerHeaderMain({
             {showSmartSearch &&
               searchResults.map((product) => (
                 <CustomerHeaderItemUlt
-                  key={product.product_id}
+                  key={product.product_id_hashed}
                   product={product}
                 />
               ))}

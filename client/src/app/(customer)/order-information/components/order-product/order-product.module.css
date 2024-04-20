@@ -31,6 +31,7 @@
   align-items: center;
   gap: 12px;
 }
+
 .order-product__img {
   object-fit: contain;
   width: 80px;
@@ -74,7 +75,7 @@
   text-decoration: line-through;
 }
 
-@media screen and (max-width: 48rem) {
+@media screen and (max-width: 768px) {
   .order-product__element {
     padding: 12px;
   }
