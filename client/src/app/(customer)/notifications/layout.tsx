@@ -1,6 +1,7 @@
 // import css
 import "./layout.css";
 import type { Metadata } from "next";
+import { Suspense } from "react";
 
 // import partials, components
 import { CustomerNotificationAside } from "./partials";
@@ -18,7 +19,9 @@ export default function NotificationLayout({
 }>) {
   return (
     <main className="notification-container">
-      <CustomerNotificationAside />
+      <Suspense>
+        <CustomerNotificationAside />
+      </Suspense>
       {children}
     </main>
   );
