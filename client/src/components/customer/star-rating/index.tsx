@@ -44,4 +44,4 @@ export default function CustomerStarRating(props: IStarRatingProps) {
         })}
     </div>
   );
-}
+};

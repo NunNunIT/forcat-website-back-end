@@ -158,14 +158,14 @@
     opacity: 0;
 }
 
-@media screen and (max-width: 70rem) {
+@media screen and (max-width: 1120px) {
     .carousel__card-bottom-details div {
         flex-direction: column;
         align-items: flex-start;
         gap: 0
     }
 
-    .carousel__card-details p{
+    .carousel__card-details p {
         display: none
     }
 
@@ -179,7 +179,7 @@
     }
 }
 
-@media screen and (max-width: 48rem) {
+@media screen and (max-width: 768px) {
     .carousel__card {
         height: auto;
         /* Auto height for smaller screens */

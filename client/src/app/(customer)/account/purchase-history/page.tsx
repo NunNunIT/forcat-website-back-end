@@ -28,15 +28,15 @@ const fetcher: Fetcher<ResponseOrderHistory, string> = async (url: string) => {
 
 const getFullBackendURLOrders = (status: string, page: string): string => {
   return (
-    BACKEND_URL_ORDERS +
-    "?" +
-    (status === "all" ? "" : `type=${status}&`) +
-    `page=${page}&limit=3`
+    BACKEND_URL_ORDERS
+    + "?"
+    + (status === "all" ? "" : `type=${status}&`)
+    + `page=${page}&limit=3`
   );
 };
 
 export default function PurchaseHistoryPage() {
-  // console.log("Bé cưwng", localStorage.getItem("currentUser"));
+  // console.log("Bé cưng", localStorage.getItem("currentUser"));
 
   // use pathName, router
   const pathName = usePathname();
@@ -62,7 +62,8 @@ export default function PurchaseHistoryPage() {
   // check valid page
   if (error?.message?.message == "Page out of range!") {
     router.push(
-      pathName + `?status=${currentStatus}&page=${error.message.maxPage}`
+      pathName
+      + `?status=${currentStatus}&page=${error.message.maxPage}`
     );
     return;
   }
@@ -97,7 +98,6 @@ export default function PurchaseHistoryPage() {
           {/* Pagination */}
           {!isLoading && !error && data?.maxPage > 1 && (
             <CustomerPagination
-              currentPage={parseInt(currentPage)}
               maxPage={data?.maxPage ?? 1}
             />
           )}

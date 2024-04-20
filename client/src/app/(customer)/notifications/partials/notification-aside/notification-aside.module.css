@@ -55,8 +55,7 @@
 }
 
 .notification__aside-nav-item.is-active {
-  background: var(--bg-gray);
-  font-weight: 500;
+  font-weight: bold;
 }
 
 @media screen and (max-width: 1024px) {
@@ -65,7 +64,7 @@
   }
 }
 
-@media screen and (max-width: 416px) {
+@media screen and (max-width: 417px) {
   .notification__aside {
     display: none;
   }

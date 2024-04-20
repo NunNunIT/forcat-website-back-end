@@ -17,15 +17,18 @@ const cx = classNames.bind(styles);
 export default function CustomerCarouselCard({ product }) {
   return (
     <>
-      <div key={product.product_id} className={cx("carousel__card")}>
+      <div className={cx("carousel__card")}>
         <Link
           className={cx("carousel__card-main")}
-          href={`/${product.product_slug}?pid=${product.product_id}`}>
-          {product.highest_discount ? (
-            <div className={cx("carousel__card--badge")}>
-              - {product.highest_discount} %
-            </div>
-          ) : null}
+          href={`/${product.product_slug}?pid=${product.product_id_hashed}`}
+        >
+          {product.highest_discount
+            ? (
+              <div className={cx("carousel__card--badge")}>
+                - {product.highest_discount} %
+              </div>
+            )
+            : null}
           <div className={cx("carousel__card--top")}>
             <div className={cx("carousel__card--img")}>
               <CldImage
@@ -48,17 +51,19 @@ export default function CustomerCarouselCard({ product }) {
           </div>
           <div className={cx("carousel__card-bottom-details")}>
             <div className={cx("carousel__card-price")}>
-              {product.highest_discount ? (
-                <>
-                  <h2>{convertNumberToMoney(product.lowest_price)}đ</h2>
-                  <small>{convertNumberToMoney(product.product_price)}đ</small>
-                </>
-              ) : (
-                <>
-                  <h2>{convertNumberToMoney(product.product_price)}đ</h2>
-                  <small className={cx("display-none")}> alo</small>
-                </>
-              )}
+              {product.highest_discount
+                ? (
+                  <>
+                    <h2>{convertNumberToMoney(product.lowest_price)}đ</h2>
+                    <small>{convertNumberToMoney(product.product_price)}đ</small>
+                  </>
+                )
+                : (
+                  <>
+                    <h2>{convertNumberToMoney(product.product_price)}đ</h2>
+                    <small className={cx("display-none")}> alo</small>
+                  </>
+                )}
             </div>
           </div>
         </Link>

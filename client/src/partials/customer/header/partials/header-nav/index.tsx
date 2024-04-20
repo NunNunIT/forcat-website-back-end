@@ -7,10 +7,13 @@ import { useEffect, useState } from "react";
 
 // import components
 import { CustomerLogo } from "@/components";
-import { BACKEND_URL } from "@/utils/commonConst";
 
 // import css
 import styles from "./header-nav.module.css";
+
+// import constant
+import { BACKEND_URL } from "@/utils/commonConst";
+import { convertDateToFormatHHMMDDMMYYYY } from "@/utils";
 
 const cx = classNameNames.bind(styles);
 
@@ -21,19 +24,18 @@ interface IUserLocal {
 }
 
 export default function CustomerHeaderNav() {
-  const [currentUser, setCurrentUser] = useState<IUserLocal | null>(null); // Định nghĩa biến currentUser ở đây
+  const [currentUser, setCurrentUser] = useState<(IUserLocal | null)>(null); // Định nghĩa biến currentUser ở đây
 
-  const getCurrentUser = (): IUserLocal | null => {
+  const getCurrentUser = (): (IUserLocal | null) => {
     const storedUser = localStorage.getItem("currentUser");
-    let currentUser = null;
-    if (storedUser) {
-      currentUser = JSON.parse(storedUser);
-    }
+    const currentUser = storedUser
+      ? JSON.parse(storedUser)
+      : null;
     return currentUser;
   };
 
   useEffect(() => {
-    const user: IUserLocal | null = getCurrentUser();
+    const user: (IUserLocal | null) = getCurrentUser();
     setCurrentUser(user);
   }, []);
 
@@ -86,7 +88,10 @@ export default function CustomerHeaderNav() {
         <CustomerLogo className={cx("header--mobile__logo")} white />
         <div className={cx("header__about-account")}>
           <div className={cx("dropdown-noti")}>
-            <Link href="/notifications" className={cx("header__notifications")}>
+            <Link
+              className={cx("header__notifications")}
+              href="/notifications"
+            >
               <span className="material-icons-outlined">notifications</span>
               Thông báo
             </Link>
