@@ -5,9 +5,10 @@ import Link from "next/link";
 import Image from "next/image";
 import classNames from "classnames/bind";
 import { usePathname, useSearchParams } from "next/navigation";
+import { Suspense } from "react";
 
 // import utils
-import { isActiveClass } from "@/utils";
+import { isActiveClassWithBool } from "@/utils";
 
 // import css
 import styles from "./notification-aside.module.css";
@@ -59,8 +60,9 @@ export default function NotificationAside() {
                 href={navData.url}
                 className={cx(
                   "notification__aside-nav-item",
-                  isActiveClass(navData.url, currentURL)
-                )}>
+                  isActiveClassWithBool(navData.url === currentURL)
+                )}
+              >
                 <span>{navData.text}</span>
               </Link>
             </li>

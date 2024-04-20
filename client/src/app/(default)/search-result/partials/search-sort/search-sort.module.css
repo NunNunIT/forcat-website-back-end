@@ -68,7 +68,7 @@
   margin: 0;
 }
 
-@media only screen and (max-width: 26rem) {
+@media only screen and (max-width: 416px) {
   .search-result__sort {
     display: none;
   }

@@ -36,9 +36,9 @@ export const getRecommend = async (req, res, next) => {
       return responseHandler.notFound(res, "Recommend Not Found");
     }
 
-    const productCategory = product.categories[0].category;
+    const productCategory = product.categories[0];
     const relatedProducts = await Product.find({
-      categories: { $elemMatch: { category: productCategory } },
+      categories: { $in: productCategory },
       product_id: { $ne: productId },
     });
     return responseHandler.ok(res, { relatedProducts });

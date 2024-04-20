@@ -1,9 +1,14 @@
 // import libs
 import Image from "next/image";
+import { notFound } from "next/navigation";
 import type { Metadata } from "next";
 
-// import components
-import { ArticleSummary } from "./partials";
+// import partials, components
+import { CustomerNewsItem } from "./partials";
+import { CustomerPagination } from "@/components";
+
+// import utils
+import { BACKEND_URL_NEWS } from "@/utils/commonConst";
 
 // import css
 import "./page.css";
@@ -14,57 +19,57 @@ export const metadata: Metadata = {
     "Khám phá tin tức mới nhất về thế giới thú cưng tại ForCat Shop. Chúng tôi cập nhật những thông tin hữu ích về cách chăm sóc, nuôi dưỡng và yêu thương thú cưng của bạn. Duyệt qua bài viết về các sản phẩm mới, những mẹo hữu ích và các sự kiện đặc biệt. ForCat Shop luôn đồng hành cùng bạn trong hành trình chăm sóc và tạo niềm vui cho thú cưng của bạn!",
 };
 
-const articleData: IArticleProps = {
-  article_id: "0",
-  article_name: "Gel Dinh Dưỡng Cho Chó Mèo: Tìm Hiểu, Lựa Chọn & Sử Dụng",
-  article_type: "Cách nuôi",
-  article_short_description:
-    "Gel dinh dưỡng cho chó mèo là một sản phẩm quan trọng trong việc bổ sung năng lượng, vitamin và khoáng chất cho thú cưng của bạn. Việc sử dụng …",
-  article_info: {
-    author: "Thú cưng",
-    published_date: "01/04/2023",
-  },
-  article_date: "01/04/2024",
-};
+const getFullBackendArticleUrl = (page: string, limit: string): string => {
+  return `${BACKEND_URL_NEWS}?page=${page}&limit=${limit}`;
+}
 
-const articlesData: IArticleProps[] = [
-  articleData,
-  articleData,
-  articleData,
-  articleData,
-  articleData,
-  articleData,
-  articleData,
-  articleData,
-  articleData,
-  articleData,
-];
+interface IResponseNews {
+  articles: INewsItemProps[];
+  maxPage: number;
+}
 
-export default function NewsPage() {
+const fetcher = async (url: string) => {
+  const res: Response = await fetch(url, {
+    next: { revalidate: 60 },
+  });
+
+  if (!res.ok) return notFound();
+
+  const json: IResponseJSON = await res.json();
+  return json.data as IResponseNews;
+}
+
+export default async function NewsPage({
+  searchParams,
+}: {
+  searchParams?: { [key: string]: string | undefined };
+}) {
+  const page = searchParams?.page ?? "1";
+  const limit = searchParams?.limit ?? "2";
+  const fullURL: string = getFullBackendArticleUrl(page, limit);
+  const data: IResponseNews = await fetcher(fullURL);
+
   return (
-    <main>
+    <main className="news-page__container">
       <h1>Tin tức</h1>
-      <section className="news__group-article">
-        {articlesData.map((articleData: IArticleProps) => (
-          <ArticleSummary key={articleData.article_id} {...articleData} />
+      <section className="news__group-news-item">
+        {data.articles.map((articleData: INewsItemProps) => (
+          <CustomerNewsItem
+            key={articleData.article_id_hashed}
+            {...articleData}
+          />
         ))}
       </section>
       <aside className="news__group-banner">
         <div className="news__banner-container">
           <Image
-            src="/imgs/banner/banner_1.png"
+            src="/imgs/banner/banner.webp"
             alt="The first banner in news-page"
             fill
           />
         </div>
-        <div className="news__banner-container">
-          <Image
-            src="/imgs/banner/banner_2.png"
-            alt="The second banner in news-page"
-            fill
-          />
-        </div>
       </aside>
+      <CustomerPagination className="news__pagination" maxPage={data.maxPage} />
     </main>
   );
 }

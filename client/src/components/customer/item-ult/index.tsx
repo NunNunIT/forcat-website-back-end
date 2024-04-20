@@ -24,7 +24,7 @@ export default function CustomerHeaderItemUlt({ product }) {
         <Link
           className={cx("header__item-ult__title__link")}
           title={product.product_name}
-          href={`/${product.product_slug}?pid=${product.product_id}`} // Đường dẫn của sản phẩm
+          href={`/${product.product_slug}?pid=${product.product_id_hashed}`} // Đường dẫn của sản phẩm
         >
           {product.product_name}
         </Link>

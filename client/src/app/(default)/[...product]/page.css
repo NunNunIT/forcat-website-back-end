@@ -55,7 +55,7 @@ section {
     z-index: 2;
 }
 
-@media only screen and (max-width: 64rem) {
+@media only screen and (max-width: 1024px) {
     .product {
         width: 90%;
     }
@@ -86,7 +86,7 @@ section {
     }
 }
 
-@media only screen and (max-width: 48rem) {
+@media only screen and (max-width: 768px) {
     .product {
         gap: 8px;
     }
@@ -112,6 +112,7 @@ section {
     .decoration__bow {
         width: 80px;
         height: 80px;
+        right: -20px;
     }
 
     .product-review {
@@ -140,7 +141,7 @@ section {
     display: none !important;
 }
 
-@media only screen and (max-width: 26rem) {
+@media only screen and (max-width: 416px) {
     .mobile-hidden {
         display: none !important;
     }

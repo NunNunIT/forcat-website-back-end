@@ -77,7 +77,7 @@ export default async function Home() {
             </Link>
             <span className="tip-products__title-after"></span>
           </h1>
-          <CustomerCategories></CustomerCategories>
+          <CustomerCategories/>
         </div>
         <div className="wrapper color">
           <div className="content-container">
@@ -87,7 +87,7 @@ export default async function Home() {
               </Link>
               <span className="tip-products__title-after"></span>
             </h1>
-            <CustomerCarouselSlider></CustomerCarouselSlider>
+            <CustomerCarouselSlider />
           </div>
         </div>
 
@@ -104,7 +104,7 @@ export default async function Home() {
                 newestProducts.length &&
                 newestProducts.map((product) => (
                   <CustomerProductCard
-                    key={product.product_id}
+                    key={product.product_id_hashed}
                     product={product}
                   />
                 ))}
@@ -115,7 +115,7 @@ export default async function Home() {
               <Image
                 className="banner-img"
                 fill={true}
-                src="/imgs/home-page/banner-small-4.png"
+                src="/imgs/home-page/banner-small-4.webp"
                 alt="banner-info"
               />
             </Link>
@@ -123,7 +123,7 @@ export default async function Home() {
               <Image
                 className="banner-img"
                 fill={true}
-                src="/imgs/home-page/banner-small-1.png"
+                src="/imgs/home-page/banner-small-1.webp"
                 alt="banner-info"
               />
             </Link>
@@ -141,7 +141,7 @@ export default async function Home() {
               <Image
                 className="banner-img"
                 fill={true}
-                src="/imgs/home-page/banner-small-2.png"
+                src="/imgs/home-page/banner-small-2.webp"
                 alt="banner-info"
               />
             </Link>
@@ -151,7 +151,7 @@ export default async function Home() {
               <Image
                 className="banner-img"
                 fill={true}
-                src="/imgs/home-page/banner-1.png"
+                src="/imgs/home-page/banner-1.webp"
                 alt="banner-info"
               />
             </Link>
@@ -169,7 +169,7 @@ export default async function Home() {
                 discountProducts.length &&
                 discountProducts.map((product) => (
                   <CustomerProductCard
-                    key={product.product_id}
+                    key={product.product_id_hashed}
                     product={product}
                   />
                 ))}

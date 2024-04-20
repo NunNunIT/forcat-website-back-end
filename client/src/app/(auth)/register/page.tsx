@@ -19,17 +19,19 @@ export const metadata: Metadata = {
 
 const RegisterPage = () => {
   return (
-    <main className={cx("auth_main")}>
-      <div className={cx("auth__forms-wrap", "register")}>
-        <AuthRegisterForm />
-      </div>
-      <div className={cx("auth__image-wrap", "register")}>
-        <Image
-          className={cx("auth__image")}
-          src="/imgs/auth/meo-7.png"
-          alt="Anh meo vang"
-          fill={true}
-        />
+    <main className={cx("main-container")}>
+      <div className={cx("auth_main")}>
+        <div className={cx("auth__forms-wrap", "register")}>
+          <AuthRegisterForm />
+        </div>
+        <div className={cx("auth__image-wrap", "register")}>
+          <Image
+            className={cx("auth__image")}
+            src="/imgs/auth/meo-7.png"
+            alt="Anh meo vang"
+            fill={true}
+          />
+        </div>
       </div>
     </main>
   );

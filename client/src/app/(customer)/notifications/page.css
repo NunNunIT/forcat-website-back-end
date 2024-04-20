@@ -1,5 +1,12 @@
 .notification__content {
   grid-area: content;
+
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+
+  padding: 0;
+  background: transparent;
 }
 
 .notification__content--top {
@@ -13,8 +20,6 @@
   background: white;
 }
 
-.notification__content {
-  display: flex;
-  flex-direction: column;
-  gap: 1rem;
+.noti__pagination {
+  justify-content: flex-end;
 }

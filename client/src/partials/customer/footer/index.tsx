@@ -110,21 +110,23 @@ export default function Footer() {
               <Link
                 href={locationURL}
                 target="_blank"
-                className={cx("footer__list-item")}>
+                className={cx("footer__list-item")}
+              >
                 Linh Trung, Thủ Đức, Hồ Chí Minh
               </Link>
             </div>
             <div className={cx("footer__list-item")}>
               <span className="material-icons-outlined">call</span>
               <span className={cx("footer__list-item", "phone")}>
-                1900 123 789
+                0559 695 594
               </span>
             </div>
             <div className={cx("footer__list-item")}>
               <span className="material-icons-outlined">mail</span>
               <Link
                 href={`mailto:${email}`}
-                className={cx("footer__list-item")}>
+                className={cx("footer__list-item")}
+              >
                 {email}
               </Link>
             </div>

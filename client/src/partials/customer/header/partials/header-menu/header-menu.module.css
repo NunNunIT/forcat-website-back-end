@@ -275,13 +275,13 @@
   box-shadow: inset 0 -2px 0 0 var(--primary-mau0-2);
 }
 
-@media only screen and (max-width: 1152px) {
+@media only screen and (max-width: 1153px) {
   .cate-dropdown__products {
     grid-template-columns: repeat(3, 1fr);
   }
 }
 
-@media only screen and (max-width: 1024px) {
+@media only screen and (max-width: 1025px) {
   .header__menu {
     display: none;
   }
@@ -299,10 +299,10 @@
   }
 }
 
-@media only screen and (max-width: 768px) {
+@media only screen and (max-width: 769px) {
   .cate-dropdown__products {
     grid-template-columns: repeat(2, 1fr);
   }
 }
 
-@media only screen and (max-width: 480px) {}
+@media only screen and (max-width: 417px) {}

@@ -4,7 +4,7 @@ import { BACKEND_URL } from "@/utils/commonConst";
 
 async function fetchUser(accessToken: String) {
   try {
-    const response = await fetch(`${BACKEND_URL}/auth/verify-access-token`, {
+    const res = await fetch(`${BACKEND_URL}/auth/verify-access-token`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -12,23 +12,18 @@ async function fetchUser(accessToken: String) {
       body: JSON.stringify({
         accessToken: accessToken,
       }),
+      credentials: "include",
     });
 
-    if (!response.ok) {
-      return false;
-    }
-
-    const userData = await response.json();
-    // Use the user data as needed in your frontend application
-    return userData;
+    return res.json()
   } catch (error) {
     console.error("There was a problem with your fetch operation:", error);
-    throw error; // Chuyển tiếp lỗi để xử lý ở phía gọi hàm
+    // throw error; // Chuyển tiếp lỗi để xử lý ở phía gọi hàm
   }
 }
 
 export async function middleware(request: NextRequest) {
-  let accessTokenString = request.cookies.get("accessToken");
+  const accessTokenString = request.cookies.get("accessToken");
 
   if (
     !accessTokenString &&
@@ -38,8 +33,9 @@ export async function middleware(request: NextRequest) {
   } else if (accessTokenString && request.url.includes("/logout")) {
     return NextResponse.next();
   } else if (accessTokenString) {
-    const user = await fetchUser(accessTokenString.value);
-    if (!user) {
+    const res = await fetchUser(accessTokenString.value);
+    console.log(res)
+    if (res.status !== 200 && res.success == true) {
       console.log("Fake AccessToken !!!");
       const response = NextResponse.redirect(new URL("/login", request.url));
       response.headers.set(

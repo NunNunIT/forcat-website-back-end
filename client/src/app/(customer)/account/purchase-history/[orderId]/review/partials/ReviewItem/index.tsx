@@ -96,7 +96,6 @@ export default function ReviewItem(props: IReviewItem) {
   };
   const handleSubmitForm = async (e) => {
     e.preventDefault();
-    // alert(JSON.stringify(dataForm));
     const RES = await axios.post(BACKEND_URL_REVIEWS, dataForm);
     const json: IResponseJSON = RES.data;
 
@@ -125,7 +124,8 @@ export default function ReviewItem(props: IReviewItem) {
         <div className="product__detail">
           <h5>
             <Link
-              href={`/${props.product_slug}?pid=${props.product_id_hashed}`}>
+              href={`/${props.product_slug}?pid=${props.product_id_hashed}`}
+            >
               {props.product_name}
             </Link>
           </h5>
@@ -141,12 +141,9 @@ export default function ReviewItem(props: IReviewItem) {
           {[1, 2, 3, 4, 5].map((index) => (
             <span
               key={index}
-              className={`material-icons${
-                index <= reviewRating ? "" : "-outlined"
-              }`}
-              onClick={() => {
-                setReviewRating(index);
-              }}>
+              className={`material-icons${index <= reviewRating ? "" : "-outlined"}`}
+              onClick={() => { setReviewRating(index); }}
+            >
               grade
             </span>
           ))}
@@ -161,8 +158,8 @@ export default function ReviewItem(props: IReviewItem) {
           accept="image/*"
         />
         <label htmlFor="imageUpload" className="image-upload-label">
-          <span className="material-icons-outlined">add_a_photo</span> Thêm hình
-          ảnh
+          <span className="material-icons-outlined">add_a_photo</span>
+          Thêm hình ảnh
         </label>
       </div>
       <div>
@@ -179,7 +176,8 @@ export default function ReviewItem(props: IReviewItem) {
       <button
         className="btn btn--filled sec"
         type="submit"
-        disabled={dataForm.review_context === ""}>
+        disabled={dataForm.review_context === ""}
+      >
         Đánh giá
       </button>
     </form>

@@ -21,7 +21,8 @@ export default function Modal({
     <div className={cx("modal")} onClick={handleOnClose}>
       <div
         className={cx("modal__container")}
-        onClick={(e) => e.stopPropagation()}>
+        onClick={(e) => e.stopPropagation()}
+      >
         <button
           className={`btn_ ${cx("modal__close")}`}
           onClick={handleOnClose}>

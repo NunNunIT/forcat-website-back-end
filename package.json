@@ -4,7 +4,7 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "dev": "concurrently --names \"BE,FE\" \"node ./server/index.js\" \"next dev ./client\"",
+    "dev": "concurrently --names \"BE,FE\" \"nodemon ./server/index.js\" \"next dev ./client\"",
     "build": "next build ./client",
     "start": "concurrently --names \"BE,FE\" \"node ./server/index.js\" \"next start ./client\"",
     "lint": "next lint ./client"
@@ -26,6 +26,7 @@
     "install": "^0.13.0",
     "jose": "^5.2.4",
     "js-cookie": "^3.0.5",
+    "jsdom": "^24.0.0",
     "jsonwebtoken": "^9.0.2",
     "material-icons": "^1.13.12",
     "moment": "^2.30.1",
@@ -36,6 +37,7 @@
     "next-redux-wrapper": "^8.1.0",
     "nodemailer": "^6.9.13",
     "nodemon": "^3.1.0",
+    "normalize.css": "^8.0.1",
     "npm": "^10.2.5",
     "react": "^18",
     "react-datepicker": "^6.6.0",
@@ -48,7 +50,8 @@
     "swiper": "^11.0.7",
     "swr": "^2.2.5",
     "tweetnacl": "^1.0.3",
-    "unidecode": "^1.0.1"
+    "unidecode": "^1.0.1",
+    "vite": "^5.2.9"
   },
   "devDependencies": {
     "@types/jsonwebtoken": "^9.0.6",

@@ -1,3 +1,5 @@
+"use client";
+
 // import libs
 import classNames from "classnames/bind";
 import Link from "next/link";
@@ -27,10 +29,10 @@ export default function ProductItemInOrderItem(
       </div>
       <div className={cx("product-item__detail")}>
         <h5>
-          {/* TODO: implement the link */}
           <Link
             className={cx("product-item__name")}
-            href={`/${props.product_slug}?pid=${props.product_id_hashed}`}>
+            href={`/${props.product_slug}?pid=${props.product_id_hashed}`}
+          >
             {props.product_name}
           </Link>
         </h5>

@@ -6,7 +6,7 @@
 
 .pagination-container>* {
   width: 3rem;
-  aspect-ratio: 1/1;
+  height: 3rem;
 
   display: flex;
   justify-content: center;
@@ -36,7 +36,3 @@
 
   font-weight: bold;
 }
-
-/* .pagination-container:has(button, Link):hover {
-  box-shadow: 0 0 1rem black;
-} */

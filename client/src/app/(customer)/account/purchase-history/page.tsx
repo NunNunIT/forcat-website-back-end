@@ -1,8 +1,6 @@
-"use client";
-
 // import libs
-import { useSearchParams, usePathname, useRouter } from "next/navigation";
-import useSWR, { Fetcher } from "swr";
+import { notFound } from "next/navigation";
+import { cookies } from "next/headers";
 
 // import utils
 import { BACKEND_URL_ORDERS, ORDER_STATUS_LIST } from "@/utils/commonConst";
@@ -10,95 +8,83 @@ import { BACKEND_URL_ORDERS, ORDER_STATUS_LIST } from "@/utils/commonConst";
 // import partials, components
 import { CustomerOrderItem, CustomerHistoryStatusNav } from "./partials";
 import { CustomerPagination } from "@/components";
-import { SkeletonOrderItem } from "./partials/OrderItem";
-import NotFound from "@/app/not-found";
 
 // import css
 import "./page.css";
 import "react-loading-skeleton/dist/skeleton.css";
 
-const fetcher: Fetcher<ResponseOrderHistory, string> = async (url: string) => {
-  const res: Response = await fetch(url);
-  const json: IResponseJSON = await res.json();
-  // if (!json.success) throw json;
+interface IDataResponseOrder {
+  orders: IOrderItemProps[];
+  maxPage: number;
+}
 
-  return json.data as ResponseOrderHistory;
-};
+const fetcher: (url: string) => Promise<IDataResponseOrder> = async (url: string) => {
+  const accessTokenString = cookies().get("accessToken").value;
+
+  const res: Response = await fetch(url, {
+    method: "GET",
+    headers: {
+      "Content-Type": "application/json",
+      Cookie:
+        "accessToken="
+        + accessTokenString,
+    },
+    credentials: "include",
+  });
+  if (!res.ok) return notFound();
+
+  const json: IResponseJSON = await res.json();
+  if (!json.success) return notFound();
+
+  return json.data as IDataResponseOrder;
+}
 
 const getFullBackendURLOrders = (status: string, page: string): string => {
   return (
-    BACKEND_URL_ORDERS +
-    "?" +
-    (status === "all" ? "" : `type=${status}&`) +
-    `page=${page}&limit=3`
+    BACKEND_URL_ORDERS
+    + "?"
+    + (status === "all" ? "" : `type=${status}&`)
+    + `page=${page}&limit=3`
   );
 };
 
-export default function PurchaseHistoryPage() {
-  // console.log("Bé cưwng", localStorage.getItem("currentUser"));
-
-  // use pathName, router
-  const pathName = usePathname();
-  const router = useRouter();
-
+export default async function PurchaseHistoryPage(
+  { searchParams }:
+    { searchParams: { [key: string]: string } }
+) {
   // get searchParam status, page
-  const searchParams = useSearchParams();
-  const currentStatus = searchParams.get("status") ?? "all";
-  const currentPage = searchParams.get("page") ?? "1";
+  const currentStatus = searchParams?.status ?? "all";
+  const currentPage = searchParams?.page ?? "1";
 
   const fullURL: string = getFullBackendURLOrders(currentStatus, currentPage);
 
-  const { data, error, isLoading, mutate } = useSWR(fullURL, fetcher);
+  // const { data, error, isLoading, mutate } = useSWR(fullURL, fetcher);
+  const data = await fetcher(fullURL);
 
   // check valid status
-  if (!ORDER_STATUS_LIST.includes(currentStatus)) return NotFound();
-
-  if (parseInt(currentPage) < 1) {
-    router.push(pathName + `?status=${currentStatus}&page=1`);
-    return;
-  }
+  if (!ORDER_STATUS_LIST.includes(currentStatus)) return notFound;
 
   // check valid page
-  if (error?.message?.message == "Page out of range!") {
-    router.push(
-      pathName + `?status=${currentStatus}&page=${error.message.maxPage}`
-    );
-    return;
-  }
+  if (parseInt(currentPage) < 1) return notFound;
 
   return (
     <div className="account-purchase-history__main">
       <CustomerHistoryStatusNav />
 
       <section className="purchase-history__purchase-item-list">
-        {isLoading && (
-          <>
-            <SkeletonOrderItem />
-            <SkeletonOrderItem />
-          </>
-        )}
-        {!isLoading && error && (
-          <p>
-            Đã có lỗi xảy ra: &#39;{error.message?.message || error.message}
-            &#39;
-          </p>
-        )}
-        {!isLoading && !error && data.orders.length === 0 && (
-          <p>Bạn chưa có đơn hàng nào</p>
-        )}
-        {!isLoading &&
-          !error &&
-          data.orders.map((order: IOrderItemProps) => (
-            <CustomerOrderItem key={order._id} {...order} mutate={mutate} />
+        {data.orders.length === 0
+          ? (
+            <p>Bạn hiện tại chưa đơn hàng nào!!!</p>
+          )
+          : data.orders.map((order: IOrderItemProps) => (
+            <CustomerOrderItem
+              key={order._id}
+              {...order}
+            />
           ))}
 
         {/* Pagination */}
-        {!isLoading && !error && data?.maxPage > 1 && (
-          <CustomerPagination
-            currentPage={parseInt(currentPage)}
-            maxPage={data?.maxPage ?? 1}
-          />
-        )}
+        <CustomerPagination maxPage={data?.maxPage ?? 1} />
       </section>
     </div>
   );

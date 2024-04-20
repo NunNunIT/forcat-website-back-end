@@ -5,10 +5,10 @@ import classNames from "classnames/bind";
 import Link from "next/link";
 import Image from "next/image";
 import { usePathname } from "next/navigation";
-import { useState } from "react";
 
 // import utils
 import { isActiveClass } from "@/utils";
+import { BACKEND_URL } from "@/utils/commonConst";
 
 // import css
 import styles from "./account-aside.module.css";
@@ -40,13 +40,33 @@ const asideNavData = [
 
 export default function CustomerAccountAside() {
   const pathName = usePathname();
-  const [isModalVisible, setIsModalVisible] = useState(false);
+  const { user_name, avatar_url } = fetchData;
 
-  const handleLogoutBtnClick = () => {
-    setIsModalVisible(!isModalVisible);
+  const handleLogout = async (e) => {
+    e.preventDefault();
+
+    try {
+      const res = await fetch(`${BACKEND_URL}/auth/logout`, {
+        method: "POST",
+        credentials: "include",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+
+      if (!res.ok) {
+        console.error("Logout failed: ", await res.text());
+        return;
+      }
+
+      localStorage.removeItem("currentUser");
+      window.location.reload();
+      return;
+    } catch (error) {
+      // return notFound();
+    }
   };
 
-  const { user_name, avatar_url } = fetchData;
 
   return (
     <aside className={cx("account__aside")}>
@@ -66,19 +86,28 @@ export default function CustomerAccountAside() {
                 className={cx(
                   "account__aside-nav-item",
                   isActiveClass(navData.url, pathName)
-                )}>
+                )}
+              >
                 <span className="material-icons">{navData.iconData}</span>
                 <span>{navData.text}</span>
               </Link>
             </li>
           ))}
-          <li key={asideNavData.length}>
-            <button
-              onClick={handleLogoutBtnClick}
-              className={cx("account__aside-nav-item", "dangerous-action")}>
-              <span className="material-icons">logout</span>
-              <span>Đăng xuất</span>
-            </button>
+          <li>
+            <form onSubmit={handleLogout}>
+              <button
+                type="submit"
+                className={
+                  cx(
+                    "account__aside-nav-item",
+                    "dangerous-action"
+                  )
+                }
+              >
+                <span className="material-icons">logout</span>
+                <span>Đăng xuất</span>
+              </button>
+            </form>
           </li>
         </ul>
       </nav>
