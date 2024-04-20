@@ -26,6 +26,7 @@
     "install": "^0.13.0",
     "jose": "^5.2.4",
     "js-cookie": "^3.0.5",
+    "jsdom": "^24.0.0",
     "jsonwebtoken": "^9.0.2",
     "material-icons": "^1.13.12",
     "moment": "^2.30.1",

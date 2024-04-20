@@ -21,10 +21,10 @@ export default function CustomerHeaderMain({
   params,
   searchParams,
 }: {
-  params: { "*": string };
+  params?: { "*": string };
   searchParams?: { [key: string]: string };
 }) {
-  const searchKey = searchParams ?? 0;
+  const {searchKey} = searchParams;
   console.log("searchKey từ Header", searchKey);
   console.log("searchKey từ Header", searchParams);
   const [showSmartSearch, setShowSmartSearch] = useState(false);
@@ -104,7 +104,7 @@ export default function CustomerHeaderMain({
               id="header__search-input"
               type="search"
               name="searchKey"
-              placeholder={searchKey ? searchKey : "Bạn tìm gì..."}
+              placeholder={searchKey ? searchKey.toString() : "Bạn tìm gì..."}
               onChange={handleInputChange}
             />
             <button className={cx("header__search-btn")} type="submit">
@@ -123,7 +123,7 @@ export default function CustomerHeaderMain({
             {showSmartSearch &&
               searchResults.map((product) => (
                 <CustomerHeaderItemUlt
-                  key={product.product_id}
+                  key={product.product_id_hashed}
                   product={product}
                 />
               ))}

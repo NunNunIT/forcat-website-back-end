@@ -125,21 +125,17 @@ interface IArticleDescriptionMediaPRops {
   caption: string;
 }
 
-interface IArticleProps {
-  article_id: string;
+interface INewsItemProps {
+  article_id_hashed: string;
   article_name: string;
+  article_slug: string;
   article_type: string;
   article_short_description: string;
-  article_description?: (
-    | IArticleDescriptionContentPRops
-    | IArticleDescriptionMediaPRops
-  )[];
   article_info: {
     author: string;
     published_date: string;
   };
   article_date: string;
-  article_slug?: string[];
 }
 
 interface IProductItemInOrderItemProps {

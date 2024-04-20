@@ -3,35 +3,12 @@ import { createSlug } from "../utils/createSlug.js";
 
 const articleSchema = new mongoose.Schema(
   {
-    article_name: {
-      type: String,
-      required: true
-    },
-    article_slug: {
-      type: String,
-    },
-    article_type: {
-      type: String,
-      required: true,
-    },
+    article_name: { type: String, required: true },
+    article_slug: { type: String, },
+    article_type: { type: String, required: true, },
+    article_info: { author: String, published_date: Date, },
     article_short_description: String,
-    article_info: {
-      author: String,
-      published_date: Date,
-    },
-    article_description: [
-      {
-        type: {
-          type: String,
-          required: true,
-        },
-        content: String,
-        url: String,
-        alt: String,
-        caption: String,
-        article_date: Date,
-      },
-    ],
+    article_content: String,
   },
   { timestamps: true }
 );
