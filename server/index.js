@@ -90,6 +90,7 @@ app.use("/api/cart", cartRoutes);
 app.use("/api/reviews", reviewRoutes);
 app.use("/api/orders", orderRoutes);
 app.use("/api/notifications", notiRoutes);
+app.use("/api/notifications", notiRoutes);
 app.use("/api/category", categoryRoutes);
 
 app.use((err, req, res, next) => {

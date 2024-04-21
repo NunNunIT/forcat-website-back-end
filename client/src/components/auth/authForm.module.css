@@ -1,0 +1,209 @@
+.form-auth{
+  max-width: 80vw;
+  display: flex;
+  flex-direction: column;
+  text-align: center;
+  padding: 12px;
+  gap: 10px;
+  margin: 0 auto;
+}
+
+.form-auth__input-content {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding: 10px 0 10px 0;
+}
+
+.form-auth input{
+  padding: 16px;
+  background-color: var(--bg);
+  color: var(--textColor);
+  border: 1px solid var(--outline-gray);
+  border-radius: 5px;
+  font-size: 16px;
+}
+
+.form-auth__title{
+  display: flex;
+  flex-direction: column;
+  text-align: center;
+  padding: 10px 0 20px 0;
+  gap: 12px;
+}
+
+.form-auth label{
+  text-align: left;
+  font-weight: 600;
+}
+
+.form-auth__title a{
+  color: var(--dark7)
+}
+
+.form-auth__title a:hover{
+  color: var(--dark6)
+}
+
+.form-auth .form-button{
+  padding: 20px 0;
+  width: 100%;
+  cursor: pointer;
+  background-color: var(--primary-mau3-1);
+  color: var(--white);
+  font-weight: bold;
+  border: none;
+  border-radius: 5px;
+  margin: 10px 0 10px 0;
+  opacity: 0.95;
+}
+
+.form-button:hover {
+  opacity: 1;
+}
+
+.form-auth__social-media {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  padding: 20px;
+}
+
+.form-auth__social-media p {
+  color: var(--dark6);
+  font-weight: 700;
+}
+
+
+.form-auth__social-buttons {
+  display: flex;
+  gap: 20px;
+}
+
+.form-auth__social-buttons button {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  border: none;
+  margin-right: 10px;
+  background-color: #f0f0f0; /* Màu nền */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  overflow: hidden; /* Để cắt hình ảnh trong phần nút */
+}
+
+.form-auth__social-buttons button:hover {
+  background-color: #e0e0e0; /* Màu nền hover */
+}
+
+.form-auth__social-buttons button:focus {
+  outline: none;
+}
+
+.social-image {
+  width: 100px;
+  height: 100px;
+  position: relative;
+}
+
+.form-auth__input-content {
+  position: relative;
+}
+
+.form-error {
+  position: absolute;
+  bottom: -10px;
+  left: 0;
+}
+
+.align-right{
+  display: flex;
+  justify-content: flex-end;
+  color: var(--dark5)
+}
+
+.register-note p {
+  text-align: center;
+}
+
+.register-note a{
+  color: var(--dark-blue)
+}
+
+/* forgot form */
+.hidden {
+  display: none;
+}
+
+.timer {
+  margin-top: 1em;
+}
+
+.input-wrap input[type="text"] {
+  width: 10%;
+  height: 4.5rem;
+  margin: 0;
+  text-align: center;
+  font-size: 2rem;
+  font-weight: bold;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  font-family: "Segoe UI", sans-serif;
+}
+
+.input-wrap {
+  position: relative;
+  height: 80px;
+  margin-top: 1rem;
+  margin-bottom: 0.875rem;
+  display: flex;
+  width: 100%;
+  justify-content: space-around;
+}
+
+.input-wrap label {
+  margin-left: 10px;
+  font-size: 0.95rem;
+}
+.send-again .resend .limit{
+  display: flex;
+  flex-direction: row;
+  font-size: 1 rem;
+  margin-top: 10px;
+  margin-bottom: 24px;
+  justify-content: center;
+  gap: 8px;
+}
+
+.send-again a {
+  color: var(--dark7)
+}
+.send-again a:hover {
+  color: var(--dark6)
+}
+span.red-start {
+  color: red;
+}
+.input-container {
+  position: relative;
+  width: 100%;
+}
+.input-field {
+  width: 100%;
+}
+.icon {
+  position: absolute;
+  top: 50%;
+  right: 4%;
+  transform: translateY(-50%);
+}
+.otp-error {
+  /* position: absolute; */
+  margin: auto;
+  bottom: -10px;
+  left: 0;
+}
