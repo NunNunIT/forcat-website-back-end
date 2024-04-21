@@ -5,12 +5,11 @@ import Notification from "../models/notification.model.js";
 import responseHandler from "../handlers/response.handler.js";
 import mappingOrderStatus from "../utils/mappingOrderStatus.js";
 import { encryptData } from "../utils/security.js";
+import convertOrderStatusToStr from "../utils/convertOrderStatusToStr.js";
 
 const createFromHexString = mongoose.Types.ObjectId.createFromHexString;
 
-const handleOrderDetailsAfterPopulate = (order
-  // , isHashedProductId = true
-) => ({
+const handleOrderDetailsAfterPopulate = (order) => ({
   ...order._doc,
   order_details: order._doc.order_details.map(
     detail => {
@@ -42,11 +41,11 @@ const handleOrderDetailsAfterPopulate = (order
 export const create = async (req, res, next) => {
   const orderInfo = req.body;
 
-  const user_id = req.user?.id ?? req.query?.user_id ?? "661754a9ae209b64b08e6874";
+  const user_id = req.user?.id;
   if (!user_id)
     return responseHandler.unauthorize(res, "You are not authenticated!");
 
-  const role = req.user?.role ?? "user";
+  const role = req.user?.role;
   if (!role === "user")
     return responseHandler.forbidden(res, "You are not authorized!");
 
@@ -66,7 +65,7 @@ export const create = async (req, res, next) => {
       `,
       users: {
         usersList: [
-          { user: user_id },
+          { _id: user_id },
         ],
       },
     };
@@ -81,7 +80,7 @@ export const create = async (req, res, next) => {
 
 // [GET] /api/orders/
 export const readAll = async (req, res, next) => {
-  const user_id = req.user?.id ?? req.query?.user_id ?? "661754a9ae209b64b08e6874";
+  const user_id = req.user?.id;
   if (!user_id)
     return responseHandler.unauthorize(res, "You are not authenticated!");
 
@@ -137,11 +136,11 @@ export const readAll = async (req, res, next) => {
 
 // [GET] /api/orders/:order_id
 export const readOne = async (req, res, next) => {
-  const user_id = req.user?.id ?? req.query?.id ?? "661754a9ae209b64b08e6874";
+  const user_id = req.user?.id;
   if (!user_id)
     return responseHandler.unauthorize(res, "You are not authenticated!");
 
-  const role = req.user?.role ?? "user";
+  const role = req.user?.role;
   if (!role || !["admin", "user", "staff"].includes(role))
     return responseHandler.forbidden(res, "You are not authorized!");
 
@@ -183,11 +182,11 @@ export const update = async (req, res, next) => {
 
 // [POST] /api/orders/:order_id/:order_status
 export const updateStatus = async (req, res, next) => {
-  const user_id = req.user?.id ?? req.query?.user_id ?? "661754a9ae209b64b08e6874";
+  const user_id = req.user?.id;
   if (!user_id)
     return responseHandler.unauthorize(res, "You are not authenticated!");
 
-  const role = req.user?.role ?? "user";
+  const role = req.user?.role;
   if (!role || !["admin", "user", "staff"].includes(role))
     return responseHandler.forbidden(res, "You are not authorized!");
 
@@ -213,13 +212,25 @@ export const updateStatus = async (req, res, next) => {
       return responseHandler.badRequest(res, "Order status can't set cause the current status");
 
     // Update order_status, order_process_info
-    const updatedOrder = await Order.findOneAndUpdate(query, {
+    await Order.findOneAndUpdate(query, {
       $set: { order_status },
       $push: { order_process_info: { status: order_status, date: new Date() } }
     })
 
-    console.log(updatedOrder);
+    const notiOrder = {
+      notification_name: "Thông báo cập nhật đơn hàng",
+      notification_type: "order",
+      notification_description: `
+        <p>Đơn hàng <b>${order_id}</b> của bạn đã được cập nhật tình trạng thành: ${convertOrderStatusToStr(order_status)}</p>
+      `,
+      users: {
+        usersList: [
+          { _id: order.customer_id },
+        ],
+      },
+    };
 
+    await Notification.create(notiOrder);
     return responseHandler.ok(res, null, "Updated");
   } catch (err) {
     next(err);
@@ -229,11 +240,11 @@ export const updateStatus = async (req, res, next) => {
 // [GET] a/pi/orders/:order_id/reviews
 // Lấy tất cả reviews bên trong order_id
 export const readAllReviews = async (req, res, next) => {
-  const user_id = req.user?.id ?? req.query?.user_id ?? "661754a9ae209b64b08e6874";
+  const user_id = req.user?.id;
   if (!user_id)
     return responseHandler.unauthorize(res, "You are not authenticated!");
 
-  const role = req.user?.role ?? "user";
+  const role = req.user?.role;
   if (!role || !["admin", "user", "staff"].includes(role))
     return responseHandler.forbidden(res, "You are not authorized!");
 

@@ -12,32 +12,32 @@ import {
 const router = express.Router();
 
 router.post("/",
-  // verifyAccessToken,
+  verifyAccessToken,
   create);
 
 // Read all purchases
 router.get('/',
-  // verifyAccessToken,
+  verifyAccessToken,
   readAll);
 
 // Read a purchase with id
 router.get('/:order_id',
-  // verifyAccessToken,
+  verifyAccessToken,
   readOne);
 
 // Update a purchase with id
 router.post("/:order_id/edit",
-  // verifyAccessToken,
+  verifyAccessToken,
   update);
 
 // Update a purchase status with id
 router.post("/:order_id/:order_status",
-  // verifyAccessToken,
+  verifyAccessToken,
   updateStatus);
 
 // Read all reviews
 router.get('/:order_id/reviews',
-  // verifyAccessToken,
+  verifyAccessToken,
   readAllReviews);
 
 

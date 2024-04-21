@@ -1,22 +1,33 @@
-import Article from '../models/article.model.js';
-import resHandler from '../handlers/response.handler.js';
+import Article from "../models/article.model.js";
+import resHandler from "../handlers/response.handler.js";
+import { encryptData, decryptData } from "../utils/security.js";
+import { parseRawHTML } from "../utils/parseRawHTML.js";
+
+const hashArticleId = (article) => {
+  article._doc.article_id_hashed = encryptData(article._doc._id);
+  article._doc._id = undefined;
+  return article;
+}
 
 const getSomeRelatedArticle = async ({ article_slug }) => {
   const numberLimitArticle = 5;
   const sortedFields = { createdAt: -1 };
 
   try {
+    // TODO: Hiếu
+    // Cải tiến khả năng xếp hạng bài tập như chức năng tìm kiếm sản phẩm
+    // Cải thiện khả năng tìm kiếm bằng cách loại trừ bài viết hiện tại
     const articles = await Article.find({
       article_slug: { $ne: article_slug }, // Exclude the current article
     }, {
-      _id: 0,
-      article_short_description: 0,
-      article_description: 0,
+      article_content: 0,
     }).limit(numberLimitArticle)
       .sort(sortedFields)
       .exec();
 
-    return articles;
+    const handledArticles = articles.map(hashArticleId);
+
+    return handledArticles;
   } catch (err) {
     console.error(err);
     return null;
@@ -30,7 +41,7 @@ export const create = async (req, res, next) => {
     return resHandler.created(res, article);
   } catch (err) {
     if (err.code === 11000) {
-      return resHandler.conflict(res, 'The article slug is already taken');
+      return resHandler.conflict(res, "The article slug is already taken");
     }
 
     next(err);
@@ -39,9 +50,10 @@ export const create = async (req, res, next) => {
 
 export const readUnlimited = async (req, res, next) => {
   try {
-    const articles = await Article.find({}, { _id: 0, article_description: 0 }).exec();
+    const articles = await Article.find({}, { article_content: 0 }).exec();
+    const handledArticles = articles.map(hashArticleId);
 
-    return resHandler.ok(res, articles);
+    return resHandler.ok(res, handledArticles);
   } catch (err) {
     next(err);
   }
@@ -61,31 +73,40 @@ export const readAll = async (req, res, next) => {
     const maxPage = Math.ceil(await Article.countDocuments(query).exec() / limit);
 
     // Perform efficient pagination with skip and limit
-    const articles = await Article.find(query, { _id: 0, article_description: 0 })
+    const articles = await Article.find(query, { article_content: 0 })
       .skip((page - 1) * limit) // Calculate skip based on page number
       .limit(limit)
       .sort(sorted_fields) // Sort by creation date (optional)
       .exec(); // Execute the query
 
-    return resHandler.ok(res, { articles, maxPage });
+    const handledArticles = articles.map(hashArticleId);
+
+    return resHandler.ok(res, { articles: handledArticles, maxPage });
   } catch (err) {
     next(err);
   }
 }
 
+// [GET] /api/articles/:slug/:aid
 export const readOne = async (req, res, next) => {
+  const { aid, slug } = req.params;
+  if (!aid || !slug)
+    return resHandler.badRequest(res, "Missing the required data to perform this request");
+
   const query = {
-    article_slug: req.params.slug,
+    _id: decryptData(req.params?.aid),
+    article_slug: req.params?.slug,
   };
 
   try {
     const article = await Article.findOne(query, { _id: 0 }).exec();
 
     if (!article) {
-      return resHandler.notFound(res, 'Not found the article with the article slug');
+      return resHandler.notFound(res, "Not found the article with the article slug");
     }
 
     const relatedArticles = await getSomeRelatedArticle(article);
+    article._doc.article_content = parseRawHTML(article.article_content);
     article._doc.related_articles = relatedArticles;
 
     return resHandler.ok(res, article);
@@ -95,21 +116,24 @@ export const readOne = async (req, res, next) => {
 }
 
 export const update = async (req, res, next) => {
-  if (!req.params.slug) {
-    return resHandler.badRequest(res, 'Missing the required data to perform this request');
+  const { article_id_hashed, article_slug, ...update } = req.body;
+  if (!article_id_hashed || !article_slug) {
+    return resHandler.badRequest(res, "Missing the required data to perform this request");
   }
 
-  const query = { article_slug: req.params.slug }
-  const update = { ...req.body }
+  const query = {
+    _id: decryptData(article_id_hashed),
+    article_slug
+  }
 
   try {
     const article = await Article.findOneAndUpdate(query, update).exec();
 
     if (!article) {
-      return resHandler.notFound(res, 'Not found the article with the article slug');
+      return resHandler.notFound(res, "Not found the article with the article_id_hashed and article_slug");
     }
 
-    return resHandler.ok(res, article);
+    return resHandler.ok(res);
   } catch (err) {
     next(err);
   }

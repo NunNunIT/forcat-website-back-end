@@ -1,7 +1,13 @@
 import nacl from "tweetnacl";
 
-const publicKey = Buffer.from(process.env.TWEETNACL_PUBLIC_KEY_BASE64, "base64");
-const secretKey = Buffer.from(process.env.TWEETNACL_SECRET_KEY_BASE64, "base64");
+const publicKey = Buffer.from(
+  process.env.TWEETNACL_PUBLIC_KEY_BASE64,
+  "base64"
+);
+const secretKey = Buffer.from(
+  process.env.TWEETNACL_SECRET_KEY_BASE64,
+  "base64"
+);
 
 const encryptData = (data) => {
   const nonce = new Uint8Array(nacl.box.nonceLength);
@@ -15,7 +21,7 @@ const encryptData = (data) => {
   // Convert the encrypted data to base64 for string representation
   const base64Encoded = Buffer.from(encryptedData).toString("base64");
 
-  // Change + to %2B
+  // Change special letter
   const encryptedString = encodeURIComponent(base64Encoded)
     .replaceAll("%21", "!")
     .replaceAll("%27", "'")
@@ -25,7 +31,6 @@ const encryptData = (data) => {
 
   return encryptedString;
 };
-
 
 const decryptData = (encryptedData) => {
   const nonce = new Uint8Array(nacl.box.nonceLength);

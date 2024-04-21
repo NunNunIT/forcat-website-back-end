@@ -30,16 +30,23 @@ mongoose
     console.log(err);
   });
 
-
 const app = express();
 
 // app.use(cors());
-app.use(
-  cors({
-    origin: "http://localhost:3000", // replace with the URL of your frontend
-    credentials: true,
-  })
-);
+// app.use(
+//   cors({
+//     origin: "https://www.forcatshop.com", // replace with the URL of your frontend
+//     credentials: true,
+//   })
+// );
+
+app.use(function(req, res, next) {
+  res.setHeader("Access-Control-Allow-Origin", "*");
+  res.setHeader("Access-Control-Allow-Methods", "GET, POST, OPTIONS, PUT, PATCH, DELETE");
+  res.setHeader("Access-Control-Allow-Credentials", true);
+  next();
+});
+
 app.use(express.json());
 app.use(cookieParser());
 
@@ -55,7 +62,7 @@ app.use("/api/articles", articleRoutes);
 app.use("/api/cart", cartRoutes);
 app.use("/api/reviews", reviewRoutes);
 app.use("/api/orders", orderRoutes);
-app.use("/api/noti", notiRoutes);
+app.use("/api/notifications", notiRoutes);
 app.use("/api/category", categoryRoutes);
 
 app.use((err, req, res, next) => {

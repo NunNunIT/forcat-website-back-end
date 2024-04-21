@@ -6,9 +6,11 @@ import {
   getFilteredReviews,
 } from "../controllers/review.controller.js";
 
+import { verifyAccessToken } from "../middleware/verifyUser.js"
+
 const router = express.Router();
 
-router.post("/", createOrUpdate);
+router.post("/", verifyAccessToken, createOrUpdate);
 
 router.get("/getOverview/:product_id", getOverview);
 

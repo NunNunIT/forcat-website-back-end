@@ -19,10 +19,10 @@ router.get("/", readAll);
 router.get("/unlimited", readUnlimited);
 
 // readOne
-router.get("/:slug", readOne);
+router.get("/:slug/:aid", readOne);
 
 // update
-router.post("/edit/:slug", update);
+router.post("/edit/:slug/:aid", update);
 
 
 export default router;
