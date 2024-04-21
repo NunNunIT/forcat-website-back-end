@@ -378,7 +378,7 @@ export const getSearchRecommended = async (req, res) => {
 
     products = sortSearchResults(products, req.query.searchKey);
     // Lấy 10 kết quả đầu tiên
-    const firstTenProducts = products.slice(0, 10);
+    const firstTenProducts = products.slice(0, 4);
 
     // Biến đổi dữ liệu trả về theo yêu cầu
     const transformedProducts = firstTenProducts.map((product) => {
