@@ -2,7 +2,6 @@ import Article from "../models/article.model.js";
 import resHandler from "../handlers/response.handler.js";
 import { encryptData, decryptData } from "../utils/security.js";
 import { parseRawHTML } from "../utils/parseRawHTML.js";
-import { parse } from "path";
 
 const hashArticleId = (article) => {
   article._doc.article_id_hashed = encryptData(article._doc._id);
