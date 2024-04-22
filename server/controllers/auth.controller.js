@@ -104,7 +104,9 @@ export const login = async (req, res, next) => {
     res.cookie("accessToken", token, {
       httpOnly: true,
       expires: expiryDate,
-      sameSite: "none",
+      // sameSite: "none",
+      domain: '.forcatshop.com',
+      path: '/', // Điều này cho phép cookie được gửi với mọi yêu cầu
       secure: true,
     });
 
