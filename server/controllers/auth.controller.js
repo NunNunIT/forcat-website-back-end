@@ -101,13 +101,12 @@ export const login = async (req, res, next) => {
     }, process.env.JWT_SECRET_KEY);
     const expiryDate = new Date(Date.now() + HOUR); // 1 hour
 
-    // res.cookie("accessToken", token, {
-    //   httpOnly: true, // Cookie chỉ có thể được truy cập thông qua HTTP, không thể bằng JavaScript
-    //   expires: expiryDate, // Thiết lập thời gian hết hạn cho cookie
-    //   sameSite: 'None',
-    //   secure: true, // Cookie chỉ được gửi qua kênh bảo mật (HTTPS)
-    // });
-    res.setHeader('Authorization', `Bearer ${token}`);
+    res.cookie("accessToken", token, {
+      httpOnly: true, // Cookie chỉ có thể được truy cập thông qua HTTP, không thể bằng JavaScript
+      expires: expiryDate, // Thiết lập thời gian hết hạn cho cookie
+      sameSite: 'None',
+      secure: true, // Cookie chỉ được gửi qua kênh bảo mật (HTTPS)
+    });
 
     return responseHandler.token(res, rest, token);
   } catch (error) {
