@@ -20,7 +20,7 @@ export const verifyAccessToken = (req, res, next) => {
 }
 
 export const verifyUserAccessToken = async (req, res, next) => {
-  const token = req.cookies.accessToken ?? req.body.accessToken;
+  const token = req.cookies.accessToken;
   console.log("Real Token:", token)
   if (!token)
     return responseHandler.unauthorize(res, 'You are not authenticated!');

@@ -16,7 +16,7 @@ const router = express.Router();
 
 router.use(cookieParser());
 
-router.post("/verify-access-token", verifyUserAccessToken);
+router.get("/verify-access-token", verifyUserAccessToken);
 router.post("/register", register);
 router.post("/login", login);
 router.post("/login/google", loginWithGoogle);
