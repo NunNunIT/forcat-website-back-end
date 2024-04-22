@@ -102,13 +102,12 @@ export const login = async (req, res, next) => {
     const expiryDate = new Date(Date.now() + HOUR); // 1 hour
 
     res.cookie("accessToken", token, {
-      httpOnly: true,
-      expires: expiryDate,
-      // sameSite: "none",
-      domain: '.forcatshop.com',
-      path: '/', // Điều này cho phép cookie được gửi với mọi yêu cầu
-      secure: true,
-    });
+  httpOnly: true, // Cookie chỉ có thể được truy cập thông qua HTTP, không thể bằng JavaScript
+  expires: expiryDate, // Thiết lập thời gian hết hạn cho cookie
+  domain: '.forcatshop.com', // Cookie có thể được chia sẻ qua các subdomain của forcatshop.com
+  path: '/', // Cookie sẽ được gửi với mọi yêu cầu
+  secure: true, // Cookie chỉ được gửi qua kênh bảo mật (HTTPS)
+});
 
     return responseHandler.token(res, rest, token);
   } catch (error) {
