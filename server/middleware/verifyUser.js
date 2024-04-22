@@ -21,19 +21,19 @@ export const verifyAccessToken = (req, res, next) => {
 
 export const verifyUserAccessToken = async (req, res, next) => {
   const token = req.cookies.accessToken;
-  console.log("FE send Token:", token);
+  console.log("Middleware Token:", token)
   if (!token)
-    return res.status(401).json({ error: 'You are not authenticated!' });
+    return responseHandler.unauthorize(res, 'You are not authenticated!');
 
   try {
     const user = jwt.verify(token, process.env.JWT_SECRET_KEY);
-    const userData = await User.findById(user.id).select('_id');
+    const userData = await User.findById(user.id).select( '_id' );
     if (!userData) {
-      return res.status(404).json({ error: 'User not found!' });
+      return responseHandler.notFound(res, 'User not exist!');
     }
     // Nếu tất cả đều thành công, trả về dữ liệu với statusCode 200
-    return res.status(200).json({ message: 'Authenticated user!' });
+    return responseHandler.ok(res, "", "Authenticated user!");
   } catch (err) {
-    return res.status(500).json({ error: err.message });
+    return responseHandler.error(res, err.message);
   }
 }
