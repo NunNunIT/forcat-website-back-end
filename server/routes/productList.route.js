@@ -25,7 +25,7 @@ router.get("/getNewestProducts", getNewestProducts);
 router.get("/getTopRatedProducts", getTopRatedProducts);
 router.get("/getDiscountProducts", getDiscountProducts);
 router.get("/searchRecommended", encodeURI, getSearchRecommended);
-// Ví dụ: "/search?searchKey=Mèo&category=ABC&sort=ABC&minPrice=100000&maxPrice=500000&rating=4&page=2
+// Ví dụ: "/search?searchKey=Mèo&category=ABC&sort=ABC&minPrice=100000&maxPrice=500000&rating=4&discount=true&page=2
 router.get("/search", encodeURI, search);
 
 export default router;
