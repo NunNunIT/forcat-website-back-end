@@ -44,7 +44,7 @@ app.use(bodyParser.urlencoded({ extended: true}))
 app.use(bodyParser.json());
 
 app.use(function (req, res, next) {
-  const allowedOrigins = ['https://www.forcatshop.com', 'http://localhost:3000', 'https://forcat-website-front-end.vercel.app/']; // Replace with your second origin
+  const allowedOrigins = ['https://www.forcatshop.com', 'http://localhost:3000', 'https://forcat-website-front-end.vercel.app']; // Replace with your second origin
   const origin = req.header('Origin');
 
   if (allowedOrigins.indexOf(origin) !== -1) {
