@@ -43,22 +43,22 @@ const app = express();
 app.use(bodyParser.urlencoded({ extended: true}))
 app.use(bodyParser.json());
 
-// app.use(function (req, res, next) {
-//   const allowedOrigins = ['https://www.forcatshop.com', 'http://localhost:3000', 'https://forcat-website-front-end.vercel.app/']; // Replace with your second origin
-//   const origin = req.header('Origin');
+app.use(function (req, res, next) {
+  const allowedOrigins = ['https://www.forcatshop.com', 'http://localhost:3000', 'https://forcat-website-front-end.vercel.app/']; // Replace with your second origin
+  const origin = req.header('Origin');
 
-//   if (allowedOrigins.indexOf(origin) !== -1) {
-//     res.setHeader('Access-Control-Allow-Origin', origin);
-//     // Rest of your code...
-//   }
-//   next();
-// });
+  if (allowedOrigins.indexOf(origin) !== -1) {
+    res.setHeader('Access-Control-Allow-Origin', origin);
+    // Rest of your code...
+  }
+  next();
+});
 
 // Add headers before the routes are defined
 app.use(function (req, res, next) {
 
   // Website you wish to allow to connect
-  res.setHeader('Access-Control-Allow-Origin', 'https://www.forcatshop.com');
+  // res.setHeader('Access-Control-Allow-Origin', 'https://www.forcatshop.com');
 
   // Request methods you wish to allow
   res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, PATCH, DELETE');
