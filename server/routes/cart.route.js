@@ -1,5 +1,5 @@
 import express from "express";
-import { verifyAccessToken } from "../middleware/verifyUser.js"
+import { verifyAccessToken } from "../middleware/verifyUser.js";
 
 import {
   getCart,
@@ -9,8 +9,8 @@ import {
 
 const router = express.Router();
 
-router.get("/:user_id", verifyAccessToken, getCart);
-router.post("/addCart/:user_id", verifyAccessToken, addCart);
-router.post("/updateCart/:user_id", verifyAccessToken, updateCart);
+router.get("/", verifyAccessToken, getCart);
+router.post("/addCart", verifyAccessToken, addCart);
+router.post("/updateCart", verifyAccessToken, updateCart);
 
 export default router;
