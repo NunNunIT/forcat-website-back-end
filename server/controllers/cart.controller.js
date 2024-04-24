@@ -1,9 +1,9 @@
 import User from "../models/user.model.js";
 import responseHandler from "../handlers/response.handler.js";
 
-// [GET] /api/cart/:user_id
+// [GET] /api/cart
 export const getCart = async (req, res, next) => {
-  const userId = req.params.user_id;
+  const userId = req.user?.id;
 
   try {
     const user = await User.findOne({ _id: userId })
@@ -25,9 +25,9 @@ export const getCart = async (req, res, next) => {
   }
 };
 
-// [POST] /api/cart/addCart/:user_id
+// [POST] /api/cart/addCart
 export const addCart = async (req, res, next) => {
-  const userId = req.params.user_id;
+  const userId = req.user?.id;
 
   if (!Object.keys(req.body).length)
     return responseHandler.notFound(res, "No Body Received");
@@ -74,9 +74,9 @@ export const addCart = async (req, res, next) => {
   }
 };
 
-// [POST] /api/cart/updateCart/:user_id
+// [POST] /api/cart/updateCart
 export const updateCart = async (req, res, next) => {
-  const userId = req.params.user_id;
+  const userId = req.user?.id;
 
   try {
     // find by user_id
