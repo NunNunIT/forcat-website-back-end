@@ -1,6 +1,7 @@
 import Notification from "../models/notification.model.js"; // Import model notification
 import responseHandler from "../handlers/response.handler.js";
 
+// [GET] /api/notifications
 export const getAllNoti = async (req, res, next) => {
   const user_id = req.user?.id;
   if (!user_id) {
@@ -64,12 +65,13 @@ export const getAllNoti = async (req, res, next) => {
   }
 };
 
+// [POST] /api/notifications/:noti_id/read
 export const setReadNoti = async (req, res, next) => {
-  const user_id = req.user?.id ?? req.body?.user_id ?? req.query?.user_id ?? "661754a9ae209b64b08e6874";
+  const user_id = req.user?.id;
   if (!user_id)
     return responseHandler.unauthorize(res, "You are not authenticated!");
 
-  const role = req.user?.role ?? "user";
+  const role = req.user?.role;
   if (!role || !["user"].includes(role))
     return responseHandler.forbidden(res, "You are not authorized!");
 
@@ -107,6 +109,7 @@ export const setReadNoti = async (req, res, next) => {
   }
 };
 
+// [POST] /api/notifications/readAll
 export const setReadAllNoti = async (req, res, next) => {
   const user_id = req.user?.id;
   if (!user_id)
