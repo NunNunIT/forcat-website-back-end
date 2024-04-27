@@ -27,7 +27,7 @@ export const verifyUserAccessToken = async (req, res, next) => {
 
   try {
     const user = jwt.verify(token, process.env.JWT_SECRET_KEY);
-    const userData = await User.findById(user.id).select( '_id' );
+    const userData = await User.findById(user.id).select('_id');
     if (!userData) {
       return responseHandler.notFound(res, 'User not exist!');
     }
