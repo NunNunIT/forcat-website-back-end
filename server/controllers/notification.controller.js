@@ -98,11 +98,13 @@ export const setReadNoti = async (req, res, next) => {
     );
 
     if (!notification.users.isAll) {
+      // Nếu thông báo không phải là tất cả thì cập nhật isUnread của user là null
       await notification.updateOne(
         { $push: { "users.usersList": { _id: user_id, isUnread: null } } },
         { new: true },
       )
     }
+
     return responseHandler.ok(res, notification);
   } catch (error) {
     next(error);
