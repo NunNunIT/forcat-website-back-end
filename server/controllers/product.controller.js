@@ -1,26 +1,47 @@
-import Product from "../models/product.model.js"; // Import model sản phẩm
+import Product from "../models/product.model.js";
+import Review from "../models/review.model.js";
 import responseHandler from "../handlers/response.handler.js";
+import { decryptData } from "../utils/security.js";
 
-// [GET] /api/:product_slug
+// [GET] /api/product/:pid
 export const getProduct = async (req, res, next) => {
-  const productSlug = req.params.product_slug;
-
   try {
-    const product = await Product.findOne({
-      product_slug: productSlug,
-    }).exec();
+    const encryptedProductId = req.params.pid;
+    const productId = decryptData(encryptedProductId);
+    const product = await Product.findOne({ _id: productId }).populate({
+      path: "recent_reviews",
+      select:
+        "_id product_variant_name review_rating user_info review_imgs review_video review_context createdAt",
+    });
 
     if (!product) {
       return responseHandler.notFound(res, "Product Not Found");
     }
 
-    const productCategory = product.categories[0].category;
-    const productId = product.product_id;
+    return responseHandler.ok(res, { product });
+  } catch (err) {
+    console.log(err);
+    return responseHandler.error(res);
+  }
+};
+
+// [GET] /api/product/getRecommend/:pid
+export const getRecommend = async (req, res, next) => {
+  try {
+    const encryptedProductId = req.params.pid;
+    const productId = decryptData(encryptedProductId);
+    const product = await Product.findOne({ _id: productId });
+
+    if (!product) {
+      return responseHandler.notFound(res, "Recommend Not Found");
+    }
+
+    const productCategory = product.categories[0];
     const relatedProducts = await Product.find({
-      categories: { $elemMatch: { category: productCategory } },
+      categories: { $in: productCategory },
       product_id: { $ne: productId },
     });
-    return responseHandler.ok(res, { product, relatedProducts });
+    return responseHandler.ok(res, { relatedProducts });
   } catch (err) {
     console.log(err);
     return responseHandler.error(res);

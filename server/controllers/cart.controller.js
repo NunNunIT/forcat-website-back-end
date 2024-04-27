@@ -1,9 +1,9 @@
 import User from "../models/user.model.js";
 import responseHandler from "../handlers/response.handler.js";
 
-// [GET] /api/cart/:user_id
+// [GET] /api/cart
 export const getCart = async (req, res, next) => {
-  const userId = req.params.user_id;
+  const userId = req.user?.id;
 
   try {
     const user = await User.findOne({ _id: userId })
@@ -25,9 +25,58 @@ export const getCart = async (req, res, next) => {
   }
 };
 
-// [POST] /api/cart/updateCart/:user_id
+// [POST] /api/cart/addCart
+export const addCart = async (req, res, next) => {
+  const userId = req.user?.id;
+
+  if (!Object.keys(req.body).length)
+    return responseHandler.notFound(res, "No Body Received");
+
+  try {
+    const user = await User.findOne({ _id: userId });
+
+    if (!user) {
+      return responseHandler.notFound(res, "Cart Not Found");
+    }
+
+    const productId = req.body.product_id;
+    const variantId = req.body.variant_id;
+    const quantity = req.body.quantity;
+    let isExisted = false;
+
+    // handle product existed in cart
+    for (let cartItem of user.cart) {
+      if (
+        cartItem.product.toString() == productId &&
+        cartItem.variant_id.toString() == variantId
+      ) {
+        cartItem.quantity += req.body.quantity;
+        isExisted = true;
+        break;
+      }
+    }
+
+    if (!isExisted) {
+      // if not existed in cart
+      user.cart.push({
+        product: productId,
+        variant_id: variantId,
+        quantity: quantity,
+      });
+    }
+
+    // save to database
+    user.save();
+    return responseHandler.ok(res, {});
+  } catch (err) {
+    console.log(err);
+    return responseHandler.error(res);
+  }
+};
+
+// [POST] /api/cart/updateCart
 export const updateCart = async (req, res, next) => {
-  const userId = req.params.user_id;
+  const userId = req.user?.id;
 
   try {
     // find by user_id

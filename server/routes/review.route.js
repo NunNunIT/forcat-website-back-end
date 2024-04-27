@@ -1,8 +1,16 @@
 import express from "express";
 
-import { getOverview, getFilteredReviews } from "../controllers/review.controller.js";
+import {
+  createOrUpdate,
+  getOverview,
+  getFilteredReviews,
+} from "../controllers/review.controller.js";
+
+import { verifyAccessToken } from "../middleware/verifyUser.js"
 
 const router = express.Router();
+
+router.post("/", verifyAccessToken, createOrUpdate);
 
 router.get("/getOverview/:product_id", getOverview);
 

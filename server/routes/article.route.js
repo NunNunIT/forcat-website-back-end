@@ -1,22 +1,28 @@
-import express from 'express';
-import { create, readAll, readOne, update } from '../controllers/article.controller.js';
+import express from "express";
+import {
+  create,
+  readUnlimited,
+  readAll,
+  readOne,
+  update,
+} from "../controllers/article.controller.js";
 
 const router = express.Router();
 
 // create
-router.post('/', create);
+router.post("/", create);
 
 // readAll
-router.get('/', readAll)
-router.get('/page/:page', readAll)
-router.get('/limit/:limit', readAll)
-router.get('/page/:page/limit/:limit', readAll)
+router.get("/", readAll);
+
+// readUnlimited
+router.get("/unlimited", readUnlimited);
 
 // readOne
-router.get('/:slug', readOne)
+router.get("/:slug/:aid", readOne);
 
 // update
-router.post('/update/:slug', update)
+router.post("/edit/:slug/:aid", update);
 
 
 export default router;

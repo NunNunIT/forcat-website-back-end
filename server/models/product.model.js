@@ -46,6 +46,7 @@ const productSchema = new mongoose.Schema(
     product_variants: [
       {
         variant_name: String,
+        variant_slug: String,
         price: Number,
         variant_imgs: [
           {
@@ -86,32 +87,37 @@ const productSchema = new mongoose.Schema(
   { timestamps: true }
 );
 
-// Middleware để cập nhật category_names
-productSchema.pre("save", async function (next) {
-  try {
-    // Lấy thông tin của các danh mục từ ObjectId trong trường categories
-    const categories = await Category.find({
-      _id: { $in: product.categories },
-    });
+// // Middleware để cập nhật category_names
+// productSchema.pre("save", async function (next) {
+//   try {
+//     // Lấy thông tin của các danh mục từ ObjectId trong trường categories
+//     const categories = await Category.find({
+//       _id: { $in: product.categories },
+//     });
 
-    // Chuyển các thông tin của các danh mục thành mảng tên các danh mục
-    const categoryNames = categories.map((category) => category.category_name);
+//     // Chuyển các thông tin của các danh mục thành mảng tên các danh mục
+//     const categoryNames = categories.map((category) => category.category_name);
 
-    // Cập nhật trường category_names trong sản phẩm
-    this.category_names = categoryNames;
+//     // Cập nhật trường category_names trong sản phẩm
+//     this.category_names = categoryNames;
 
-    // Lưu sản phẩm đã được cập nhật
-    // await product.save();
-    next();
+//     // Lưu sản phẩm đã được cập nhật
+//     // await product.save();
+//     next();
 
-    console.log("Cập nhật sản phẩm thành công!");
-  } catch (error) {
-    console.error("Lỗi khi cập nhật sản phẩm:", error);
-  }
-});
+//     console.log("Cập nhật sản phẩm thành công!");
+//   } catch (error) {
+//     console.error("Lỗi khi cập nhật sản phẩm:", error);
+//   }
+// });
 
 productSchema.pre("save", function (next) {
   this.product_slug = createSlug(this.product_name);
+  // Lặp qua mỗi phần tử trong mảng product_variants
+  this.product_variants.forEach((variant) => {
+    // Tạo slug mới từ variant_name và gán cho variant_slug
+    variant.variant_slug = createSlug(variant.variant_name);
+  });
   next();
 });
 

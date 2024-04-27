@@ -9,6 +9,7 @@ const resWithPack = (res, statusCode, pack) =>
 // Define the response handler
 // 2xx
 const ok = (res, data, message) => resWithPack(res, 200, { data, message });
+const token = (res, data, token) => resWithPack(res, 200, { data, token });
 const created = (res, data, message) =>
   resWithPack(res, 201, { data, message });
 
@@ -31,6 +32,7 @@ const error = (res, message) =>
 export default {
   resWithPack,
   ok,
+  token,
   created,
   badRequest,
   unauthorize,

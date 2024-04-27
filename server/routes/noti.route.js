@@ -5,10 +5,12 @@ import {
   setReadAllNoti,
 } from "../controllers/notification.controller.js";
 
+import { verifyAccessToken } from "../middleware/verifyUser.js"
+
 const router = express.Router();
 
-router.get("/getNoti/:user_id", getAllNoti);
-router.post("/readNoti/:user_id/:noti_id", setReadNoti);
-router.post("/readAllNoti/:user_id", setReadAllNoti);
+router.get("/", verifyAccessToken, getAllNoti);
+router.post("/:noti_id/read", verifyAccessToken, setReadNoti);
+router.post("/readAll", verifyAccessToken, setReadAllNoti);
 
 export default router;
