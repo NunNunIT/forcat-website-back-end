@@ -20,7 +20,8 @@ export const verifyAccessToken = (req, res, next) => {
 }
 
 export const verifyUserAccessToken = async (req, res, next) => {
-  const token = req.cookies.currentUser ?? req.body.accessToken;
+  // const token = req.cookies.currentUser ?? req.body.accessToken;
+  const token = req.cookies.accessToken;
   console.log("Middleware Token:", token)
   if (!token)
     return responseHandler.unauthorize(res, 'You are not authenticated!');
