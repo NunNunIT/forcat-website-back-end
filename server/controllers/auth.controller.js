@@ -38,6 +38,7 @@ export const register = async (req, res, next) => {
   try {
     const newUser = await User.create(user_data);
     const {
+      _id: noID,
       user_password: passwordToDiscard,
       createdAt: createdAtToDiscard,
       updatedAt: updatedAtToDiscard,
@@ -87,6 +88,7 @@ export const login = async (req, res, next) => {
 
   try {
     const {
+      _id: noID,
       user_password: passwordToDiscard,
       createdAt: createdAtToDiscard,
       updatedAt: updatedAtToDiscard,
@@ -123,6 +125,7 @@ export const loginWithGoogle = async (req, res, next) => {
     });
     if (checkUser) {
       const {
+        _id: noID,
         user_password: passwordToDiscard,
         createdAt: createdAtToDiscard,
         updatedAt: updatedAtToDiscard,
@@ -130,10 +133,10 @@ export const loginWithGoogle = async (req, res, next) => {
         user_active: isActiveToDiscard,
         __v: versionToDiscard,
         ...rest
-      } = user._doc;
+      } = checkUser._doc;
 
       const token = jwt.sign({
-        id: user._id,
+        id: checkUser._id,
         role: checkUser.user_role
       }, process.env.JWT_SECRET_KEY);
       const expiryDate = new Date(Date.now() + HOUR); // 1 hour
@@ -164,6 +167,7 @@ export const loginWithGoogle = async (req, res, next) => {
 
     const user = await User.create(user_data);
     const {
+      _id: noID,
       user_password: passwordToDiscard,
       createdAt: createdAtToDiscard,
       updatedAt: updatedAtToDiscard,
