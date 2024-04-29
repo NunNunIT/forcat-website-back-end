@@ -1,5 +1,6 @@
 import Product from "../models/product.model.js";
 import Review from "../models/review.model.js";
+import { encryptData } from "../utils/security.js";
 import responseHandler from "../handlers/response.handler.js";
 import {
   decryptData
@@ -44,7 +45,7 @@ export const getRecommend = async (req, res, next) => {
     }
 
     const productCategory = product.categories[0];
-    const products = await Product.find({
+    const relatedProducts = await Product.find({
       categories: {
         $in: productCategory
       },
@@ -53,17 +54,16 @@ export const getRecommend = async (req, res, next) => {
       },
     });
 
-    // Biến đổi dữ liệu trả về theo yêu cầu
-    const relatedProducts = products.map((product) => {
+    const transformedProducts = relatedProducts.map((product) => {
       // Tìm giá thấp nhất và số lượng bán được cao nhất
       const lowestPriceVariant = product.product_variants.reduce(
         (minPriceVariant, variant) => {
           if (
             !minPriceVariant ||
             (variant.price * (100 - variant.discount_amount)) / 100 <
-            (minPriceVariant.price *
-              (100 - minPriceVariant.discount_amount)) /
-            100
+              (minPriceVariant.price *
+                (100 - minPriceVariant.discount_amount)) /
+                100
           ) {
             minPriceVariant = variant;
           }
@@ -92,25 +92,24 @@ export const getRecommend = async (req, res, next) => {
         product_slug: product.product_slug,
         product_avg_rating: product.product_avg_rating,
         product_img: product.product_imgs[0], // Lấy ảnh đầu tiên trong mảng product_imgs
-        lowest_price: lowestPriceVariant ?
-          (lowestPriceVariant.price *
-            (100 - lowestPriceVariant.discount_amount)) /
-          100 :
-          null, // Giá thấp nhất
+        lowest_price: lowestPriceVariant
+          ? (lowestPriceVariant.price *
+              (100 - lowestPriceVariant.discount_amount)) /
+            100
+          : null, // Giá thấp nhất
         product_price: lowestPriceVariant.price,
-        highest_discount: highestDiscountVariant ?
-          highestDiscountVariant.discount_amount :
-          null, // Giảm giá cao nhất
+        highest_discount: highestDiscountVariant
+          ? highestDiscountVariant.discount_amount
+          : null, // Giảm giá cao nhất
         product_sold_quantity: product.product_sold_quanity, // Số lượng bán được
         category_name: product.category_names[0],
         variant_id: lowestPriceVariant._id,
         variant_name: lowestPriceVariant.variant_name,
         variant_slug: lowestPriceVariant.variant_slug,
-        updatedAt: product.updatedAt,
       };
     });
 
-    return responseHandler.ok(res, relatedProducts, "Trả dữ liệu thành công");
+    responseHandler.ok(res, transformedProducts, "Trả dữ liệu thành công");
   } catch (err) {
     console.log(err);
     return responseHandler.error(res);
