@@ -20,7 +20,7 @@ router.post("/verify-access-token", verifyUserAccessToken);
 router.post("/register", register);
 router.post("/login", login);
 router.post("/login/google", loginWithGoogle);
-router.post("/logout", logout);
+router.get("/logout", logout);
 router.post("/forgot", forgot);
 router.post("/verify-otp", verifyOtp);
 router.put("/reset-password", resetPassword);

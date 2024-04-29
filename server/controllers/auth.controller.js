@@ -163,6 +163,7 @@ export const loginWithGoogle = async (req, res, next) => {
       user_email: req.body.user_email,
       user_password: hashedPassword,
       user_avt_img: req.body.user_avt_img,
+      provider: "google",
     };
 
     const user = await User.create(user_data);
@@ -199,7 +200,6 @@ export const loginWithGoogle = async (req, res, next) => {
 
 export const logout = (req, res, next) => {
   const accessToken = req.cookies.access_token;
-
   res.clearCookie("accessToken");
   return responseHandler.ok(res, undefined, "Logout success");
 };
