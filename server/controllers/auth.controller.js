@@ -149,50 +149,50 @@ export const loginWithGoogle = async (req, res, next) => {
       });
 
       return responseHandler.token(res, rest, token);
+    } else {
+      const generatedPassword =
+        Math.random().toString(36).slice(-8) +
+        Math.random().toString(36).slice(-8);
+      const hashedPassword = bcryptjs.hashSync(generatedPassword, 10);
+
+      const user_data = {
+        user_name: req.body.user_name,
+        user_login_name: req.body.user_name.split(" ").join("").toLowerCase() +
+          Math.random().toString(36).slice(-8),
+        user_email: req.body.user_email,
+        user_password: hashedPassword,
+        user_avt_img: req.body.user_avt_img,
+        provider: "google",
+      };
+
+      const user = await User.create(user_data);
+      const {
+        _id: noID,
+        user_password: passwordToDiscard,
+        createdAt: createdAtToDiscard,
+        updatedAt: updatedAtToDiscard,
+        user_role: roleToDiscard,
+        user_active: isActiveToDiscard,
+        __v: versionToDiscard,
+        ...rest
+      } = user._doc;
+
+
+      const token = jwt.sign({
+        id: user._id,
+        role: user.user_role
+      }, process.env.JWT_SECRET_KEY);
+      const expiryDate = new Date(Date.now() + HOUR); // 1 hour
+      res.cookie("accessToken", token, {
+        httpOnly: true, // Cookie chỉ có thể được truy cập thông qua HTTP, không thể bằng JavaScript
+        expires: expiryDate, // Thiết lập thời gian hết hạn cho cookie
+        sameSite: 'None',
+        secure: true, // Cookie chỉ được gửi qua kênh bảo mật (HTTPS)
+        domain: '.forcatshop.com',
+      });
+
+      return responseHandler.token(res, rest, token);
     }
-
-    const generatedPassword =
-      Math.random().toString(36).slice(-8) +
-      Math.random().toString(36).slice(-8);
-    const hashedPassword = bcryptjs.hashSync(generatedPassword, 10);
-
-    const user_data = {
-      user_name: req.body.user_name,
-      user_login_name: req.body.user_name.split(" ").join("").toLowerCase() +
-        Math.random().toString(36).slice(-8),
-      user_email: req.body.user_email,
-      user_password: hashedPassword,
-      user_avt_img: req.body.user_avt_img,
-      provider: "google",
-    };
-
-    const user = await User.create(user_data);
-    const {
-      _id: noID,
-      user_password: passwordToDiscard,
-      createdAt: createdAtToDiscard,
-      updatedAt: updatedAtToDiscard,
-      user_role: roleToDiscard,
-      user_active: isActiveToDiscard,
-      __v: versionToDiscard,
-      ...rest
-    } = user._doc;
-
-
-    const token = jwt.sign({
-      id: user._id,
-      role: user.user_role
-    }, process.env.JWT_SECRET_KEY);
-    const expiryDate = new Date(Date.now() + HOUR); // 1 hour
-    res.cookie("accessToken", token, {
-      httpOnly: true, // Cookie chỉ có thể được truy cập thông qua HTTP, không thể bằng JavaScript
-      expires: expiryDate, // Thiết lập thời gian hết hạn cho cookie
-      sameSite: 'None',
-      secure: true, // Cookie chỉ được gửi qua kênh bảo mật (HTTPS)
-      domain: '.forcatshop.com',
-    });
-
-    return responseHandler.token(res, rest, token);
   } catch (error) {
     next(error);
   }
