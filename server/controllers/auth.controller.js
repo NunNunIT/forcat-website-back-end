@@ -106,6 +106,7 @@ export const login = async (req, res, next) => {
       expires: expiryDate, // Thiết lập thời gian hết hạn cho cookie
       sameSite: 'None',
       secure: true, // Cookie chỉ được gửi qua kênh bảo mật (HTTPS)
+      domain: '.forcatshop.com',
     });
 
     return responseHandler.token(res, rest, token);
