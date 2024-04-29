@@ -110,9 +110,7 @@ export const getRecommend = async (req, res, next) => {
       };
     });
 
-    return responseHandler.ok(res, {
-      relatedProducts
-    });
+    return responseHandler.ok(res, relatedProducts, "Trả dữ liệu thành công");
   } catch (err) {
     console.log(err);
     return responseHandler.error(res);
