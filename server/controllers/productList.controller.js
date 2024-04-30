@@ -197,7 +197,8 @@ export const getTopRatedProducts = async (req, res, next) => {
   try {
     const topRatedProducts = await Product.find()
       .sort({
-        product_avg_rating: -1
+        product_avg_rating: -1,
+        product_sold_quantity: -1,
       }) // Sắp xếp các sản phẩm theo product_avg_rating giảm dần
       .limit(10) // Giới hạn kết quả trả về chỉ 10 sản phẩm
       .select(
