@@ -8,6 +8,7 @@ const articleSchema = new mongoose.Schema(
     article_type: { type: String, required: true, },
     article_info: { author: String, published_date: Date, },
     article_short_description: String,
+    article_subtitle: String,
     article_content: String,
   },
   { timestamps: true }
