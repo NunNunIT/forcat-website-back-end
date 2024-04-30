@@ -8,6 +8,8 @@
     "start": "node ./server/index.js"
   },
   "dependencies": {
+    "@payos/node": "^1.0.6",
+    "axios": "^1.6.8",
     "bcrypt": "^5.1.1",
     "bcryptjs": "^2.4.3",
     "cookie-parser": "^1.4.6",
