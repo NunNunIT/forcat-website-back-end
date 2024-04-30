@@ -72,7 +72,7 @@ export const create = async (req, res, next) => {
 
     await Notification.create(notiOrder);
 
-    return responseHandler.created(res);
+    return responseHandler.created(res, newOrder);
   } catch (error) {
     next(error);
   }
