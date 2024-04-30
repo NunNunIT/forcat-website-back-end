@@ -16,18 +16,18 @@ const COUNT_PAYMENT_DATA = {
 };
 
 export const paymentLinkData = async (req, res) => {
-  const { user_id, ...paymentData } = req.body;
+  const user_id = req.user?.id;
+  const role = req.user?.role;
+
+    if (!user_id) return responseHandler.unauthorize(res);
+    if (!role || role !== "user") return responseHandler.forbidden(res);
+
+  const { ...paymentData } = req.body;
+
   const orderCode = hashString(user_id + Date.now());
   const { amount } = paymentData;
 
   if (!amount) return responseHandler.badRequest(res);
-
-  // const user_id = req.user?.id;
-
-  if (!user_id) return responseHandler.unauthorize(res);
-
-  // const role = req.user?.role;
-  // if (!role || role !== "user") return responseHandler.forbidden(res);
 
   try {
     const res_data = await payos.createPaymentLink({
@@ -38,6 +38,6 @@ export const paymentLinkData = async (req, res) => {
 
     return responseHandler.created(res, res_data);
   } catch (err) {
-    next(err);
+    console.log("không tạo được link thanh toán", err);
   }
 };

@@ -4,7 +4,7 @@ import bcryptjs from "bcryptjs";
 import responseHandler from "../handlers/response.handler.js";
 
 export const edit = async (req, res, next) => {
-  const user_id = req.user.id;
+  const user_id = req.user?.id;
   const { user_name, user_birth, user_gender, user_phone, user_address} =
     req.body;
 
@@ -24,7 +24,7 @@ export const edit = async (req, res, next) => {
 };
 
 export const changePassword = async (req, res, next) => {
-  const user_id = req.user.id;
+  const user_id = req.user?.id;
   const { oldPassword, newPassword } = req.body;
 
   try {
@@ -53,7 +53,7 @@ export const changePassword = async (req, res, next) => {
 };
 
 export const getInfoUser = async (req, res, next) => {
-  const user_id = req.user.id;
+  const user_id = req.user?.id;
 
   try {
     // Find the user in the database

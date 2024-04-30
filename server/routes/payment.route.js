@@ -5,7 +5,7 @@ import { verifyAccessToken } from "../middleware/verifyUser.js";
 const router = express.Router();
 
 router.post("/create-payment-link",
-    // verifyAccessToken, 
+    verifyAccessToken, 
     paymentLinkData);
 
 export default router;
