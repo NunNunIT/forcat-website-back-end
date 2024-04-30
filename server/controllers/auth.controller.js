@@ -121,7 +121,7 @@ export const login = async (req, res, next) => {
 export const loginWithGoogle = async (req, res, next) => {
   try {
     const checkUser = await User.findOne({
-      user_email: req.body.email
+      user_email: req.body.user_email
     });
     if (checkUser) {
       const {
