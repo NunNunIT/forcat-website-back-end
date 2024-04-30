@@ -556,6 +556,7 @@ export const search = async (req, res) => {
 
     let sortOptions = {};
     if (sortBy === "hot") {
+      sortOptions.product_avg_rating = -1,
       sortOptions.product_sold_quantity = -1; // Sắp xếp theo sản phẩm nổi bật
     } else if (sortBy === "new") {
       sortOptions.createdAt= -1; 
