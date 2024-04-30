@@ -559,8 +559,7 @@ export const search = async (req, res) => {
       sortOptions.product_sold_quantity = -1; // Sắp xếp theo sản phẩm nổi bật
     } else if (sortBy === "new") {
       sortOptions.createdAt= -1; 
-    }
-    else if (sortBy === "sale") {
+    } else if (sortBy === "sale") {
       sortOptions.product_sold_quantity = -1; // Sắp xếp theo sản phẩm bán chạy
     } else if (sortBy === "price-z-to-a") {
       sortOptions["product_variants.price"] = -1; // Sắp xếp theo giá cao đến thấp
