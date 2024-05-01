@@ -1,6 +1,7 @@
 import PayOS from "@payos/node";
 import responseHandler from "../handlers/response.handler.js";
 import Order from "../models/order.model.js";
+import convertOrderStatusToStr from "../utils/convertOrderStatusToStr.js";
 
 const payos = new PayOS(
   process.env.PAYOS_CLIENT_ID,
