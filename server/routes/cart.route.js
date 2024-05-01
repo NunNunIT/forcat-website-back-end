@@ -14,7 +14,7 @@ const router = express.Router();
 //   console.log(decryptData(req.body.product_id));
 // });
 router.get("/", verifyAccessToken, getCart);
-router.post("/addCart", addCart);
+router.post("/addCart", verifyAccessToken, addCart);
 router.post("/updateCart", verifyAccessToken, updateCart);
 
 export default router;
