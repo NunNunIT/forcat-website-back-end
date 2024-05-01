@@ -1,4 +1,5 @@
 import mongoose from "mongoose";
+import User from "./user.model.js";
 
 const orderSchema = new mongoose.Schema(
   {
@@ -76,6 +77,15 @@ orderSchema.pre("save", function (next) {
 
   next();
 });
+
+orderSchema.post("save", async function (doc, next) {
+  await User.updateOne(
+    { _id: doc.customer_id },
+    { $push: { current_orders: { _id: doc._id } } }
+  );
+  return next();
+});
+
 
 const Order = mongoose.model("Order", orderSchema);
 export default Order;
