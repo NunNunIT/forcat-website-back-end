@@ -1,13 +1,10 @@
 import Order from "../models/order.model.js";
 import Review from "../models/review.model.js";
-import mongoose from "mongoose";
 import Notification from "../models/notification.model.js";
 import responseHandler from "../handlers/response.handler.js";
 import mappingOrderStatus from "../utils/mappingOrderStatus.js";
 import { decryptData, encryptData } from "../utils/security.js";
 import convertOrderStatusToStr from "../utils/convertOrderStatusToStr.js";
-
-const createFromHexString = mongoose.Types.ObjectId.createFromHexString;
 
 const handleOrderDetailsAfterPopulate = (order) => ({
   ...order._doc,
@@ -15,15 +12,10 @@ const handleOrderDetailsAfterPopulate = (order) => ({
     detail => {
       // get variant from product_variants
       const variant = detail.product_id?.product_variants.find(
-        variant => variant.toObject()._id === detail.variant_id
+        variant => variant.toObject()._id.toString() === detail.variant_id
       );
 
-      // const id = isHashedProductId
-      //   ? { product_id_hashed: encryptData(detail.product_id?._id) }
-      //   : { product_id: detail.product_id?._id }
-
       return {
-        // ...id,
         product_id_hashed: encryptData(detail.product_id?._id),
         product_name: detail.product_id?.product_name,
         product_slug: detail.product_id?.product_slug,
@@ -118,7 +110,7 @@ export const readAll = async (req, res, next) => {
       ...(type ? { order_status: type } : {})
     } :
     {
-      customer_id: createFromHexString(user_id),
+      customer_id: user_id,
       ...(type ? { order_status: type } : {})
     };
 
