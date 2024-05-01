@@ -39,7 +39,8 @@ export const getCart = async (req, res, next) => {
 // [POST] /api/cart/addCart
 export const addCart = async (req, res, next) => {
   const userId = req.user?.id;
-
+  // const userId = "66292d557a3a6d22f489b0f4";
+  // console.log(decryptData(decodeURIComponent(req.body.product_id)));
   if (!Object.keys(req.body).length)
     return responseHandler.notFound(res, "No Body Received");
 
@@ -50,7 +51,7 @@ export const addCart = async (req, res, next) => {
       return responseHandler.notFound(res, "Cart Not Found");
     }
 
-    const productId = decryptData(req.body.product_id);
+    const productId = decryptData(decodeURIComponent(req.body.product_id));
     const variantId = req.body.variant_id;
     const quantity = req.body.quantity;
     let isExisted = false;
@@ -102,7 +103,8 @@ export const updateCart = async (req, res, next) => {
       changedItems.forEach((item) => {
         const index = user.cart.findIndex(
           (cartItem) =>
-            cartItem.product.toString() == decryptData(item.product_id)
+            cartItem.product.toString() ==
+            decryptData(decodeURIComponent(item.product_id))
         );
         if (index !== -1) {
           user.cart[index].quantity = item.quantity;
@@ -116,7 +118,8 @@ export const updateCart = async (req, res, next) => {
       deletedItems.forEach((item) => {
         const index = user.cart.findIndex(
           (cartItem) =>
-            cartItem.product.toString() == decryptData(item.product_id)
+            cartItem.product.toString() ==
+            decryptData(decodeURIComponent(item.product_id))
         );
         user.cart.splice(index, 1);
       });
