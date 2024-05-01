@@ -1,10 +1,7 @@
 import Product from "../models/product.model.js";
-import Review from "../models/review.model.js";
 import { encryptData } from "../utils/security.js";
 import responseHandler from "../handlers/response.handler.js";
-import {
-  decryptData
-} from "../utils/security.js";
+import { decryptData } from "../utils/security.js";
 
 // [GET] /api/product/:pid
 export const getProduct = async (req, res, next) => {
@@ -12,18 +9,21 @@ export const getProduct = async (req, res, next) => {
     const encryptedProductId = req.params.pid;
     const productId = decryptData(encryptedProductId);
     const product = await Product.findOne({
-      _id: productId
+      _id: productId,
     }).populate({
       path: "recent_reviews",
-      select: "_id product_variant_name review_rating user_info review_imgs review_video review_context createdAt",
+      select:
+        "_id product_variant_name review_rating user_info review_imgs review_video review_context createdAt",
     });
 
     if (!product) {
       return responseHandler.notFound(res, "Product Not Found");
     }
 
+    product.product_id_hashed = encryptData(product._id);
+
     return responseHandler.ok(res, {
-      product
+      product,
     });
   } catch (err) {
     console.log(err);
@@ -37,7 +37,7 @@ export const getRecommend = async (req, res, next) => {
     const encryptedProductId = req.params.pid;
     const productId = decryptData(encryptedProductId);
     const product = await Product.findOne({
-      _id: productId
+      _id: productId,
     });
 
     if (!product) {
@@ -47,10 +47,10 @@ export const getRecommend = async (req, res, next) => {
     const productCategory = product.categories[0];
     const relatedProducts = await Product.find({
       categories: {
-        $in: productCategory
+        $in: productCategory,
       },
       product_id: {
-        $ne: productId
+        $ne: productId,
       },
     });
 
