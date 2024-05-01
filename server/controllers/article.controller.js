@@ -10,7 +10,7 @@ const hashArticleId = (article) => {
 }
 
 const getSomeRelatedArticle = async ({ article_slug }) => {
-  const numberLimitArticle = 5;
+  const numberLimitArticle = 6;
   const sortedFields = { createdAt: -1 };
 
   try {
