@@ -20,10 +20,30 @@ export const getProduct = async (req, res, next) => {
       return responseHandler.notFound(res, "Product Not Found");
     }
 
-    product.product_id_hashed = encryptData(product._id);
-
     return responseHandler.ok(res, {
-      product,
+      product: {
+        _id: product._id,
+        product_id_hashed: encryptData(product._id),
+        product_name: product.product_name,
+        product_slug: product.product_slug,
+        category_names: product.category_names,
+        categories: product.categories,
+        product_imgs: product.product_imgs,
+        product_avg_rating: product.product_avg_rating,
+        product_imgs: product.product_imgs,
+        product_sold_quanity: product.product_sold_quanity,
+        product_short_description: product.product_short_description,
+        product_description: product.product_description,
+        product_detail: product.product_detail,
+        product_variants: product.product_variants,
+        review_count: product.review_count,
+        recent_reviews: product.recent_reviews,
+        product_supp_price: product.recent_reviews,
+        recent_images: product.recent_reviews,
+        recent_videos: product.recent_reviews,
+        createdAt: product.recent_reviews,
+        updatedAt: product.recent_reviews,
+      },
     });
   } catch (err) {
     console.log(err);
