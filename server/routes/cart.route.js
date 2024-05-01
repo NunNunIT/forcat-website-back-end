@@ -6,11 +6,15 @@ import {
   updateCart,
   addCart,
 } from "../controllers/cart.controller.js";
+import { decryptData } from "../utils/security.js";
 
 const router = express.Router();
 
+// router.post("/", (req, res) => {
+//   console.log(decryptData(req.body.product_id));
+// });
 router.get("/", verifyAccessToken, getCart);
-router.post("/addCart", verifyAccessToken, addCart);
+router.post("/addCart", addCart);
 router.post("/updateCart", verifyAccessToken, updateCart);
 
 export default router;
