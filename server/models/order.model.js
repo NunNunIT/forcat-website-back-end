@@ -12,10 +12,6 @@ const orderSchema = new mongoose.Schema(
       default: "661754e675fd4037c93d0dd8",
       ref: "User", // Tham chiếu đến collection nhân viên (Staff), nếu có
     },
-    payment_id: {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: "Payment", // Tham chiếu đến collection thanh toán (Payment)
-    },
     order_buyer: {
       order_name: String,
       order_phone: String,
@@ -27,6 +23,7 @@ const orderSchema = new mongoose.Schema(
       province: String,
     },
     order_note: String,
+    order_payment_cost: { type: Number, default: 0 },
     order_shipping_cost: { type: Number, default: 0 },
     order_total_cost: Number,
     order_process_info: [
