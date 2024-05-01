@@ -4,6 +4,7 @@ import Notification from "../models/notification.model.js";
 import responseHandler from "../handlers/response.handler.js";
 import mappingOrderStatus from "../utils/mappingOrderStatus.js";
 import { decryptData, encryptData } from "../utils/security.js";
+import hashString from "../utils/hashStringIntoInt.js";
 import convertOrderStatusToStr from "../utils/convertOrderStatusToStr.js";
 
 const handleOrderDetailsAfterPopulate = (order) => ({
@@ -35,14 +36,16 @@ export const create = async (req, res, next) => {
   const orderInfo = req.body;
 
   // Decrypt product_id_hashed to product_id in order_details
+  // console.log(">> orderInfo:", orderInfo);
   orderInfo.order_details = orderInfo?.order_details.map(order_detail => {
     const { product_id_hashed, ...restData } = order_detail;
-    const product_id = decryptData(product_id_hashed);
+    console.log(product_id_hashed);
+    const product_id = decryptData(decodeURIComponent(product_id_hashed));
 
     return { product_id, ...restData, }
   })
 
-  console.log(">> orderInfo:", orderInfo);
+  // console.log(">> orderInfo:", orderInfo);
 
   const user_id = req.user?.id;
   if (!user_id)
@@ -53,8 +56,11 @@ export const create = async (req, res, next) => {
     return responseHandler.forbidden(res, "You are not authorized!");
 
   try {
+    const orderCode = hashString(user_id + Date.now());
+
     const newOrder = {
       customer_id: user_id,
+      orderCode,
       ...orderInfo,
     };
 
