@@ -36,7 +36,7 @@ const decryptData = (encryptedData) => {
   const nonce = new Uint8Array(nacl.box.nonceLength);
 
   // Decode the base64 encoded string back to a Uint8Array
-  const decodedData = Buffer.from(decodeURIComponent(encryptedData), "base64");
+  const decodedData = Buffer.from(encryptedData, "base64");
 
   // Perform decryption using nacl.box.open
   const decryptedData = nacl.box.open(decodedData, nonce, publicKey, secretKey);
