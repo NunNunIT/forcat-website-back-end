@@ -9,7 +9,7 @@ const payos = new PayOS(
 );
 
 const COUNT_PAYMENT_DATA = {
-  description: "Thanh toan don hang Forcatshop.com",
+  description: "Thanh toan don hang",
   cancelUrl: "https://www.forcatshop.com/account/purchase-history?type=unpaid",
   returnUrl:
     "https://www.forcatshop.com/account/purchase-history?type=delivering",
