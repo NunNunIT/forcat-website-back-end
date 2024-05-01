@@ -1,6 +1,5 @@
 import PayOS from "@payos/node";
 import responseHandler from "../handlers/response.handler.js";
-import hashString from "../utils/hashStringIntoInt.js";
 import Order from "../models/order.model.js";
 
 const payos = new PayOS(
@@ -10,7 +9,7 @@ const payos = new PayOS(
 );
 
 const COUNT_PAYMENT_DATA = {
-  description: "Thanh toan don hang",
+  description: "Thanh toan don hang Forcatshop.com",
   cancelUrl: "https://www.forcatshop.com/account/purchase-history?type=unpaid",
   returnUrl:
     "https://www.forcatshop.com/account/purchase-history?type=delivering",
@@ -25,8 +24,7 @@ export const paymentLinkData = async (req, res) => {
 
   const { ...paymentData } = req.body;
 
-  const orderCode = hashString(user_id + Date.now());
-  const { amount } = paymentData;
+  const { orderCode, amount } = paymentData;
 
   if (!amount) return responseHandler.badRequest(res);
 
@@ -47,6 +45,8 @@ export const updateStatusOrderAfterPayment = async (req, res) => {
   const { orderCode } = req.webhookData;
   const order = await Order.findOne({ orderCode });
   if (!order) return responseHandler.notFound(res);
+
+  const query = { orderCode };
 
   // Update order_status, order_process_info
   await Order.findOneAndUpdate(query, {
