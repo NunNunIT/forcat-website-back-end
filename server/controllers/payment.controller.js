@@ -44,7 +44,7 @@ export const paymentLinkData = async (req, res) => {
 export const updateStatusOrderAfterPayment = async (req, res) => {
   const { orderCode } = req.webhookData;
   const order = await Order.findOne({ orderCode });
-  if (!order) return responseHandler.notFound(res);
+  if (!order) return res.json();
 
   const query = { orderCode };
 
