@@ -59,7 +59,7 @@ export const updateStatusOrderAfterPayment = async (req, res) => {
     notification_name: "Thông báo cập nhật đơn hàng",
     notification_type: "order",
     notification_description: `
-        <p>Đơn hàng <b>${order_id}</b> của bạn đã được
+        <p>Đơn hàng <b>${order._id}</b> của bạn đã được
         cập nhật tình trạng thành: ${convertOrderStatusToStr(order_status)}</p>
       `,
     users: {
