@@ -4,7 +4,7 @@ import mongoose from "mongoose";
 import Notification from "../models/notification.model.js";
 import responseHandler from "../handlers/response.handler.js";
 import mappingOrderStatus from "../utils/mappingOrderStatus.js";
-import { encryptData } from "../utils/security.js";
+import { decryptData, encryptData } from "../utils/security.js";
 import convertOrderStatusToStr from "../utils/convertOrderStatusToStr.js";
 
 const createFromHexString = mongoose.Types.ObjectId.createFromHexString;
@@ -39,7 +39,18 @@ const handleOrderDetailsAfterPopulate = (order) => ({
 
 // [POST] /api/orders/
 export const create = async (req, res, next) => {
+  // get order info from req.body
   const orderInfo = req.body;
+
+  // Decrypt product_id_hashed to product_id in order_details
+  orderInfo.order_details = orderInfo?.order_details.map(order_detail => {
+    const { product_id_hashed, ...restData } = order_detail;
+    const product_id = decryptData(product_id_hashed);
+
+    return { product_id, ...restData, }
+  })
+
+  console.log(">> orderInfo:", orderInfo);
 
   const user_id = req.user?.id;
   if (!user_id)
