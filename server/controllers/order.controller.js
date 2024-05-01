@@ -15,7 +15,7 @@ const handleOrderDetailsAfterPopulate = (order) => ({
     detail => {
       // get variant from product_variants
       const variant = detail.product_id?.product_variants.find(
-        variant => variant.toObject().variant_id === detail.variant_id
+        variant => variant.toObject()._id === detail.variant_id
       );
 
       // const id = isHashedProductId
