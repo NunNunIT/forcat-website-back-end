@@ -6,6 +6,7 @@ import path from "path";
 import cookieParser from "cookie-parser";
 import bodyParser from "body-parser"
 
+
 import userRoutes from "./routes/user.route.js";
 import authRoutes from "./routes/auth.route.js";
 import productListRoutes from "./routes/productList.route.js";
@@ -16,9 +17,11 @@ import reviewRoutes from "./routes/review.route.js";
 import orderRoutes from "./routes/order.route.js";
 import articleRoutes from "./routes/article.route.js";
 import categoryRoutes from "./routes/category.route.js";
+import paymentRoutes from "./routes/payment.route.js";
 
 const PORT = 8080;
 const __dirname = path.resolve();
+
 
 dotenv.config();
 
@@ -72,6 +75,7 @@ app.use("/api/reviews", reviewRoutes);
 app.use("/api/orders", orderRoutes);
 app.use("/api/notifications", notiRoutes);
 app.use("/api/category", categoryRoutes);
+app.use("/api/payment", paymentRoutes);
 
 app.use((err, req, res, next) => {
   const statusCode = err.statusCode || 500;
