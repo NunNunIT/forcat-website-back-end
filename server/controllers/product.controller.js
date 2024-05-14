@@ -1,10 +1,7 @@
 import Product from "../models/product.model.js";
-import Review from "../models/review.model.js";
 import { encryptData } from "../utils/security.js";
 import responseHandler from "../handlers/response.handler.js";
-import {
-  decryptData
-} from "../utils/security.js";
+import { decryptData } from "../utils/security.js";
 
 // [GET] /api/product/:pid
 export const getProduct = async (req, res, next) => {
@@ -12,10 +9,11 @@ export const getProduct = async (req, res, next) => {
     const encryptedProductId = req.params.pid;
     const productId = decryptData(encryptedProductId);
     const product = await Product.findOne({
-      _id: productId
+      _id: productId,
     }).populate({
       path: "recent_reviews",
-      select: "_id product_variant_name review_rating user_info review_imgs review_video review_context createdAt",
+      select:
+        "_id product_variant_name review_rating user_info review_imgs review_video review_context createdAt",
     });
 
     if (!product) {
@@ -23,7 +21,29 @@ export const getProduct = async (req, res, next) => {
     }
 
     return responseHandler.ok(res, {
-      product
+      product: {
+        _id: product._id,
+        product_id_hashed: encryptData(product._id),
+        product_name: product.product_name,
+        product_slug: product.product_slug,
+        category_names: product.category_names,
+        categories: product.categories,
+        product_imgs: product.product_imgs,
+        product_avg_rating: product.product_avg_rating,
+        product_imgs: product.product_imgs,
+        product_sold_quanity: product.product_sold_quanity,
+        product_short_description: product.product_short_description,
+        product_description: product.product_description,
+        product_detail: product.product_detail,
+        product_variants: product.product_variants,
+        review_count: product.review_count,
+        recent_reviews: product.recent_reviews,
+        product_supp_price: product.recent_reviews,
+        recent_images: product.recent_reviews,
+        recent_videos: product.recent_reviews,
+        createdAt: product.recent_reviews,
+        updatedAt: product.recent_reviews,
+      },
     });
   } catch (err) {
     console.log(err);
@@ -37,7 +57,7 @@ export const getRecommend = async (req, res, next) => {
     const encryptedProductId = req.params.pid;
     const productId = decryptData(encryptedProductId);
     const product = await Product.findOne({
-      _id: productId
+      _id: productId,
     });
 
     if (!product) {
@@ -47,10 +67,10 @@ export const getRecommend = async (req, res, next) => {
     const productCategory = product.categories[0];
     const relatedProducts = await Product.find({
       categories: {
-        $in: productCategory
+        $in: productCategory,
       },
       product_id: {
-        $ne: productId
+        $ne: productId,
       },
     });
 

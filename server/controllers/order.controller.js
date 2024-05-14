@@ -1,13 +1,11 @@
 import Order from "../models/order.model.js";
 import Review from "../models/review.model.js";
-import mongoose from "mongoose";
 import Notification from "../models/notification.model.js";
 import responseHandler from "../handlers/response.handler.js";
 import mappingOrderStatus from "../utils/mappingOrderStatus.js";
-import { encryptData } from "../utils/security.js";
+import { decryptData, encryptData } from "../utils/security.js";
+import hashString from "../utils/hashStringIntoInt.js";
 import convertOrderStatusToStr from "../utils/convertOrderStatusToStr.js";
-
-const createFromHexString = mongoose.Types.ObjectId.createFromHexString;
 
 const handleOrderDetailsAfterPopulate = (order) => ({
   ...order._doc,
@@ -15,15 +13,10 @@ const handleOrderDetailsAfterPopulate = (order) => ({
     detail => {
       // get variant from product_variants
       const variant = detail.product_id?.product_variants.find(
-        variant => variant.toObject().variant_id === detail.variant_id
+        variant => variant.toObject()._id.toString() === detail.variant_id
       );
 
-      // const id = isHashedProductId
-      //   ? { product_id_hashed: encryptData(detail.product_id?._id) }
-      //   : { product_id: detail.product_id?._id }
-
       return {
-        // ...id,
         product_id_hashed: encryptData(detail.product_id?._id),
         product_name: detail.product_id?.product_name,
         product_slug: detail.product_id?.product_slug,
@@ -39,7 +32,20 @@ const handleOrderDetailsAfterPopulate = (order) => ({
 
 // [POST] /api/orders/
 export const create = async (req, res, next) => {
+  // get order info from req.body
   const orderInfo = req.body;
+
+  // Decrypt product_id_hashed to product_id in order_details
+  // console.log(">> orderInfo:", orderInfo);
+  orderInfo.order_details = orderInfo?.order_details.map(order_detail => {
+    const { product_id_hashed, ...restData } = order_detail;
+    console.log(product_id_hashed);
+    const product_id = decryptData(decodeURIComponent(product_id_hashed));
+
+    return { product_id, ...restData, }
+  })
+
+  // console.log(">> orderInfo:", orderInfo);
 
   const user_id = req.user?.id;
   if (!user_id)
@@ -50,8 +56,11 @@ export const create = async (req, res, next) => {
     return responseHandler.forbidden(res, "You are not authorized!");
 
   try {
+    const orderCode = hashString(user_id + Date.now());
+
     const newOrder = {
       customer_id: user_id,
+      orderCode,
       ...orderInfo,
     };
 
@@ -72,7 +81,7 @@ export const create = async (req, res, next) => {
 
     await Notification.create(notiOrder);
 
-    return responseHandler.created(res);
+    return responseHandler.created(res, newOrder);
   } catch (error) {
     next(error);
   }
@@ -107,7 +116,7 @@ export const readAll = async (req, res, next) => {
       ...(type ? { order_status: type } : {})
     } :
     {
-      customer_id: createFromHexString(user_id),
+      customer_id: user_id,
       ...(type ? { order_status: type } : {})
     };
 
