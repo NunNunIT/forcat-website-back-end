@@ -34,7 +34,7 @@ export const verifyUserAccessToken = async (req, res, next) => {
     token = req.body.accessToken;
     console.log("Body Token:", token)
   }
-  
+
   if (!token)
     return responseHandler.unauthorize(res, 'You are not authenticated!');
 
@@ -46,6 +46,25 @@ export const verifyUserAccessToken = async (req, res, next) => {
     }
     // Nếu tất cả đều thành công, trả về dữ liệu với statusCode 200
     return responseHandler.ok(res, "", "Authenticated user!");
+  } catch (err) {
+    return responseHandler.error(res, err.message);
+  }
+}
+
+export const verifyAdminAccessToken = async (req, res, next) => {
+  const token = req.cookies.accessToken;
+  if (!token)
+    return responseHandler.unauthorize(res, 'You are not authenticated!');
+
+  try {
+    const user = jwt.verify(token, process.env.JWT_SECRET_KEY);
+    const userData = await User.findById(user.id).select('_id role');
+    if (!userData || userData.role !== 'admin' || user.role !== 'admin') {
+      return responseHandler.forbidden(res, 'You are not authorized!');
+    }
+
+    // Nếu tất cả đều thành công, trả về dữ liệu với statusCode 200
+    next();
   } catch (err) {
     return responseHandler.error(res, err.message);
   }
