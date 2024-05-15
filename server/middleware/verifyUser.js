@@ -58,7 +58,7 @@ export const verifyAdminAccessToken = async (req, res, next) => {
 
   try {
     const user = jwt.verify(token, process.env.JWT_SECRET_KEY);
-    const userData = await User.findById(user.id).select('_id role');
+    const userData = await User.findById(user.id).select('_id user_role');
     if (!userData || userData.user_role !== 'admin' || user.role !== 'admin') {
       return responseHandler.forbidden(res, 'You are not authorized!');
     }
