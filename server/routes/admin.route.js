@@ -16,15 +16,15 @@ import {
 
 const router = express.Router();
 
-router.post("/product/addProduct", addProduct);
-router.post("/product/updateProduct", updateProduct);
-router.post("/product/deleteProduct", deleteProduct);
+router.post("/product/addProduct", verifyAdminAccessToken, addProduct);
+router.post("/product/updateProduct", verifyAdminAccessToken, updateProduct);
+router.post("/product/deleteProduct", verifyAdminAccessToken, deleteProduct);
 
-router.get("/product/getProducts", getProducts);
-router.get("/product/:pid", getProduct);
+router.get("/product/getProducts", verifyAdminAccessToken, getProducts);
+router.get("/product/:pid", verifyAdminAccessToken, getProduct);
 
-router.get("/orders/", getOrders);
-router.get("/orders/:order_id", getOrder);
-router.post("/orders/", updateOrderStatus);
+router.get("/orders/", verifyAdminAccessToken, getOrders);
+router.get("/orders/:order_id", verifyAdminAccessToken, getOrder);
+router.post("/orders/", verifyAdminAccessToken, updateOrderStatus);
 
 export default router;
