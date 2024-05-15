@@ -23,8 +23,8 @@ router.post("/product/deleteProduct", deleteProduct);
 router.get("/product/getProducts", getProducts);
 router.get("/product/:pid", getProduct);
 
-router.get("/orders/", verifyAdminAccessToken, getOrders);
-router.get("/orders/:order_id", verifyAdminAccessToken, getOrder);
-router.post("/orders/", verifyAdminAccessToken, updateOrderStatus);
+router.get("/orders/", getOrders);
+router.get("/orders/:order_id", getOrder);
+router.post("/orders/", updateOrderStatus);
 
 export default router;

@@ -1,5 +1,6 @@
 import mappingOrderStatus from "../../utils/mappingOrderStatus.js";
-import responseHandler from "../../handlers/response.handler";
+import { encryptData } from "../../utils/security.js";
+import responseHandler from "../../handlers/response.handler.js";
 import Order from "../../models/order.model.js";
 import Notification from "../../models/notification.model.js";
 
@@ -18,16 +19,52 @@ import Notification from "../../models/notification.model.js";
 //   }
 // }
 
+const orderHandler = (order) => ({
+  order_id: order._id,
+  order_buyer_name: order.order_buyer?.order_name,
+  order_buyer_phone: order.order_buyer?.order_phone,
+  order_address: order.order_address,
+  order_status: order.order_status,
+  order_payment: order.order_payment,
+  order_total_cost: order.order_total_cost,
+  createdAt: order.createdAt,
+});
+
+const OrderDetailHandler = (order) => {
+  return order._doc.order_details.map(
+    detail => {
+      // get variant from product_variants
+      const variant = detail.product_id?.product_variants.find(
+        variant => variant.toObject()._id.toString() === detail.variant_id
+      );
+
+      return {
+        product_id_hashed: encryptData(detail.product_id?._id),
+        product_name: detail.product_id?.product_name,
+        product_slug: detail.product_id?.product_slug,
+        variant_id: detail.variant_id,
+        variant_name: variant?.variant_name,
+        product_img: variant?.variant_imgs[0],
+        quantity: detail.quantity,
+        unit_price: detail.unit_price,
+      }
+    }
+  )
+};
+
 // [GET] /api/admin/orders/
 export const getOrders = async (req, res, next) => {
   const numberLimitOrders = 20;
   const sortedFields = { createdAt: -1 }
   const page = req.query.page || 1;
   const order_status = req.query.order_status ?? null;
+
+  const query = {
+    ...(order_status && { order_status }),
+  };
+
   try {
-    const orders = await Order.find({
-      order_status,
-    }, {
+    const orders = await Order.find(query, {
       order_details: 0,
     }).sort(sortedFields)
       .skip((page - 1) * numberLimitOrders)
@@ -37,7 +74,9 @@ export const getOrders = async (req, res, next) => {
     if (!orders || orders?.length === 0)
       return responseHandler.notFound(res, "Orders Not Found");
 
-    return responseHandler.ok(res, { orders });
+    const handledOrder = orders.map(orderHandler);
+
+    return responseHandler.ok(res, { orders: handledOrder });
   } catch (err) {
     console.log(err);
     next(err);
@@ -50,12 +89,20 @@ export const getOrder = async (req, res, next) => {
   try {
     const order = await Order.findOne({
       _id: orderId,
-    });
+    }).populate(
+      "order_details.product_id",
+      "_id product_name product_slug product_variants"
+    ).exec();
 
     if (!order)
       return responseHandler.notFound(res, "Order Not Found");
 
-    return responseHandler.ok(res, { order });
+    const handledOrder = {
+      ...orderHandler(order),
+      order_details: OrderDetailHandler(order),
+    };
+
+    return responseHandler.ok(res, { order: handledOrder });
   } catch (err) {
     console.log(err);
     next(err);
