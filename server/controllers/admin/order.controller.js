@@ -57,13 +57,24 @@ export const getOrders = async (req, res, next) => {
   const numberLimitOrders = 20;
   const sortedFields = { createdAt: -1 }
   const page = req.query.page || 1;
-  const order_status = req.query.order_status ?? null;
+  if (page < 1)
+    return responseHandler.badRequest(res, "Invalid page number");
+  const order_status = req.query.status ?? null;
+  if (
+    order_status
+    && !["unpaid", "delivering", "finished", "cancel"].includes(order_status)
+  ) return responseHandler.badRequest(res, "Invalid order status");
 
   const query = {
     ...(order_status && { order_status }),
   };
 
   try {
+    const maxPage =
+      Math.ceil(await Order.countDocuments(query) / numberLimitOrders)
+      || 1;
+    if (page > maxPage)
+      return responseHandler.badRequest(res, "Invalid page number");
     const orders = await Order.find(query, {
       order_details: 0,
     }).sort(sortedFields)
@@ -71,12 +82,12 @@ export const getOrders = async (req, res, next) => {
       .limit(numberLimitOrders)
       .exec();
 
-    if (!orders || orders?.length === 0)
+    if (!orders)
       return responseHandler.notFound(res, "Orders Not Found");
 
     const handledOrder = orders.map(orderHandler);
 
-    return responseHandler.ok(res, { orders: handledOrder });
+    return responseHandler.ok(res, { maxPage, orders: handledOrder });
   } catch (err) {
     console.log(err);
     next(err);
@@ -102,7 +113,7 @@ export const getOrder = async (req, res, next) => {
       order_details: OrderDetailHandler(order),
     };
 
-    return responseHandler.ok(res, { order: handledOrder });
+    return responseHandler.ok(res, handledOrder);
   } catch (err) {
     console.log(err);
     next(err);
