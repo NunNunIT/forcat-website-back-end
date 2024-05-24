@@ -46,7 +46,7 @@ export const verifyUserAccessToken = async (req, res, next) => {
     }
 
     // Nếu tất cả đều thành công, trả về dữ liệu với statusCode 200
-    return responseHandler.ok(res, "", "Authenticated user!");
+    return responseHandler.ok(res, userData, "Authenticated user!");
   } catch (err) {
     return responseHandler.error(res, err.message);
   }
