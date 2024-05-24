@@ -1,4 +1,5 @@
 import mappingOrderStatus from "../../utils/mappingOrderStatus.js";
+import convertOrderStatusToStr from "../../utils/convertOrderStatusToStr.js";
 import { encryptData } from "../../utils/security.js";
 import responseHandler from "../../handlers/response.handler.js";
 import Order from "../../models/order.model.js";
@@ -127,6 +128,10 @@ export const updateOrderStatus = async (req, res, next) => {
   // handle the invalid order_status
   if (!["delivering", "finished", "cancel"].includes(order_status))
     return responseHandler.badRequest(res, "Invalid status!");
+
+  const query = {
+    _id: order_id,
+  }
 
   try {
     const order = await Order.findOne(query);
