@@ -40,10 +40,11 @@ export const verifyUserAccessToken = async (req, res, next) => {
 
   try {
     const user = jwt.verify(token, process.env.JWT_SECRET_KEY);
-    const userData = await User.findById(user.id).select('_id');
+    const userData = await User.findById(user.id).select('_id user_role');
     if (!userData) {
       return responseHandler.notFound(res, 'User not exist!');
     }
+
     // Nếu tất cả đều thành công, trả về dữ liệu với statusCode 200
     return responseHandler.ok(res, "", "Authenticated user!");
   } catch (err) {
