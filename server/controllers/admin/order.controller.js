@@ -152,11 +152,11 @@ export const updateOrderStatus = async (req, res, next) => {
     if (!mappingOrderStatus(order.order_status, order_status))
       return responseHandler.badRequest(res, "Order status can't set cause the current status");
 
-    const updatedOrder = await Order.findOneAndUpdate(
-      { _id: order_id },
-      { order_status },
-      { new: true }
-    ).exec();
+    // Update order_status, order_process_info
+    await Order.findOneAndUpdate(query, {
+      $set: { order_status },
+      $push: { order_process_info: { status: order_status, date: new Date() } }
+    }).exec();
 
     // Create notification
     const notiOrder = {
