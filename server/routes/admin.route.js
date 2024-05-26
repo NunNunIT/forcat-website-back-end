@@ -13,6 +13,12 @@ import {
   getOrder,
   updateOrderStatus,
 } from "../controllers/admin/order.controller.js";
+import {
+  createArticle,
+  getArticles,
+  getArticle,
+  updateArticle,
+} from "../controllers/admin/article.controller.js";
 
 const router = express.Router();
 
@@ -26,5 +32,11 @@ router.get("/product/:pid", verifyAdminAccessToken, getProduct);
 router.get("/orders/", verifyAdminAccessToken, getOrders);
 router.get("/orders/:order_id", verifyAdminAccessToken, getOrder);
 router.post("/orders/", verifyAdminAccessToken, updateOrderStatus);
+
+// Article
+router.post("/articles/", verifyAdminAccessToken, createArticle); // create Article
+router.get("/articles/", verifyAdminAccessToken, getArticles); // get all Articles
+router.get("/articles/:article_id_hashed", verifyAdminAccessToken, getArticle); // get Article by ID
+router.post("/articles/:article_id_hashed", verifyAdminAccessToken, updateArticle); // update Article by ID
 
 export default router;
