@@ -44,9 +44,10 @@ app.use(function (req, res, next) {
     "http://localhost:3000",
     /^https:\/\/forcat-website-front-.*\.vercel\.app$/,
   ];
-  const origin = req.headers.origin; // Sử dụng req.headers.origin thay vì req.header('Origin')
-
-  if (allowedOrigins.some((allowedOrigin) => origin.match(allowedOrigin))) {
+  const origin = req.headers.origin ?? req.header("Origin"); // Sử dụng req.headers.origin thay vì req.header('Origin')
+  console.log(req.headers);
+  if (allowedOrigins.some((allowedOrigin) => origin && origin.match(allowedOrigin))) {
+    console.log("Origin allowed with", origin);
     res.setHeader("Access-Control-Allow-Origin", origin);
   }
 
