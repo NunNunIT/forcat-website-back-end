@@ -20,7 +20,20 @@ import Notification from "../../models/notification.model.js";
 //   }
 // }
 
-const orderHandler = (order) => ({
+const handleCustomer = (customer) => {
+  const user_id_hashed = encryptData(customer._id);
+
+  return {
+    user_id: user_id_hashed,
+    user_name: customer.user_name,
+    user_phone: customer.user_phone,
+    user_email: customer.user_email,
+    user_address: customer.user_address,
+    user_avt_img: customer.user_avt_img,
+  };
+};
+
+const handleOrderInfo = (order) => ({
   order_id: order._id,
   order_buyer_name: order.order_buyer?.order_name,
   order_buyer_phone: order.order_buyer?.order_phone,
@@ -31,7 +44,14 @@ const orderHandler = (order) => ({
   createdAt: order.createdAt,
 });
 
-const OrderDetailHandler = (order) => {
+const handleOrderProcessInfo = (order_process_info) => {
+  return order_process_info?.map(process => ({
+    status: process.status,
+    date: process.date,
+  }))
+}
+
+const handleOrderDetail = (order) => {
   return order._doc.order_details.map(
     detail => {
       // get variant from product_variants
@@ -55,40 +75,21 @@ const OrderDetailHandler = (order) => {
 
 // [GET] /api/admin/orders/
 export const getOrders = async (req, res, next) => {
-  const numberLimitOrders = 20;
   const sortedFields = { createdAt: -1 }
-  const page = req.query.page || 1;
-  if (page < 1)
-    return responseHandler.badRequest(res, "Invalid page number");
-  const order_status = req.query.status ?? null;
-  if (
-    order_status
-    && !["unpaid", "delivering", "finished", "cancel"].includes(order_status)
-  ) return responseHandler.badRequest(res, "Invalid order status");
-
-  const query = {
-    ...(order_status && { order_status }),
-  };
+  const query = {};
 
   try {
-    const maxPage =
-      Math.ceil(await Order.countDocuments(query) / numberLimitOrders)
-      || 1;
-    if (page > maxPage)
-      return responseHandler.badRequest(res, "Invalid page number");
-    const orders = await Order.find(query, {
+    const orders = await Order.find(
+      query, {
       order_details: 0,
-    }).sort(sortedFields)
-      .skip((page - 1) * numberLimitOrders)
-      .limit(numberLimitOrders)
-      .exec();
+    }).sort(sortedFields);
 
     if (!orders)
       return responseHandler.notFound(res, "Orders Not Found");
 
-    const handledOrder = orders.map(orderHandler);
+    const handledOrder = orders.map(handleOrderInfo);
 
-    return responseHandler.ok(res, { maxPage, orders: handledOrder });
+    return responseHandler.ok(res, { maxPage: 1, orders: handledOrder });
   } catch (err) {
     console.log(err);
     next(err);
@@ -102,6 +103,9 @@ export const getOrder = async (req, res, next) => {
     const order = await Order.findOne({
       _id: orderId,
     }).populate(
+      "customer_id",
+      "_id user_name user_phone user_email user_address user_avt_img"
+    ).populate(
       "order_details.product_id",
       "_id product_name product_slug product_variants"
     ).exec();
@@ -110,8 +114,13 @@ export const getOrder = async (req, res, next) => {
       return responseHandler.notFound(res, "Order Not Found");
 
     const handledOrder = {
-      ...orderHandler(order),
-      order_details: OrderDetailHandler(order),
+      customer: handleCustomer(order.customer_id),
+      order: {
+        ...handleOrderInfo(order),
+        order_process_info: handleOrderProcessInfo(order.order_process_info),
+        order_details: handleOrderDetail(order),
+        order_note: order.order_note,
+      }
     };
 
     return responseHandler.ok(res, handledOrder);
