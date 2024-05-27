@@ -93,6 +93,7 @@ export const getArticle = async (req, res, next) => {
       ...handleArticleInfo(article),
       article_subtitle: article.article_subtitle,
       article_content: article.article_content,
+      article_avt: article.article_avt,
     };
 
     return responseHandler.ok(res, handledArticle);
@@ -111,10 +112,11 @@ export const updateArticle = async (req, res, next) => {
     article_info,
     article_short_description,
     article_subtitle,
+    article_avt,
     article_content
   } = req.body;
 
-  if (!article_id_hashed || !article_name || !article_type || !article_info || !article_short_description || !article_subtitle || !article_content)
+  if (!article_id_hashed || !article_name || !article_type || !article_info || !article_short_description || !article_subtitle || !article_content || !article_avt)
     return responseHandler.badRequest(res, "Invalid article data");
 
   const articleID = decryptData(article_id_hashed);
@@ -136,7 +138,8 @@ export const updateArticle = async (req, res, next) => {
       article_info,
       article_short_description,
       article_subtitle,
-      article_content
+      article_avt,
+      article_content,
     });
 
     return responseHandler.ok(res, null, "Updated");
