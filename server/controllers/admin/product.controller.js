@@ -2,7 +2,7 @@ import Product from "../../models/product.model.js";
 import responseHandler from "../../handlers/response.handler.js";
 import { createSlug } from "../../utils/createSlug.js";
 
-// [GET] /api/admin/product/getProducts
+// [GET] /api/admin/products/getProducts
 export const getProducts = async (req, res, next) => {
   try {
     const products = await Product.find();
@@ -10,14 +10,19 @@ export const getProducts = async (req, res, next) => {
     if (products?.length == 0 || !products)
       return responseHandler.notFound(res, "Products Not Found");
 
-    return responseHandler.ok(res, { products });
+    const p = req.query.p != "" ? Number(req.query.p) : 0;
+    const returnedProducts = products.slice(p * 10, p * 10 + 10);
+
+    const totalPages = Math.ceil(products.length / 10);
+
+    return responseHandler.ok(res, { products: returnedProducts, totalPages });
   } catch (err) {
     console.log(err);
     return responseHandler.error(res);
   }
 };
 
-// [GET] /api/admin/product/:pid
+// [GET] /api/admin/products/:pid
 export const getProduct = async (req, res, next) => {
   try {
     const productId = req.params.pid;
@@ -36,11 +41,13 @@ export const getProduct = async (req, res, next) => {
   }
 };
 
-// [POST] /api/admin/product/addProduct
+// [POST] /api/admin/products/addProduct
 export const addProduct = async (req, res, next) => {
   try {
     if (!Object.keys(req.body).length)
       return responseHandler.notFound(res, "No Body Received");
+
+    console.log(req.body);
 
     let existedProduct = await Product.findOne({
       product_slug: createSlug(req.body.product.product_name),
@@ -53,6 +60,8 @@ export const addProduct = async (req, res, next) => {
           req.body.product.product_slug ??
           createSlug(req.body.product.product_name),
       });
+
+      // console.log(product);
 
       product.save();
     } else {
@@ -73,15 +82,15 @@ export const addProduct = async (req, res, next) => {
   }
 };
 
-// [POST] /api/admin/product/updateProduct
+// [POST] /api/admin/products/updateProduct
 export const updateProduct = async (req, res, next) => {
   try {
     if (!Object.keys(req.body).length)
       return responseHandler.notFound(res, "No Body Received");
 
     const updatedProduct = await Product.findOneAndUpdate(
-      { _id: req.body.product_id },
-      { ...req.body.product_info }
+      { _id: req.body.product.product_id },
+      { ...req.body.product }
     );
 
     // console.log(updatedProduct);
@@ -93,14 +102,11 @@ export const updateProduct = async (req, res, next) => {
   }
 };
 
-// [POST] /api/admin/product/deleteProduct
-export const deleteProduct = async (req, res, next) => {
+// [POST] /api/admin/products/deleteProduct
+export const deleteProducts = async (req, res, next) => {
   try {
-    if (!Object.keys(req.body).length)
-      return responseHandler.notFound(res, "No Body Received");
-
     const deletedProduct = await Product.deleteOne({
-      _id: req.body.product_id,
+      _id: { $in: req.query.pid.split(",") },
     });
 
     return responseHandler.ok(res, {});

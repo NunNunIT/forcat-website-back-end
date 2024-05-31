@@ -47,7 +47,11 @@ app.use(function (req, res, next) {
   const origin = req.headers.origin ?? req.header("Origin"); // Sử dụng req.headers.origin thay vì req.header('Origin')
   // console.log(req.headers);
   // console.log("Origin", origin);
-  if (allowedOrigins.some((allowedOrigin) => origin && origin.match(allowedOrigin))) {
+  if (
+    allowedOrigins.some(
+      (allowedOrigin) => origin && origin.match(allowedOrigin)
+    )
+  ) {
     console.log("Origin allowed with", origin);
     res.setHeader("Access-Control-Allow-Origin", origin);
   }
@@ -79,7 +83,7 @@ app.listen(PORT, () => {
 app.use("/api/admin", adminRoutes);
 app.use("/api/auth", authRoutes);
 app.use("/api/user", userRoutes);
-app.use("/api/product", productRoutes);
+app.use("/api/products", productRoutes);
 app.use("/api/productList", productListRoutes);
 app.use("/api/articles", articleRoutes);
 app.use("/api/cart", cartRoutes);
