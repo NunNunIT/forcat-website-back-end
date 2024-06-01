@@ -53,7 +53,7 @@ export const readAll = async (req, res, next) => {
     // Construct query object for filtering (if applicable)
     const query = {};
 
-    const sorted_fields = { createdAt: -1, }
+    const sorted_fields = { createdAt: -1, _id: -1 }; // Sort by creation date (optional)
 
     // Count the total number of articles
     const maxPage = Math.ceil(await Article.countDocuments(query).exec() / limit);
