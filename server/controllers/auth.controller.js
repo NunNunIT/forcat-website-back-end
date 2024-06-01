@@ -92,7 +92,6 @@ export const login = async (req, res, next) => {
       user_password: passwordToDiscard,
       createdAt: createdAtToDiscard,
       updatedAt: updatedAtToDiscard,
-      user_role: roleToDiscard,
       user_active: isActiveToDiscard,
       __v: versionToDiscard,
       ...rest
