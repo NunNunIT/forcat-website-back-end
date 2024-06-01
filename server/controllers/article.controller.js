@@ -60,9 +60,9 @@ export const readAll = async (req, res, next) => {
 
     // Perform efficient pagination with skip and limit
     const articles = await Article.find(query, { article_content: 0 })
+      .sort(sorted_fields) // Sort by creation date (optional)
       .skip((page - 1) * limit) // Calculate skip based on page number
       .limit(limit)
-      .sort(sorted_fields) // Sort by creation date (optional)
       .exec(); // Execute the query
 
     const handledArticles = articles.map(hashArticleId);
