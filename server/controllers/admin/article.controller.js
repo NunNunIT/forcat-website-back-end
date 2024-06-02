@@ -144,19 +144,31 @@ export const updateArticle = async (req, res, next) => {
   const {
     article_name,
     article_type,
-    article_info,
+    article_info: article_info_json,
     article_short_description,
     article_subtitle,
-    article_avt,
+    article_avt: article_avt_json,
     article_content
   } = req.body;
 
-  if (!article_id_hashed || !article_name || !article_type || !article_info || !article_short_description || !article_subtitle || !article_content || !article_avt)
-    return responseHandler.badRequest(res, "Invalid article data");
+  const article_avt_blob = req.file;
+
+  if (!article_id_hashed
+    || !article_name
+    || !article_type
+    || !article_info_json
+    || !article_short_description
+    || !article_subtitle
+    || !article_content
+    || !article_avt_json
+  ) return responseHandler.badRequest(res, "Invalid article data");
 
   const articleID = decryptData(article_id_hashed);
   if (!articleID)
     return responseHandler.badRequest(res, "Invalid article ID");
+
+  const article_info = JSON.parse(article_info_json);
+  const article_avt = JSON.parse(article_avt_json);
 
   const query = { _id: articleID };
 
@@ -165,6 +177,22 @@ export const updateArticle = async (req, res, next) => {
 
     if (!article)
       return responseHandler.notFound(res, "Article not found!");
+
+    if (article_avt_blob) {
+      const { originalname, path } = article_avt_blob;
+      const originalnameWithoutExt = originalname.split(".").slice(0, -1).join(".");
+      const originalnameSlug = createSlug(originalnameWithoutExt);
+      const imgFolder = "Articles/" + (req.body?.imgFolder ?? CLD_DEFAULT_UPLOAD_FOLDER);
+      const imgPath = `${CLD_SEO_FOLDER}/${imgFolder}/${originalnameSlug}`;
+
+      const resCld = await uploadImgToCld(
+        path,
+        { public_id: imgPath, }
+      );
+
+      removeFile(path);
+      article_avt.link = resCld.secure_url;
+    }
 
     // Update order_status, order_process_info
     await Article.findOneAndUpdate(query, {

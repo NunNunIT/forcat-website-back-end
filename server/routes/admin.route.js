@@ -39,6 +39,6 @@ router.post("/orders/", verifyAdminAccessToken, updateOrderStatus);
 router.post("/articles/", verifyAdminAccessToken, upload("article_avt_blob"), createArticle); // create Article
 router.get("/articles/", verifyAdminAccessToken, getArticles); // get all Articles
 router.get("/articles/:article_id_hashed", verifyAdminAccessToken, getArticle); // get Article by ID
-router.post("/articles/:article_id_hashed", verifyAdminAccessToken, updateArticle); // update Article by ID
+router.post("/articles/:article_id_hashed", verifyAdminAccessToken, upload("article_avt_blob"), updateArticle); // update Article by ID
 
 export default router;
