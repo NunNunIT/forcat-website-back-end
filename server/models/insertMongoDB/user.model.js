@@ -50,7 +50,7 @@ const data = [
 // Sử dụng phương thức create để chèn user mới vào cơ sở dữ liệu
 User.create(data)
   .then((d) => {
-    console.log("User đã được thêm vào cơ sở dữ liệu:", d);
+    // console.log("User đã được thêm vào cơ sở dữ liệu:", d);
   })
   .catch((error) => {
     console.error("Đã xảy ra lỗi khi thêm user:", error);

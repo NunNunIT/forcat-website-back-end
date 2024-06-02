@@ -39,7 +39,7 @@ export const paymentLinkData = async (req, res) => {
 
     return responseHandler.created(res, res_data);
   } catch (err) {
-    console.log("không tạo được link thanh toán", err);
+    console.error("không tạo được link thanh toán", err);
   }
 };
 

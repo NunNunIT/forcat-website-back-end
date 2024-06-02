@@ -61,7 +61,7 @@ const data = [
 // Sử dụng phương thức create để chèn bài viết mới vào cơ sở dữ liệu
 Article.create(data)
   .then(d => {
-    console.log("Bài viết đã được thêm vào cơ sở dữ liệu:", d);
+    // console.log("Bài viết đã được thêm vào cơ sở dữ liệu:", d);
   })
   .catch(error => {
     console.error("Đã xảy ra lỗi khi thêm bài viết:", error);

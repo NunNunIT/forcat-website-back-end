@@ -20,6 +20,8 @@ import {
   updateArticle,
 } from "../controllers/admin/article.controller.js";
 
+import upload from "../middleware/handleFile.js";
+
 const router = express.Router();
 
 router.post("/products/addProduct", verifyAdminAccessToken, addProduct);
@@ -34,12 +36,18 @@ router.get("/orders/:order_id", verifyAdminAccessToken, getOrder);
 router.post("/orders/", verifyAdminAccessToken, updateOrderStatus);
 
 // Article
-router.post("/articles/", verifyAdminAccessToken, createArticle); // create Article
+router.post(
+  "/articles/",
+  verifyAdminAccessToken,
+  upload("article_avt_blob"),
+  createArticle
+); // create Article
 router.get("/articles/", verifyAdminAccessToken, getArticles); // get all Articles
 router.get("/articles/:article_id_hashed", verifyAdminAccessToken, getArticle); // get Article by ID
 router.post(
   "/articles/:article_id_hashed",
   verifyAdminAccessToken,
+  upload("article_avt_blob"),
   updateArticle
 ); // update Article by ID
 

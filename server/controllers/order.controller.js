@@ -39,7 +39,6 @@ export const create = async (req, res, next) => {
   // console.log(">> orderInfo:", orderInfo);
   orderInfo.order_details = orderInfo?.order_details.map(order_detail => {
     const { product_id_hashed, ...restData } = order_detail;
-    console.log(product_id_hashed);
     const product_id = decryptData(decodeURIComponent(product_id_hashed));
 
     return { product_id, ...restData, }

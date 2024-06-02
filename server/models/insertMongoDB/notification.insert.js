@@ -63,7 +63,7 @@ const notificationData = [
 // Tạo một thông báo mới và lưu vào cơ sở dữ liệu
 Notification.create(notificationData)
   .then((notification) => {
-    console.log("Thông báo đã được thêm vào cơ sở dữ liệu:", notification);
+    // console.log("Thông báo đã được thêm vào cơ sở dữ liệu:", notification);
   })
   .catch((error) => {
     console.error("Đã xảy ra lỗi khi thêm thông báo:", error);

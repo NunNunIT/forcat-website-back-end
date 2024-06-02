@@ -103,7 +103,7 @@ export const getOverview = async (req, res, next) => {
       },
     });
   } catch (err) {
-    console.log(err);
+    console.error(err);
     return responseHandler.error(res);
   }
 };

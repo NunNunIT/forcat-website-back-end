@@ -17,7 +17,7 @@ export const getProducts = async (req, res, next) => {
 
     return responseHandler.ok(res, { products: returnedProducts, totalPages });
   } catch (err) {
-    console.log(err);
+    console.error(err);
     return responseHandler.error(res);
   }
 };
@@ -36,7 +36,7 @@ export const getProduct = async (req, res, next) => {
 
     return responseHandler.ok(res, { product });
   } catch (err) {
-    console.log(err);
+    console.error(err);
     return responseHandler.error(res);
   }
 };
@@ -77,7 +77,7 @@ export const addProduct = async (req, res, next) => {
 
     return responseHandler.ok(res, {});
   } catch (err) {
-    console.log(err);
+    console.error(err);
     return responseHandler.error(res);
   }
 };
@@ -97,7 +97,7 @@ export const updateProduct = async (req, res, next) => {
 
     return responseHandler.ok(res);
   } catch (err) {
-    console.log(err);
+    console.error(err);
     return responseHandler.error(res);
   }
 };
@@ -111,7 +111,7 @@ export const deleteProducts = async (req, res, next) => {
 
     return responseHandler.ok(res, {});
   } catch (err) {
-    console.log(err);
+    console.error(err);
     return responseHandler.error(res);
   }
 };

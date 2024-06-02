@@ -15,7 +15,7 @@ import Notification from "../../models/notification.model.js";
 
 //     return responseHandler.ok(res, totalOrders);
 //   } catch (err) {
-//     console.log(err);
+//     console.error(err);
 //     next(err);
 //   }
 // }
@@ -91,7 +91,7 @@ export const getOrders = async (req, res, next) => {
 
     return responseHandler.ok(res, { maxPage: 1, orders: handledOrder });
   } catch (err) {
-    console.log(err);
+    console.error(err);
     next(err);
   }
 }
@@ -125,7 +125,7 @@ export const getOrder = async (req, res, next) => {
 
     return responseHandler.ok(res, handledOrder);
   } catch (err) {
-    console.log(err);
+    console.error(err);
     next(err);
   }
 }
@@ -175,7 +175,7 @@ export const updateOrderStatus = async (req, res, next) => {
     await Notification.create(notiOrder);
     return responseHandler.ok(res, null, "Updated");
   } catch (err) {
-    console.log(err);
+    console.error(err);
     next(err);
   }
 }

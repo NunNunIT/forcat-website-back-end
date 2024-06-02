@@ -31,7 +31,7 @@ export const getCart = async (req, res, next) => {
     }));
     return responseHandler.ok(res, { cartInfo });
   } catch (err) {
-    console.log(err);
+    console.error(err);
     return responseHandler.error(res);
   }
 };
@@ -81,7 +81,7 @@ export const addCart = async (req, res, next) => {
     user.save();
     return responseHandler.ok(res, {});
   } catch (err) {
-    console.log(err);
+    console.error(err);
     return responseHandler.error(res);
   }
 };
@@ -128,7 +128,7 @@ export const updateCart = async (req, res, next) => {
     user.save();
     return responseHandler.ok(res, {});
   } catch (err) {
-    console.log(err);
+    console.error(err);
     return responseHandler.error(res);
   }
 };

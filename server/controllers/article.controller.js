@@ -53,16 +53,16 @@ export const readAll = async (req, res, next) => {
     // Construct query object for filtering (if applicable)
     const query = {};
 
-    const sorted_fields = { createdAt: -1, }
+    const sorted_fields = { createdAt: -1, _id: -1 }; // Sort by creation date (optional)
 
     // Count the total number of articles
     const maxPage = Math.ceil(await Article.countDocuments(query).exec() / limit);
 
     // Perform efficient pagination with skip and limit
     const articles = await Article.find(query, { article_content: 0 })
+      .sort(sorted_fields) // Sort by creation date (optional)
       .skip((page - 1) * limit) // Calculate skip based on page number
       .limit(limit)
-      .sort(sorted_fields) // Sort by creation date (optional)
       .exec(); // Execute the query
 
     const handledArticles = articles.map(hashArticleId);
@@ -76,9 +76,9 @@ export const readAll = async (req, res, next) => {
 // [GET] /api/articles/:slug/:aid
 export const readOne = async (req, res, next) => {
   const { aid, slug } = req.params;
-  console.log(aid, slug);
+  // console.log(aid, slug);
   if (!aid || !slug) {
-    console.log("Missing the required data to perform this request");
+    // console.log("Missing the required data to perform this request");
     return resHandler.badRequest(res, "Missing the required data to perform this request");
   }
 

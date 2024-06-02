@@ -46,7 +46,7 @@ export const getProduct = async (req, res, next) => {
       },
     });
   } catch (err) {
-    console.log(err);
+    console.error(err);
     return responseHandler.error(res);
   }
 };
@@ -81,9 +81,9 @@ export const getRecommend = async (req, res, next) => {
           if (
             !minPriceVariant ||
             (variant.price * (100 - variant.discount_amount)) / 100 <
-              (minPriceVariant.price *
-                (100 - minPriceVariant.discount_amount)) /
-                100
+            (minPriceVariant.price *
+              (100 - minPriceVariant.discount_amount)) /
+            100
           ) {
             minPriceVariant = variant;
           }
@@ -114,8 +114,8 @@ export const getRecommend = async (req, res, next) => {
         product_img: product.product_imgs[0], // Lấy ảnh đầu tiên trong mảng product_imgs
         lowest_price: lowestPriceVariant
           ? (lowestPriceVariant.price *
-              (100 - lowestPriceVariant.discount_amount)) /
-            100
+            (100 - lowestPriceVariant.discount_amount)) /
+          100
           : null, // Giá thấp nhất
         product_price: lowestPriceVariant.price,
         highest_discount: highestDiscountVariant
@@ -131,7 +131,7 @@ export const getRecommend = async (req, res, next) => {
 
     responseHandler.ok(res, transformedProducts, "Trả dữ liệu thành công");
   } catch (err) {
-    console.log(err);
+    console.error(err);
     return responseHandler.error(res);
   }
 };
