@@ -12,6 +12,6 @@ const UPLOAD_PATH = "uploads/";
 
 const upload = multer({ dest: UPLOAD_PATH });
 export default (attr) => {
-  console.log(">> multer - attr:", attr);
+  // console.log(">> multer - attr:", attr);
   return upload.single(attr);
 }

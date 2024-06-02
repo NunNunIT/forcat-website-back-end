@@ -78,7 +78,7 @@ export const createArticle = async (req, res, next) => {
 
     return responseHandler.ok(res, null, "Created");
   } catch (err) {
-    console.log(err);
+    console.error(err);
     next(err);
   }
 }
@@ -101,7 +101,7 @@ export const getArticles = async (req, res, next) => {
 
     return responseHandler.ok(res, { maxPage: 1, article: handledArticle });
   } catch (err) {
-    console.log(err);
+    console.error(err);
     next(err);
   }
 }
@@ -133,7 +133,7 @@ export const getArticle = async (req, res, next) => {
 
     return responseHandler.ok(res, handledArticle);
   } catch (err) {
-    console.log(err);
+    console.error(err);
     next(err);
   }
 }
@@ -207,7 +207,7 @@ export const updateArticle = async (req, res, next) => {
 
     return responseHandler.ok(res, null, "Updated");
   } catch (err) {
-    console.log(err);
+    console.error(err);
     next(err);
   }
 }

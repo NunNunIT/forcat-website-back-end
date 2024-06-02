@@ -5,7 +5,7 @@ import User from "../models/user.model.js";
 export const verifyAccessToken = (req, res, next) => {
   // const token = req.cookies.accessToken ?? req.body.accessToken;
   const token = req.cookies.accessToken;
-  console.log("Token Authenicated:", token);
+  // console.log("Token Authenicated:", token);
   if (!token)
     return responseHandler.unauthorize(res, "You are not authenticated!");
 
@@ -23,16 +23,16 @@ export const verifyUserAccessToken = async (req, res, next) => {
   let token = req.cookies.accessToken;
 
   if (token) {
-    console.log("accessToken Token:", token)
+    // console.log("accessToken Token:", token)
   } else {
     token = req.cookies.currentUser;
   }
 
   if (token) {
-    console.log("currentUser Token:", token)
+    // console.log("currentUser Token:", token)
   } else {
     token = req.body.accessToken;
-    console.log("Body Token:", token)
+    // console.log("Body Token:", token)
   }
 
   if (!token)

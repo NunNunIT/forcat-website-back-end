@@ -48,7 +48,7 @@ app.use(function (req, res, next) {
   // console.log(req.headers);
   // console.log("Origin", origin);
   if (allowedOrigins.some((allowedOrigin) => origin && origin.match(allowedOrigin))) {
-    console.log("Origin allowed with", origin);
+    // console.log("Origin allowed with", origin);
     res.setHeader("Access-Control-Allow-Origin", origin);
   }
 

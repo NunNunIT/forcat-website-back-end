@@ -76,9 +76,9 @@ export const readAll = async (req, res, next) => {
 // [GET] /api/articles/:slug/:aid
 export const readOne = async (req, res, next) => {
   const { aid, slug } = req.params;
-  console.log(aid, slug);
+  // console.log(aid, slug);
   if (!aid || !slug) {
-    console.log("Missing the required data to perform this request");
+    // console.log("Missing the required data to perform this request");
     return resHandler.badRequest(res, "Missing the required data to perform this request");
   }
 

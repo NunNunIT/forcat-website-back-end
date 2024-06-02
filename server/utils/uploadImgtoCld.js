@@ -19,7 +19,7 @@ export default async function uploadIgToCld(path, options) {
 
   try {
     const result = await cloudinary.v2.uploader.upload(path, options);
-    console.log(result);
+    // console.log(result);
     return result;
   } catch (err) {
     throw err;

@@ -8,25 +8,15 @@ export const getAllNoti = async (req, res, next) => {
     return responseHandler.unauthorize(res, "You are not authenticated!");
   }
 
-  console.log(">> user_id:", user_id);
-
   const role = req.user?.role;
   if (!["admin", "staff", "user"].includes(role)) {
     return responseHandler.forbidden(res, "You are not authorized!");
   }
 
-  console.log(">> role:", role);
-
-
   const type = req.query?.type; // Lấy từ truy vấn loại thông báo từ query parameter
-
-  console.log(">> type:", type);
 
   const page = (parseInt(req.query?.page) > 0) ? parseInt(req.query?.page) : 1; // Trang mặc định là 1
   const limit = (parseInt(req.query?.limit) > 0) ? parseInt(req.query?.limit) : 10; // Số lượng thông báo trên mỗi trang
-
-  console.log(">> page:", page);
-  console.log(">> limit:", limit);
 
   const query = {
     $and: [
@@ -40,8 +30,6 @@ export const getAllNoti = async (req, res, next) => {
     ]
   };
 
-  console.log(">> query:", query);
-
   try {
     const maxPage = Math.ceil(await Notification.find(query).countDocuments() / limit); // Tính tổng số trang
     if (maxPage === 0) {
@@ -53,8 +41,6 @@ export const getAllNoti = async (req, res, next) => {
       .limit(limit) // Giới hạn số lượng thông báo trên mỗi trang
       .sort({ createdAt: -1 })
       .exec();
-
-    console.log(">> notifications:", notifications);
 
     const handledNotifications = notifications.map(
       notification => {
@@ -76,8 +62,6 @@ export const getAllNoti = async (req, res, next) => {
         }
       }
     )
-
-    console.log(">> handled_notifications:", handledNotifications);
 
     return responseHandler.ok(res, { notifications: handledNotifications, maxPage });
   } catch (error) {
