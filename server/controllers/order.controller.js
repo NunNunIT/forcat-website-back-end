@@ -93,31 +93,22 @@ export const readAll = async (req, res, next) => {
     return responseHandler.unauthorize(res, "You are not authenticated!");
 
   const role = req.user?.role ?? "user";
-  if (!role || !["admin", "user", "staff"].includes(role))
+  if (!role || !["user"].includes(role))
     return responseHandler.forbidden(res, "You are not authorized!");
 
-  const select = (["admin", "staff"].includes(role)) ?
-    {
-      order_note: 0,
-      __v: 0,
-    } :
-    {
-      order_status: 1,
-      order_details: 1,
-      order_total_cost: 1,
-    };
+  const select = {
+    order_status: 1,
+    order_details: 1,
+    order_total_cost: 1,
+  };
 
   // default page = 1, limit = 10
   const { type, page = 1, limit = 10 } = req.query;
 
-  const query = (["admin", "staff"].includes(role)) ?
-    {
-      ...(type ? { order_status: type } : {})
-    } :
-    {
-      customer_id: user_id,
-      ...(type ? { order_status: type } : {})
-    };
+  const query = {
+    customer_id: user_id,
+    ...(type ? { order_status: type } : {})
+  };
 
   try {
     const maxPage = Math.ceil(await Order.countDocuments(query) / limit);
@@ -149,24 +140,20 @@ export const readOne = async (req, res, next) => {
     return responseHandler.unauthorize(res, "You are not authenticated!");
 
   const role = req.user?.role;
-  if (!role || !["admin", "user", "staff"].includes(role))
+  if (!role || !["user"].includes(role))
     return responseHandler.forbidden(res, "You are not authorized!");
 
   const order_id = req.params.order_id;
-  const query = (role.includes(["admin", "staff"])) ?
-    { _id: order_id } :
-    { _id: order_id, customer_id: user_id };
+  const query = { _id: order_id, customer_id: user_id };
 
-  const select = (role.includes(["admin", "staff"])) ?
-    {} :
-    {
-      order_buyer: 1,
-      order_address: 1,
-      order_status: 1,
-      order_total_cost: 1,
-      order_details: 1,
-      createdAt: 1,
-    };
+  const select = {
+    order_buyer: 1,
+    order_address: 1,
+    order_status: 1,
+    order_total_cost: 1,
+    order_details: 1,
+    createdAt: 1,
+  };
 
   try {
     const order = await Order.findOne(query, select)
@@ -195,7 +182,7 @@ export const updateStatus = async (req, res, next) => {
     return responseHandler.unauthorize(res, "You are not authenticated!");
 
   const role = req.user?.role;
-  if (!role || !["admin", "user", "staff"].includes(role))
+  if (!role || !["user"].includes(role))
     return responseHandler.forbidden(res, "You are not authorized!");
 
   const order_id = req.params.order_id;
@@ -205,9 +192,7 @@ export const updateStatus = async (req, res, next) => {
   if (!["delivering", "finished", "cancel"].includes(order_status))
     return responseHandler.badRequest(res, "Invalid status!");
 
-  const query = (role.includes(["admin", "staff"])) ?
-    { _id: order_id } :
-    { _id: order_id, customer_id: user_id };
+  const query = { _id: order_id, customer_id: user_id };
 
   try {
     const order = await Order.findOne(query);
@@ -253,21 +238,21 @@ export const readAllReviews = async (req, res, next) => {
     return responseHandler.unauthorize(res, "You are not authenticated!");
 
   const role = req.user?.role;
-  if (!role || !["admin", "user", "staff"].includes(role))
+  if (!role || !["user"].includes(role))
     return responseHandler.forbidden(res, "You are not authorized!");
 
   const order_id = req.params.order_id;
 
-  const query_order = ["admin", "staff"].includes(role)
-    ? { _id: order_id }
-    : { _id: order_id, customer_id: user_id, order_status: "finished" };
+  const query_order = { _id: order_id, customer_id: user_id, order_status: "finished" };
 
-  const query_reviews = (role.includes(["admin", "staff"])) ?
-    { order_id } :
-    { order_id, user_id };
-  const select_reviews = (role.includes(["admin", "staff"])) ?
-    {} :
-    { review_rating: 1, review_context: 1, review_imgs: 1, review_videos: 1, createdAt: 1 };
+  const query_reviews = { order_id, user_id };
+  const select_reviews = {
+    review_rating: 1,
+    review_context: 1,
+    review_imgs: 1,
+    review_videos: 1,
+    createdAt: 1,
+  };
 
   try {
     const order = await Order.findOne(query_order)
