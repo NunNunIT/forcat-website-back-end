@@ -51,7 +51,7 @@ export const create = async (req, res, next) => {
     return responseHandler.unauthorize(res, "You are not authenticated!");
 
   const role = req.user?.role;
-  if (!role === "user")
+  if (!role || !["admin", "staff", "user"].includes(role))
     return responseHandler.forbidden(res, "You are not authorized!");
 
   try {
@@ -93,7 +93,7 @@ export const readAll = async (req, res, next) => {
     return responseHandler.unauthorize(res, "You are not authenticated!");
 
   const role = req.user?.role ?? "user";
-  if (!role || !["user"].includes(role))
+  if (!role || !["admin", "staff", "user"].includes(role))
     return responseHandler.forbidden(res, "You are not authorized!");
 
   const select = {
@@ -140,7 +140,7 @@ export const readOne = async (req, res, next) => {
     return responseHandler.unauthorize(res, "You are not authenticated!");
 
   const role = req.user?.role;
-  if (!role || !["user"].includes(role))
+  if (!role || !["admin", "staff", "user"].includes(role))
     return responseHandler.forbidden(res, "You are not authorized!");
 
   const order_id = req.params.order_id;
@@ -182,7 +182,7 @@ export const updateStatus = async (req, res, next) => {
     return responseHandler.unauthorize(res, "You are not authenticated!");
 
   const role = req.user?.role;
-  if (!role || !["user"].includes(role))
+  if (!role || !["admin", "staff", "user"].includes(role))
     return responseHandler.forbidden(res, "You are not authorized!");
 
   const order_id = req.params.order_id;
@@ -238,7 +238,7 @@ export const readAllReviews = async (req, res, next) => {
     return responseHandler.unauthorize(res, "You are not authenticated!");
 
   const role = req.user?.role;
-  if (!role || !["user"].includes(role))
+  if (!role || !["admin", "staff", "user"].includes(role))
     return responseHandler.forbidden(res, "You are not authorized!");
 
   const order_id = req.params.order_id;
