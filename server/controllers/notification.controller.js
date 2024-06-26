@@ -1,4 +1,5 @@
 import Notification from "../models/notification.model.js"; // Import model notification
+import User from "../models/user.model.js"; // Import model user
 import responseHandler from "../handlers/response.handler.js";
 
 // [GET] /api/notifications
@@ -96,9 +97,12 @@ export const setReadNoti = async (req, res, next) => {
 
     // const userIndex = notification.users.usersList.findIndex(user => user._id.toString() === user_id);
 
-    await notification.updateOne(
-      { $pull: { "users.usersList": { _id: user_id } } },
-      { new: true },
+    await Promise.all(
+      notification.updateOne(
+        { $pull: { "users.usersList": { _id: user_id } } },
+        { new: true },
+      ),
+      User.updateById(user_id, { $pull: { recent_notification: { _id: notificationId } } }),
     );
 
     if (!notification.users.isAll) {
@@ -137,6 +141,7 @@ export const setReadAllNoti = async (req, res, next) => {
         { $set: { "users.usersList.$.isUnread": null } },
         { new: true },
       ).exec(),
+      User.updateById(user_id, { $set: { recent_notification: [] } }),
     ]);
     return responseHandler.ok(res, updateAll);
   } catch (error) {
