@@ -24,8 +24,13 @@ const __dirname = path.resolve();
 
 dotenv.config();
 
+const mongooseOptions = {
+  serverSelectionTimeoutMS: 5000, // Increase this value
+  socketTimeoutMS: 45000, // Increase this value
+};
+
 mongoose
-  .connect(process.env.MONGO)
+  .connect(process.env.MONGO, mongooseOptions)
   .then(() => {
     console.log("Connected to MongoDB");
   })
