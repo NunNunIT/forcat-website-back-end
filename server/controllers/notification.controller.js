@@ -77,7 +77,7 @@ export const setReadNoti = async (req, res, next) => {
     return responseHandler.unauthorize(res, "You are not authenticated!");
 
   const role = req.user?.role;
-  if (!role || !["user"].includes(role))
+  if (!role || !["admin", "staff", "user"].includes(role))
     return responseHandler.forbidden(res, "You are not authorized!");
 
   const notification_id = req.params.noti_id;
@@ -100,17 +100,18 @@ export const setReadNoti = async (req, res, next) => {
     await Promise.all(
       notification.updateOne(
         { $pull: { "users.usersList": { _id: user_id } } },
-        { new: true },
-      ),
-      User.updateById(user_id, { $pull: { recent_notification: { _id: notificationId } } }),
+      ).exec(),
+      User.findByIdAndUpdate(
+        user_id,
+        { $pull: { recent_notification: { _id: notification._id } } },
+      ).exec(),
     );
 
     if (!notification.users.isAll) {
       // Nếu thông báo không phải là tất cả thì cập nhật isUnread của user là null
       await notification.updateOne(
         { $push: { "users.usersList": { _id: user_id, isUnread: null } } },
-        { new: true },
-      )
+      ).exec()
     }
 
     return responseHandler.ok(res, notification);
@@ -126,25 +127,26 @@ export const setReadAllNoti = async (req, res, next) => {
     return responseHandler.unauthorize(res, "You are not authenticated!");
 
   const role = req.user?.role;
-  if (!role || !["user"].includes(role))
+  if (!role || !["admin", "staff", "user"].includes(role))
     return responseHandler.forbidden(res, "You are not authorized!");
 
   try {
-    await Promise.All([
+    await Promise.all([
       Notification.updateMany(
         { "users.isAll": true, },
         { $pull: { "users.usersList": { _id: user_id } } },
-        { new: true },
       ).exec(),
       Notification.updateMany(
         { "users.usersList": { $elemMatch: { _id: user_id } } },
         { $set: { "users.usersList.$.isUnread": null } },
-        { new: true },
       ).exec(),
-      User.updateById(user_id, { $set: { recent_notification: [] } }),
+      User.findByIdAndUpdate(
+        user_id,
+        { $set: { recent_notification: [] } },
+      ).exec(),
     ]);
-    return responseHandler.ok(res, updateAll);
+    return responseHandler.ok(res, null);
   } catch (error) {
-    return responseHandler.error(res);
+    next(error);
   }
 };
