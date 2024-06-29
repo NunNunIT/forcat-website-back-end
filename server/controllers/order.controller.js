@@ -150,6 +150,7 @@ export const readOne = async (req, res, next) => {
     order_buyer: 1,
     order_address: 1,
     order_status: 1,
+    order_payment: 1,
     order_total_cost: 1,
     order_details: 1,
     createdAt: 1,
