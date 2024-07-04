@@ -10,7 +10,7 @@ const hashArticleId = (article) => {
 }
 
 const getSomeRelatedArticle = async ({ article_slug }) => {
-  const numberLimitArticle = 5;
+  const numberLimitArticle = 6;
   const sortedFields = { createdAt: -1 };
 
   try {
@@ -34,20 +34,6 @@ const getSomeRelatedArticle = async ({ article_slug }) => {
   }
 }
 
-export const create = async (req, res, next) => {
-  try {
-    const article = await Article.create({ ...req.body });
-
-    return resHandler.created(res, article);
-  } catch (err) {
-    if (err.code === 11000) {
-      return resHandler.conflict(res, "The article slug is already taken");
-    }
-
-    next(err);
-  }
-}
-
 export const readUnlimited = async (req, res, next) => {
   try {
     const articles = await Article.find({}, { article_content: 0 }).exec();
@@ -67,16 +53,16 @@ export const readAll = async (req, res, next) => {
     // Construct query object for filtering (if applicable)
     const query = {};
 
-    const sorted_fields = { createdAt: -1, }
+    const sorted_fields = { createdAt: -1, _id: -1 }; // Sort by creation date (optional)
 
     // Count the total number of articles
     const maxPage = Math.ceil(await Article.countDocuments(query).exec() / limit);
 
     // Perform efficient pagination with skip and limit
     const articles = await Article.find(query, { article_content: 0 })
+      .sort(sorted_fields) // Sort by creation date (optional)
       .skip((page - 1) * limit) // Calculate skip based on page number
       .limit(limit)
-      .sort(sorted_fields) // Sort by creation date (optional)
       .exec(); // Execute the query
 
     const handledArticles = articles.map(hashArticleId);
@@ -90,8 +76,11 @@ export const readAll = async (req, res, next) => {
 // [GET] /api/articles/:slug/:aid
 export const readOne = async (req, res, next) => {
   const { aid, slug } = req.params;
-  if (!aid || !slug)
+  // console.log(aid, slug);
+  if (!aid || !slug) {
+    // console.log("Missing the required data to perform this request");
     return resHandler.badRequest(res, "Missing the required data to perform this request");
+  }
 
   const query = {
     _id: decryptData(req.params?.aid),
@@ -110,30 +99,6 @@ export const readOne = async (req, res, next) => {
     article._doc.related_articles = relatedArticles;
 
     return resHandler.ok(res, article);
-  } catch (err) {
-    next(err);
-  }
-}
-
-export const update = async (req, res, next) => {
-  const { article_id_hashed, article_slug, ...update } = req.body;
-  if (!article_id_hashed || !article_slug) {
-    return resHandler.badRequest(res, "Missing the required data to perform this request");
-  }
-
-  const query = {
-    _id: decryptData(article_id_hashed),
-    article_slug
-  }
-
-  try {
-    const article = await Article.findOneAndUpdate(query, update).exec();
-
-    if (!article) {
-      return resHandler.notFound(res, "Not found the article with the article_id_hashed and article_slug");
-    }
-
-    return resHandler.ok(res);
   } catch (err) {
     next(err);
   }

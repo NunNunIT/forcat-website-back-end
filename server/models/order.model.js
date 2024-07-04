@@ -1,4 +1,5 @@
 import mongoose from "mongoose";
+import User from "./user.model.js";
 
 const orderSchema = new mongoose.Schema(
   {
@@ -21,6 +22,17 @@ const orderSchema = new mongoose.Schema(
       ward: String,
       district: String,
       province: String,
+    },
+    order_payment: {
+      type: String,
+      default: "cod",
+      enum: ["cod", "momo", "internet_banking"],
+    },
+    orderCode: {
+      type: Number,
+      unique: true,
+      // orderCode tham chiếu đến payOS,
+      // dùng để xác định đơn hàng đã được thanh toán hay chưa
     },
     order_note: String,
     order_payment_cost: { type: Number, default: 0 },
@@ -65,6 +77,15 @@ orderSchema.pre("save", function (next) {
 
   next();
 });
+
+orderSchema.post("save", async function (doc, next) {
+  await User.updateOne(
+    { _id: doc.customer_id },
+    { $push: { current_orders: { _id: doc._id } } }
+  );
+  return next();
+});
+
 
 const Order = mongoose.model("Order", orderSchema);
 export default Order;

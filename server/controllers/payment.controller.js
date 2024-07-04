@@ -1,11 +1,13 @@
 import PayOS from "@payos/node";
 import responseHandler from "../handlers/response.handler.js";
-import hashString from "../utils/hashStringIntoInt.js";
+import Order from "../models/order.model.js";
+import Notification from "../models/notification.model.js";
+import convertOrderStatusToStr from "../utils/convertOrderStatusToStr.js";
 
 const payos = new PayOS(
-  "a6f6345d-6892-475c-a422-3dd3ee69d3c9",
-  "4daf8611-1745-483a-8f0a-eafe16d12b5d",
-  "fcb5dcf88ddb665dcbb80805e928880a4248ba22d282c9ce5d75cb40fc32919d"
+  process.env.PAYOS_CLIENT_ID,
+  process.env.PAYOS_API_KEY,
+  process.env.PAYOS_CHECKSUM_KEY,
 );
 
 const COUNT_PAYMENT_DATA = {
@@ -19,13 +21,12 @@ export const paymentLinkData = async (req, res) => {
   const user_id = req.user?.id;
   const role = req.user?.role;
 
-    if (!user_id) return responseHandler.unauthorize(res);
-    if (!role || role !== "user") return responseHandler.forbidden(res);
+  if (!user_id) return responseHandler.unauthorize(res);
+  if (!role || role !== "user") return responseHandler.forbidden(res);
 
   const { ...paymentData } = req.body;
 
-  const orderCode = hashString(user_id + Date.now());
-  const { amount } = paymentData;
+  const { orderCode, amount } = paymentData;
 
   if (!amount) return responseHandler.badRequest(res);
 
@@ -38,6 +39,39 @@ export const paymentLinkData = async (req, res) => {
 
     return responseHandler.created(res, res_data);
   } catch (err) {
-    console.log("không tạo được link thanh toán", err);
+    console.error("không tạo được link thanh toán", err);
   }
 };
+
+export const updateStatusOrderAfterPayment = async (req, res) => {
+  const { orderCode } = req.webhookData;
+  const order = await Order.findOne({ orderCode });
+  if (!order) return res.json();
+
+  const query = { orderCode };
+
+  // Update order_status, order_process_info
+  await Order.findOneAndUpdate(query, {
+    $set: { order_status: "delivering" },
+    $push: { order_process_info: { status: "delivering", date: new Date() } }
+  })
+
+  // Create notification
+  const notiOrder = {
+    notification_name: "Thông báo cập nhật đơn hàng",
+    notification_type: "order",
+    notification_description: `
+        <p>Đơn hàng <b>${order._id}</b> của bạn đã được
+        cập nhật tình trạng thành: ${convertOrderStatusToStr("delivering")}</p>
+      `,
+    users: {
+      usersList: [
+        { _id: order.customer_id },
+      ],
+    },
+  };
+
+  await Notification.create(notiOrder);
+
+  return res.json();
+}

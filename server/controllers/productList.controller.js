@@ -271,20 +271,19 @@ export const getTopRatedProducts = async (req, res, next) => {
 export const getDiscountProducts = async (req, res, next) => {
   try {
     const discountProducts = await Product.find({
-        product_variants: {
-          $elemMatch: {
-            discount_id: {
-              $exists: true
-            },
-            discount_amount: {
-              $gt: 0
-            },
+      product_variants: {
+        $elemMatch: {
+          discount_id: {
+            $exists: true
+          },
+          discount_amount: {
+            $gt: 0
           },
         },
-      })
-      .sort({
-        product_avg_rating: -1
-      })
+      },
+    }).sort({
+      product_avg_rating: -1
+    })
       .limit(10)
       .select(
         "product_name category_names product_imgs product_avg_rating product_variants product_sold_quanity product_slug"
@@ -366,7 +365,8 @@ export const getSearchRecommended = async (req, res) => {
       searchKey = searchKey.replace(/\s+/g, "(^\\s.+)|");
       let searchKeySlug = searchKey.replace(/\s+/g, "-");
 
-      searchConditions.$or = [{
+      searchConditions.$or = [
+        {
           product_name: {
             $regex: searchKey,
             $options: "i"
@@ -408,7 +408,7 @@ export const getSearchRecommended = async (req, res) => {
       ); // Chọn các trường cần trả về
 
     products = sortSearchResults(products, req.query.searchKey);
-    // Lấy 10 kết quả đầu tiên
+    // Lấy 4 kết quả đầu tiên
     const firstTenProducts = products.slice(0, 4);
 
     // Biến đổi dữ liệu trả về theo yêu cầu
@@ -446,7 +446,8 @@ export const getSearchRecommended = async (req, res) => {
     });
 
     responseHandler.ok(
-      res, {
+      res,
+      {
         searchKey: req.query.searchKey,
         totalProducts,
         recommendedProducts: transformedProducts,
@@ -486,7 +487,8 @@ export const search = async (req, res) => {
       // console.log(searchKey, category)
       // Sử dụng regular expression để tìm kiếm các từ tương tự
 
-      searchConditions.$or = [{
+      searchConditions.$or = [
+        {
           product_name: {
             $regex: searchKey,
             $options: "i"
@@ -557,9 +559,9 @@ export const search = async (req, res) => {
     let sortOptions = {};
     if (sortBy === "hot") {
       sortOptions.product_avg_rating = -1,
-      sortOptions.product_sold_quantity = -1; // Sắp xếp theo sản phẩm nổi bật
+        sortOptions.product_sold_quantity = -1; // Sắp xếp theo sản phẩm nổi bật
     } else if (sortBy === "new") {
-      sortOptions.createdAt= -1; 
+      sortOptions.createdAt = -1;
     } else if (sortBy === "sale") {
       sortOptions.product_sold_quantity = -1; // Sắp xếp theo sản phẩm bán chạy
     } else if (sortBy === "price-z-to-a") {
@@ -639,7 +641,8 @@ export const search = async (req, res) => {
     });
 
     responseHandler.ok(
-      res, {
+      res,
+      {
         totalPages,
         currentPage: pageNumber,
         totalResults: totalProducts,

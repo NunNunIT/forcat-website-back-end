@@ -8,9 +8,9 @@ import {
 // Thiết lập kết nối đến cơ sở dữ liệu MongoDB
 mongoose.connect(
   "mongodb+srv://forcat-website-database-admin:jDSXBk9VEcCXpQIX@cluster0.gei9gq5.mongodb.net/FORCATSHOP?retryWrites=true&w=majority&appName=Cluster0", {
-    useNewUrlParser: true,
-    useUnifiedTopology: true,
-  }
+  useNewUrlParser: true,
+  useUnifiedTopology: true,
+}
 );
 
 function roundPrice(price) {
@@ -48,7 +48,7 @@ async function updateProducts() {
       // Lưu sản phẩm đã được cập nhật
       await product.save();
     }
-    console.log("Cập nhật sản phẩm thành công!");
+    // console.log("Cập nhật sản phẩm thành công!");
   } catch (error) {
     console.error("Lỗi khi cập nhật sản phẩm:", error);
   }
@@ -82,7 +82,7 @@ async function updateProductVariants() {
       // Lưu sản phẩm đã được cập nhật
       await product.save();
     }
-    console.log("Cập nhật sản phẩm thành công!");
+    // console.log("Cập nhật sản phẩm thành công!");
   } catch (error) {
     console.error("Lỗi khi cập nhật sản phẩm:", error);
   }
@@ -100,7 +100,7 @@ const updateAllProductsVariantSlugs = async function () {
       product.save();
     });
 
-    console.log("Cập nhật variant_slug cho tất cả sản phẩm thành công!");
+    // console.log("Cập nhật variant_slug cho tất cả sản phẩm thành công!");
   } catch (error) {
     console.error("Lỗi khi cập nhật variant_slug cho tất cả sản phẩm:", error);
   }
@@ -120,7 +120,7 @@ async function updateProductRatings() {
       // Lưu sản phẩm đã được cập nhật
       await product.save();
     }
-    console.log("Cập nhật đánh giá sản phẩm thành công!");
+    // console.log("Cập nhật đánh giá sản phẩm thành công!");
   } catch (error) {
     console.error("Lỗi khi cập nhật đánh giá sản phẩm:", error);
   }
