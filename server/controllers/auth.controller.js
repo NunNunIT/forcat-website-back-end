@@ -120,10 +120,12 @@ export const login = async (req, res, next) => {
 
 export const loginWithGoogle = async (req, res, next) => {
   try {
+    console.log(req.body.user_email)
     const checkUser = await User.findOne({
       user_email: req.body.user_email
     });
-    if (checkUser) {
+    if (checkUser._id) {
+      console.log("Đã tìm thấy")
       const {
         _id: noID,
         user_password: passwordToDiscard,
