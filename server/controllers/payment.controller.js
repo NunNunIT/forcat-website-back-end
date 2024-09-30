@@ -1,21 +1,21 @@
-import PayOS from "@payos/node";
+// import PayOS from "@payos/node";
 import responseHandler from "../handlers/response.handler.js";
 import Order from "../models/order.model.js";
 import Notification from "../models/notification.model.js";
 import convertOrderStatusToStr from "../utils/convertOrderStatusToStr.js";
 
-const payos = new PayOS(
-  process.env.PAYOS_CLIENT_ID,
-  process.env.PAYOS_API_KEY,
-  process.env.PAYOS_CHECKSUM_KEY,
-);
+// const payos = new PayOS(
+//   process.env.PAYOS_CLIENT_ID,
+//   process.env.PAYOS_API_KEY,
+//   process.env.PAYOS_CHECKSUM_KEY,
+// );
 
-const COUNT_PAYMENT_DATA = {
-  description: "Thanh toan don hang",
-  cancelUrl: "https://www.forcatshop.com/account/purchase-history?type=unpaid",
-  returnUrl:
-    "https://www.forcatshop.com/account/purchase-history?type=delivering",
-};
+// const COUNT_PAYMENT_DATA = {
+//   description: "Thanh toan don hang",
+//   cancelUrl: "https://www.forcatshop.com/account/purchase-history?type=unpaid",
+//   returnUrl:
+//     "https://www.forcatshop.com/account/purchase-history?type=delivering",
+// };
 
 export const paymentLinkData = async (req, res) => {
   const user_id = req.user?.id;
@@ -28,19 +28,22 @@ export const paymentLinkData = async (req, res) => {
 
   const { orderCode, amount } = paymentData;
 
-  if (!amount) return responseHandler.badRequest(res);
+  if (!amount)
+    return responseHandler.badRequest(res);
 
-  try {
-    const res_data = await payos.createPaymentLink({
-      ...COUNT_PAYMENT_DATA,
-      orderCode,
-      amount,
-    });
+  return responseHandler.error(res);
 
-    return responseHandler.created(res, res_data);
-  } catch (err) {
-    console.error("không tạo được link thanh toán", err);
-  }
+  // try {
+  //   const res_data = await payos.createPaymentLink({
+  //     ...COUNT_PAYMENT_DATA,
+  //     orderCode,
+  //     amount,
+  //   });
+
+  //   return responseHandler.created(res, res_data);
+  // } catch (err) {
+  //   console.error("không tạo được link thanh toán", err);
+  // }
 };
 
 export const updateStatusOrderAfterPayment = async (req, res) => {
