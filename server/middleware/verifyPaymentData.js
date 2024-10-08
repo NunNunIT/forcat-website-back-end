@@ -1,4 +1,3 @@
-import responseHandler from "../handlers/response.handler.js";
 import isValidWebHookData from "../utils/securityPayment.js";
 
 export default async function verifyPaymentData(req, res, next) {
